@@ -454,10 +454,9 @@ def handle_not_pickup_by_client_calls(response):
     frappe.db.commit()
 
 
-# Fetch Unique Clients Report
+# Fetch Unique Clients Report => Tested working fine
 @frappe.whitelist()
 def fetch_unique_clients_report():
-    # Fetch and validate parameters
     start_date = frappe.form_dict.get("start_date")
     end_date = frappe.form_dict.get("end_date")
     company = frappe.form_dict.get("company")
@@ -466,10 +465,8 @@ def fetch_unique_clients_report():
     call_from = format_time_timestamp_(datetime.strptime(start_date, "%Y-%m-%d %H:%M:%S"))
     call_to = format_time_timestamp_(datetime.strptime(end_date, "%Y-%m-%d %H:%M:%S"))
 
-    # Get API settings
     settings = get_callyzer_settings(company)
  
-    # Prepare headers and payload
     url = f"{settings.domain_api}/call-log/unique-clients"
     headers = {
         "Authorization": f"Bearer {settings.api_key}",
@@ -484,11 +481,14 @@ def fetch_unique_clients_report():
         "emp_tags": [],
         "is_exclude_numbers": True,
         "page_no": 1,
-        "page_size": 10000
+        "page_size": 100
     }
 
     try:
         response = requests.post(url, headers=headers, data=json.dumps(payload), timeout=20)
+        if response.status_code != 200:
+            frappe.log_error(response.text, "Callyzer History API Error")
+            frappe.throw(_("Call history fetch failed: ") + response.text)
         return process_unique_clients_response(response.json(), company)
 
     except Exception:
@@ -521,7 +521,6 @@ def process_unique_clients_response(response_json, company):
         doc.total_outgoing_calls = client.get("total_outgoing_calls")
         doc.company = company
 
-        # Optional: You can parse and store last call log info if needed
         last_call_log = client.get("last_call_log", {})
         if last_call_log:
             doc.last_call_date = last_call_log.get("call_date")
