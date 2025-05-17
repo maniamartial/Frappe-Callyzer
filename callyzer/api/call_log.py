@@ -229,7 +229,7 @@ def fetch_employee_summary_report():
         frappe.throw(_("Could not fetch employee summary report"))
 
 
-#Fetch analysis report
+#Fetch analysis report => (Pending test on pushing to respective doctype only)
 @frappe.whitelist()
 def fetch_analysis_report():
     start_date = frappe.form_dict.get("start_date")
@@ -264,7 +264,8 @@ def fetch_analysis_report():
 
     try:
         response = requests.post(url, headers=headers, data=json.dumps(payload), timeout=20)
-        response.raise_for_status()
+        if response.status_code != 200:
+            frappe.throw(f"Failed to fetch data: {response.status_code} - {response.text}")
 
         result = response.json().get("result", {})
         if not result:
