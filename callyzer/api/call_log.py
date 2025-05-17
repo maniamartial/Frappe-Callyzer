@@ -395,15 +395,16 @@ def handle_never_attended_calls(response):
             process_employee(emp)
 
         for log in emp.get("call_logs", []):
-            if not frappe.db.exists("Callyzer Analysis", {"call_log_id": log["id"]}):
-                doc = frappe.new_doc("Callyzer Analysis")
+            if not frappe.db.exists("Callyzer Call Attendance", {"call_log": log["id"]}):
+                doc = frappe.new_doc("Callyzer Call Attendance")
                 doc.employee = emp_number
                 doc.emp_code = emp.get("emp_code")
                 doc.emp_name = emp.get("emp_name")
                 doc.emp_number = emp_number
+                doc.call_status = "Unattended"
                 doc.client_name = emp.get("client_name")
                 doc.client_number = emp.get("client_number")
-                doc.call_log_id = log.get("id")
+                doc.call_log = log.get("id")
                 doc.duration = log.get("duration")
                 doc.call_type = log.get("call_type")
                 doc.call_date = log.get("call_date")
@@ -413,6 +414,8 @@ def handle_never_attended_calls(response):
                 doc.synced_at = log.get("synced_at")
                 doc.modified_at = log.get("modified_at")
                 doc.insert(ignore_permissions=True)
+
+    frappe.db.commit()
 
 
 #Fetch Not Pickup By Client (Pending testing on pushing data to doctype)
@@ -482,15 +485,16 @@ def handle_not_pickup_by_client_calls(response):
             if not call_log_id:
                 continue  # skip if no call log ID
 
-            if not frappe.db.exists("Callyzer Analysis", {"call_log_id": call_log_id}):
-                doc = frappe.new_doc("Callyzer Analysis")
+            if not frappe.db.exists("Callyzer Call Attendance", {"call_log": call_log_id}):
+                doc = frappe.new_doc("Callyzer Call Attendance")
                 doc.employee = emp_number
                 doc.emp_code = emp.get("emp_code")
                 doc.emp_name = emp.get("emp_name")
                 doc.emp_number = emp_number
+                doc.call_status = "Missed"
                 doc.client_name = emp.get("client_name")
                 doc.client_number = emp.get("client_number")
-                doc.call_log_id = call_log_id
+                doc.call_log = call_log_id
                 doc.duration = log.get("duration")
                 doc.call_type = log.get("call_type")
                 doc.call_date = log.get("call_date")

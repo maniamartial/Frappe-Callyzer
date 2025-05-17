@@ -1,0 +1,299 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-05-17 12:56:06.122916",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "start_date",
+  "end_date",
+  "column_break_luyn",
+  "company",
+  "section_break_ybhi",
+  "total_days",
+  "total_calls",
+  "total_duration",
+  "total_incoming_calls",
+  "total_outgoing_calls",
+  "column_break_opho",
+  "avg_per_day",
+  "avg_per_call",
+  "avg_per_incoming_calls",
+  "avg_per_outgoing",
+  "top_dialer_section",
+  "top_dialer_name",
+  "top_dialer_number",
+  "column_break_smse",
+  "top_dialer_tags",
+  "top_dialer_outgoing_calls",
+  "top_answered_section",
+  "top_answered_name",
+  "top_answered_number",
+  "column_break_uqri",
+  "top_answered_tags",
+  "top_answered_incoming_calls",
+  "top_caller_section",
+  "top_caller_name",
+  "top_caller_number",
+  "column_break_xzhm",
+  "top_caller_tags",
+  "top_caller_total_calls",
+  "longest_duration_section",
+  "longest_duration_name",
+  "longest_duration_number",
+  "column_break_stnp",
+  "longest_duration_tags",
+  "longest_call_duration",
+  "highest_duration_section",
+  "highest_duration_name",
+  "highest_duration_number",
+  "column_break_yiva",
+  "highest_duration_tags",
+  "highest_total_duration"
+ ],
+ "fields": [
+  {
+   "fieldname": "end_date",
+   "fieldtype": "Data",
+   "label": "End Date"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Data",
+   "label": "Company"
+  },
+  {
+   "fieldname": "column_break_luyn",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "start_date",
+   "fieldtype": "Data",
+   "label": "Start Date"
+  },
+  {
+   "fieldname": "section_break_ybhi",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "total_days",
+   "fieldtype": "Int",
+   "label": "Total Days"
+  },
+  {
+   "fieldname": "total_calls",
+   "fieldtype": "Int",
+   "label": "Total Calls"
+  },
+  {
+   "fieldname": "total_duration",
+   "fieldtype": "Int",
+   "label": "Total Duration"
+  },
+  {
+   "fieldname": "total_incoming_calls",
+   "fieldtype": "Int",
+   "label": "Total Incoming Calls"
+  },
+  {
+   "fieldname": "total_outgoing_calls",
+   "fieldtype": "Int",
+   "label": "Total Outgoing Calls"
+  },
+  {
+   "fieldname": "column_break_opho",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "avg_per_day",
+   "fieldtype": "Int",
+   "label": "Avg Per Day"
+  },
+  {
+   "fieldname": "avg_per_call",
+   "fieldtype": "Int",
+   "label": "Avg Per Call"
+  },
+  {
+   "fieldname": "avg_per_incoming_calls",
+   "fieldtype": "Int",
+   "label": "Avg per Incoming Calls"
+  },
+  {
+   "fieldname": "avg_per_outgoing",
+   "fieldtype": "Int",
+   "label": "Avg Per Outgoing"
+  },
+  {
+   "fieldname": "top_dialer_section",
+   "fieldtype": "Section Break",
+   "label": "Top Dialer"
+  },
+  {
+   "fieldname": "top_dialer_name",
+   "fieldtype": "Data",
+   "label": "Top Dialer Name"
+  },
+  {
+   "fieldname": "top_dialer_number",
+   "fieldtype": "Data",
+   "label": "Top Dialer Number"
+  },
+  {
+   "fieldname": "column_break_smse",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "top_dialer_tags",
+   "fieldtype": "Data",
+   "label": "Top Dialer Tags"
+  },
+  {
+   "fieldname": "top_dialer_outgoing_calls",
+   "fieldtype": "Int",
+   "label": "Top Dialer Outgoing Calls"
+  },
+  {
+   "fieldname": "top_answered_section",
+   "fieldtype": "Section Break",
+   "label": "Top Answered"
+  },
+  {
+   "fieldname": "top_answered_name",
+   "fieldtype": "Data",
+   "label": "Top Answered Name"
+  },
+  {
+   "fieldname": "top_answered_number",
+   "fieldtype": "Data",
+   "label": "Top Answered Number"
+  },
+  {
+   "fieldname": "column_break_uqri",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "top_answered_tags",
+   "fieldtype": "Data",
+   "label": "Top Answered Tags"
+  },
+  {
+   "fieldname": "top_answered_incoming_calls",
+   "fieldtype": "Int",
+   "label": "Top Answered Incoming Calls"
+  },
+  {
+   "fieldname": "top_caller_section",
+   "fieldtype": "Section Break",
+   "label": "Top Caller"
+  },
+  {
+   "fieldname": "top_caller_name",
+   "fieldtype": "Data",
+   "label": "Top Caller Name"
+  },
+  {
+   "fieldname": "top_caller_number",
+   "fieldtype": "Data",
+   "label": "Top Caller Number"
+  },
+  {
+   "fieldname": "column_break_xzhm",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "top_caller_tags",
+   "fieldtype": "Data",
+   "label": "Top Caller Tags"
+  },
+  {
+   "fieldname": "top_caller_total_calls",
+   "fieldtype": "Int",
+   "label": "Top Caller Total Calls"
+  },
+  {
+   "fieldname": "longest_duration_section",
+   "fieldtype": "Section Break",
+   "label": "Longest Duration"
+  },
+  {
+   "fieldname": "longest_duration_name",
+   "fieldtype": "Data",
+   "label": "Longest Duration Name"
+  },
+  {
+   "fieldname": "longest_duration_number",
+   "fieldtype": "Data",
+   "label": "Longest Duration Number"
+  },
+  {
+   "fieldname": "column_break_stnp",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "longest_duration_tags",
+   "fieldtype": "Data",
+   "label": "Longest Duration Tags"
+  },
+  {
+   "fieldname": "longest_call_duration",
+   "fieldtype": "Int",
+   "label": "Longest Call Duration"
+  },
+  {
+   "fieldname": "highest_duration_section",
+   "fieldtype": "Section Break",
+   "label": "Highest Duration"
+  },
+  {
+   "fieldname": "highest_duration_name",
+   "fieldtype": "Data",
+   "label": "Highest Duration Name"
+  },
+  {
+   "fieldname": "highest_duration_number",
+   "fieldtype": "Data",
+   "label": "Highest Duration Number"
+  },
+  {
+   "fieldname": "column_break_yiva",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "highest_duration_tags",
+   "fieldtype": "Data",
+   "label": "Highest Duration Tags"
+  },
+  {
+   "fieldname": "highest_total_duration",
+   "fieldtype": "Int",
+   "label": "Highest Total Duration"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2025-05-17 17:56:12.290403",
+ "modified_by": "Administrator",
+ "module": "Callyzer",
+ "name": "Callyzer Analysis Report",
+ "owner": "jojomadready@gmail.com",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}
