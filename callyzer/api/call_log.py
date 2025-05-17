@@ -534,7 +534,7 @@ def process_unique_clients_response(response_json, company):
     return {"status": "success", "inserted": inserted}
 
 
-# Fetch Hourly Analytics Report
+# Fetch Hourly Analytics Report => Tested working fine
 @frappe.whitelist()
 def fetch_hourly_analytics_report():
     start_date = frappe.form_dict.get("start_date")
@@ -586,7 +586,7 @@ def process_hourly_analytics_response(response_json, company, call_date):
     for slot in time_slots:
         doc = frappe.new_doc("Hourly Analytics")
         doc.company = company
-        doc.call_date = call_date[:10]  # Extract date part
+        doc.call_date = call_date[:10]
         doc.hour = slot.get("hour")
         doc.call_count = slot.get("call_count", 0)
         doc.connected_call_count = slot.get("connected_call_count", 0)
@@ -604,7 +604,6 @@ def process_hourly_analytics_response(response_json, company, call_date):
         "total_calls": total_calls,
         "total_connected_calls": total_connected_calls
     }
-
 
 #Fetch Day-wise Analytics Report => Tested working fine
 @frappe.whitelist()
