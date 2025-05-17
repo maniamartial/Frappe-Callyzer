@@ -1,6 +1,6 @@
 {
  "actions": [],
- "allow_rename": 1,
+ "autoname": "field:external_id",
  "creation": "2025-05-16 14:46:11.210973",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -44,7 +44,8 @@
   {
    "fieldname": "external_id",
    "fieldtype": "Data",
-   "label": "External Id"
+   "label": "External Id",
+   "unique": 1
   },
   {
    "fieldname": "lead_id",
@@ -178,10 +179,11 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-16 15:39:56.704918",
- "modified_by": "jojomadready@gmail.com",
+ "modified": "2025-05-17 17:05:09.698765",
+ "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Call History Log",
+ "naming_rule": "By fieldname",
  "owner": "jojomadready@gmail.com",
  "permissions": [
   {
