@@ -7,7 +7,7 @@ from frappe import _
 import time
 from datetime import datetime
 
-
+#Tested working
 @frappe.whitelist()
 def fetch_summary_report():
     call_from = format_time_timestamp(datetime.strptime(frappe.form_dict.get("start_date"), "%Y-%m-%d %H:%M:%S"))
@@ -50,6 +50,7 @@ def fetch_summary_report():
         frappe.throw(_("Error fetching summary report"))
 
 
+#Tested working
 @frappe.whitelist(allow_guest=True)
 def callyzer_call_log_webhook():
     """Webhook endpoint for receiving and processing Callyzer employee & call log data."""
@@ -146,6 +147,7 @@ def format_time_timestamp(dt=None):
 def format_time_timestamp_(date):
     return int(datetime.timestamp(date))
 
+#Tested working
 @frappe.whitelist()
 def fetch_employee_summary_report():
     # Fetch and validate parameters
@@ -604,7 +606,7 @@ def process_hourly_analytics_response(response_json, company, call_date):
     }
 
 
-#Fetch Day-wise Analytics Report
+#Fetch Day-wise Analytics Report => Tested working fine
 @frappe.whitelist()
 def fetch_day_wise_analytics_report():
     start_date = frappe.form_dict.get("start_date")
@@ -633,7 +635,9 @@ def fetch_day_wise_analytics_report():
 
     try:
         response = requests.post(url, headers=headers, data=json.dumps(payload), timeout=20)
-        response.raise_for_status()
+        if response.status_code != 200:
+            frappe.log_error(response.text, "Callyzer History API Error")
+            frappe.throw(_("Call history fetch failed: ") + response.text)
         return process_daywise_analytics_response(response.json(), company)
 
     except Exception:
@@ -641,33 +645,38 @@ def fetch_day_wise_analytics_report():
         frappe.throw(_("Could not fetch day-wise analytics report"))
 
 def process_daywise_analytics_response(response_json, company):
-    result = response_json.get("result", [])
+    result = response_json.get("result", {})
     if not result:
         return {"status": "error", "message": "No day-wise analytics found in response"}
 
     inserted = 0
-    for row in result:
-        call_date = row.get("date")
-        if not call_date:
-            continue
 
-        doc = frappe.new_doc("Daywise Analytics")
-        doc.company = company
-        doc.call_date = call_date
-        doc.total_calls = row.get("total_calls", 0)
-        doc.total_connected_calls = row.get("total_connected_calls", 0)
-        doc.total_duration = row.get("total_duration", 0)
-        doc.insert(ignore_permissions=True)
-        inserted += 1
+    time_slots = result.get("time_slots", [])
+    for slot in time_slots:
+        day_wise_data = slot.get("day_wise", [])
+        for row in day_wise_data:
+            call_date = row.get("date")
+            if not call_date:
+                continue
+
+            doc = frappe.new_doc("Daywise Analyicts")
+            doc.company = company
+            doc.call_date = call_date
+            doc.total_calls = row.get("total_calls", 0)
+            doc.total_connected_calls = row.get("total_connected_calls", 0)
+            doc.total_duration = row.get("total_duration", 0)
+            doc.insert(ignore_permissions=True)
+            inserted += 1
 
     return {
         "status": "success",
         "inserted": inserted,
-        "days_processed": len(result)
+        "days_processed": inserted  # Or len(unique_dates) if deduping is needed
     }
 
 
-##Fetch Call History Report
+
+##Fetch Call History Report #Tested working
 @frappe.whitelist()
 def fetch_call_history_report():
     start_date = frappe.form_dict.get("start_date")
