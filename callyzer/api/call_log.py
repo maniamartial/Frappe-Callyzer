@@ -331,12 +331,28 @@ def fetch_analysis_report():
         
         
         
-#Fetch Never Attended Report
+#Fetch Never Attended Report(Pending testing on teh part of pushing data on the respective doctype)
+@frappe.whitelist()
 def fetch_never_attended_calls():
-    url = "https://your.callyzer.instance/call-log/never-attended"
+    start_date = frappe.form_dict.get("start_date")
+    end_date = frappe.form_dict.get("end_date")
+    company = frappe.form_dict.get("company")
+
+  
+    call_from = format_time_timestamp_(datetime.strptime(start_date, "%Y-%m-%d %H:%M:%S"))
+    call_to = format_time_timestamp_(datetime.strptime(end_date, "%Y-%m-%d %H:%M:%S"))
+
+    settings = get_callyzer_settings(company)
+ 
+    url = f"{settings.domain_api}/call-log/never-attended"
+    headers = {
+        "Authorization": f"Bearer {settings.api_key}",
+        "Content-Type": "application/json"
+    }
+  
     payload = {
-        "call_from": 1691649001,
-        "call_to": 1707197072,
+        "call_from": call_from,
+        "call_to": call_to,
         "emp_numbers": [],
         "emp_tags": [],
         "is_exclude_numbers": True,
@@ -344,10 +360,7 @@ def fetch_never_attended_calls():
         "page_size": 10
     }
 
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer your_api_key_here"
-    }
+
 
     response = requests.post(url, headers=headers, json=payload)
     handle_never_attended_calls(response)
@@ -357,6 +370,18 @@ def fetch_never_attended_calls():
     return response.json()
 
 def handle_never_attended_calls(response):
+    if hasattr(response, "get_json"):
+        response = response.get_json()
+
+    # Ensure we're working with a dictionary
+    if not isinstance(response, dict):
+        frappe.msgprint("Invalid response format.")
+        return
+
+    results = response.get("result")
+    if not results:
+        frappe.msgprint("No records found.")
+        return
     if not response.get("result"):
         frappe.msgprint("No records found.")
         return
@@ -389,26 +414,34 @@ def handle_never_attended_calls(response):
                 doc.insert(ignore_permissions=True)
 
 
-
-#Fetch Not Pickup By Client
+#Fetch Not Pickup By Client (Pending testing on pushing data to doctype)
+@frappe.whitelist()
 def fetch_not_pickup_by_client_calls():
-    
-    url = "https://your.callyzer.instance/call-log/not-pickup-by-client"
+    start_date = frappe.form_dict.get("start_date")
+    end_date = frappe.form_dict.get("end_date")
+    company = frappe.form_dict.get("company")
 
+  
+    call_from = format_time_timestamp_(datetime.strptime(start_date, "%Y-%m-%d %H:%M:%S"))
+    call_to = format_time_timestamp_(datetime.strptime(end_date, "%Y-%m-%d %H:%M:%S"))
+
+    settings = get_callyzer_settings(company)
+ 
+    url = f"{settings.domain_api}/call-log/not-pickup-by-client"
+    headers = {
+        "Authorization": f"Bearer {settings.api_key}",
+        "Content-Type": "application/json"
+    }
+  
     payload = {
-        "call_from": 1691649001,
-        "call_to": 1707197072,
+        "call_from": call_from,
+        "call_to": call_to,
         "call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
         "emp_numbers": [],
         "emp_tags": [],
         "is_exclude_numbers": True,
         "page_no": 1,
         "page_size": 10
-    }
-
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer your_api_key_here"
     }
 
     response = requests.post(url, headers=headers, json=payload)
@@ -420,19 +453,35 @@ def fetch_not_pickup_by_client_calls():
 
 
 def handle_not_pickup_by_client_calls(response):
-    if not response.get("result"):
+    # If the response is a Frappe Response object, extract JSON
+    if hasattr(response, "get_json"):
+        response = response.get_json()
+
+    # Ensure we're working with a dictionary
+    if not isinstance(response, dict):
+        frappe.msgprint("Invalid response format.")
+        return
+
+    results = response.get("result")
+    if not results:
         frappe.msgprint("No records found.")
         return
 
-    for emp in response["result"]:
+    for emp in results:
         emp_number = emp.get("emp_number")
+        if not emp_number:
+            continue  # skip if employee number is missing
 
-        # Ensure employee exists via your reusable function
+        # Ensure employee exists or process if not
         if not frappe.db.exists("Callyzer Employee", {"employee_no": emp_number}):
             process_employee(emp)
 
         for log in emp.get("call_logs", []):
-            if not frappe.db.exists("Callyzer Analysis", {"call_log_id": log["id"]}):
+            call_log_id = log.get("id")
+            if not call_log_id:
+                continue  # skip if no call log ID
+
+            if not frappe.db.exists("Callyzer Analysis", {"call_log_id": call_log_id}):
                 doc = frappe.new_doc("Callyzer Analysis")
                 doc.employee = emp_number
                 doc.emp_code = emp.get("emp_code")
@@ -440,7 +489,7 @@ def handle_not_pickup_by_client_calls(response):
                 doc.emp_number = emp_number
                 doc.client_name = emp.get("client_name")
                 doc.client_number = emp.get("client_number")
-                doc.call_log_id = log.get("id")
+                doc.call_log_id = call_log_id
                 doc.duration = log.get("duration")
                 doc.call_type = log.get("call_type")
                 doc.call_date = log.get("call_date")
@@ -452,6 +501,7 @@ def handle_not_pickup_by_client_calls(response):
                 doc.insert(ignore_permissions=True)
 
     frappe.db.commit()
+
 
 
 # Fetch Unique Clients Report => Tested working fine
