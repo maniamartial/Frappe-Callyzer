@@ -110,7 +110,7 @@ frappe.ui.form.on('Callyzer Settings', {
                     d.hide();
                     frappe.call({
                         // method: 'callyzer.api.call_log.fetch_summary_report',
-                        method: 'callyzer.api.call_log.fetch_unique_clients_report',
+                        method: 'callyzer.api.call_log.fetch_summary_report',
 
                         args: {
                             start_date: values.start_date,

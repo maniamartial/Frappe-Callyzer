@@ -13,9 +13,6 @@ def fetch_summary_report():
     call_to = format_time_timestamp_(datetime.strptime(frappe.form_dict.get("end_date"), "%Y-%m-%d %H:%M:%S"))
     company = frappe.form_dict.get("company")
 
-    if not call_from or not call_to:
-        frappe.throw(_("Call from and call to (timestamps) are required"))
-
     settings = get_callyzer_settings(company)
  
     url = f"{settings.domain_api}/call-log/summary"
@@ -33,9 +30,38 @@ def fetch_summary_report():
         "is_exclude_numbers": True
     }
     results = post_api(url, token, payload)
+    process_total_summary_calls(results, company)
     return results
 
-
+def process_total_summary_calls(result, company):
+    """
+    Insert a new Callyzer Total Summary document from API response.
+    
+    :param data: Dictionary with 'result' from Callyzer API.
+    :param company: Optional. Link to Company.
+    :param employee: Optional. Link to Employee.
+    :param for_date: Optional. Date of the summary (default: today).
+    """
+    
+    doc = frappe.new_doc("Callyzer Total Summary")
+    
+    # Populate known fields from API result
+    doc.total_incoming_calls = result.get("total_incoming_calls", 0)
+    doc.total_incoming_duration = result.get("total_incoming_duration", 0)
+    doc.total_outgoing_calls = result.get("total_outgoing_calls", 0)
+    doc.total_outgoing_duration = result.get("total_outgoing_duration", 0)
+    doc.total_missed_calls = result.get("total_missed_calls", 0)
+    doc.total_rejected_calls = result.get("total_rejected_calls", 0)
+    doc.total_calls = result.get("total_calls", 0)
+    doc.total_duration = result.get("total_duration", 0)
+    doc.total_never_attended_calls = result.get("total_never_attended_calls", 0)
+    doc.total_not_pickup_by_clients_calls = result.get("total_not_pickup_by_clients_calls", 0)
+    doc.total_unique_clients = result.get("total_unique_clients", 0)
+    doc.total_working_hours = result.get("total_working_hours", "00:00:00")
+    doc.total_connected_calls = result.get("total_connected_calls", 0)
+    doc.insert(ignore_permissions=True)
+    return doc.name
+    
 def process_call_logs(employee_name, call_logs):
     """Create new call logs for the employee and return the number created."""
     count = 0
@@ -530,9 +556,6 @@ def fetch_call_history_report():
 
     call_from = format_time_timestamp_(datetime.strptime(start_date, "%Y-%m-%d %H:%M:%S"))
     call_to = format_time_timestamp_(datetime.strptime(end_date, "%Y-%m-%d %H:%M:%S"))
-
-    if call_from >= call_to:
-        frappe.throw(_("Start date must be before end date"))
 
     settings = get_callyzer_settings(company)
   
