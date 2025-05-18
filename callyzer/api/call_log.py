@@ -37,14 +37,6 @@ def fetch_summary_report():
     results = post_api(url, token, payload)
     return results
 
-    # try:
-    #     response = requests.post(url, headers=headers, data=json.dumps(payload), timeout=10)
-    #     response.raise_for_status()
-    #     return response.json()
-    # except Exception as e:
-    #     frappe.log_error(frappe.get_traceback(), _("Failed to fetch summary report"))
-    #     frappe.throw(_("Error fetching summary report"))
-
 #Tested working
 @frappe.whitelist(allow_guest=True)
 def callyzer_call_log_webhook():
@@ -145,18 +137,8 @@ def fetch_employee_summary_report():
     result = post_api(url, settings.api_key, payload)
     handle_employee_summary_response(result, company)
     return {"status": "success", "message": "Employee summary report fetched successfully"}
-    # try:
-    #     response = requests.post(url, headers=headers, data=json.dumps(payload), timeout=20)
-    #     response.raise_for_status()
-    #     employees = employees = response.json().get("result", [])
-    #     handle_employee_summary_response(employees, company)
-    #     return {"status": "success", "message": "Employee summary report fetched successfully"}
-
-    # except Exception:
-    #     frappe.log_error(frappe.get_traceback(), _("Failed to fetch Callyzer summary"))
-    #     frappe.throw(_("Could not fetch employee summary report"))
-
-
+   
+#Tested working
 def handle_employee_summary_response(result, company):
     for emp in result:
         if not frappe.db.exists("Callyzer Employee", {"employee_no": emp.get("emp_number")}):
@@ -224,21 +206,9 @@ def fetch_analysis_report():
     }
     result = post_api(url, settings.api_key, payload)
     handle_analysis_report(start_date, end_date, company, result)
-    
-    # try:
-    #     response = requests.post(url, headers=headers, data=json.dumps(payload), timeout=20)
-    #     if response.status_code != 200:
-    #         frappe.throw(f"Failed to fetch data: {response.status_code} - {response.text}")
+    return {"status": "success", "message": "Analysis report fetched successfully"}
 
-    #     result = response.json().get("result", {})
-    #     if not result:
-    #         frappe.throw(_("No analysis data found in response"))
-    #     handle_analysis_report(start_date, end_date, company, result)
-        
-    # except Exception:
-    #     frappe.log_error(frappe.get_traceback(), _("Failed to fetch Callyzer analysis"))
-    #     frappe.throw(_("Could not fetch analysis report"))
-        
+
 def handle_analysis_report(start_date, end_date, company, result):
     doc = frappe.new_doc("Callyzer Analysis")
     doc.start_date = start_date
@@ -326,12 +296,6 @@ def fetch_never_attended_calls():
     }
     result = post_api(url, settings.api_key, payload)
     handle_never_attended_calls(result)
-    
-    # response = requests.post(url, headers=headers, json=payload)
-    # result = response.json().get("result", {})
-    # handle_never_attended_calls(result)
-    # if response.status_code != 200:
-    #     frappe.throw(f"Failed to fetch data: {response.status_code} - {response.text}")
 
     return {"status": "success", "message": "Analysis data inserted"}
 
@@ -398,13 +362,7 @@ def fetch_not_pickup_by_client_calls():
 
     result = post_api(url, settings.api_key, payload)
     handle_not_pickup_by_client_calls(result)
-    
-    # response = requests.post(url, headers=headers, json=payload)
-    # result = response.json().get("result", {})
-    # handle_not_pickup_by_client_calls(result)
-    # if response.status_code != 200:
-    #     frappe.throw(f"Failed to fetch data: {response.status_code} - {response.text}")
-
+  
     return {"status": "success", "message": "Analysis data inserted"}
 
 
@@ -668,19 +626,10 @@ def fetch_call_history_report():
     result = post_api(url, settings.api_key, payload)
     process_call_history_response(result, company)
     return {"status": "success", "message": "Call history report fetched successfully"}
-    # try:
-    #     response = requests.post(url, headers=headers, data=json.dumps(payload), timeout=30)
-    #     if response.status_code != 200:
-    #         frappe.log_error(response.text, "Callyzer History API Error")
-    #         frappe.throw(_("Call history fetch failed: ") + response.text)
+   
 
-    #     return process_call_history_response(response.json(), company)
-    # except Exception:
-    #     frappe.log_error(frappe.get_traceback(), _("Failed to fetch call history report"))
-    #     frappe.throw(_("Could not fetch call history report"))
-
-def process_call_history_response(response_json, company):
-    call_logs = response_json.get("result", [])
+def process_call_history_response(result, company):
+    call_logs = result
     if not call_logs:
         return {"status": "error", "message": "No call history data found in response"}
 
@@ -753,15 +702,8 @@ def fetch_call_history_by_ids():
     result = post_api(url, settings.api_key, payload)
     process_call_history_response(result, company)
     return {"status": "success", "message": "Call history fetched successfully"}
-    # try:
-    #     response = requests.post(url, headers=headers, data=json.dumps(payload), timeout=30)
-    #     response.raise_for_status()
-    #     return process_call_history_response(response.json(), company)
-
-    # except Exception:
-    #     frappe.log_error(frappe.get_traceback(), _("Failed to fetch call history by IDs"))
-    #     frappe.throw(_("Could not fetch call history by unique IDs"))
-
+  
+  
 #Remove Call Recording
 @frappe.whitelist()
 def remove_call_recording(unique_ids: list[str], company: str = None):
