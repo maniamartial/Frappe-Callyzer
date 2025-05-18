@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class CallyzerEndpoint(Document):
+class CallyzerEndpointSettings(Document):
 	pass

@@ -1,0 +1,90 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Callyzer Endpoint Settings",
+  "endpoints": [
+   {
+    "endpoint": "/call-log/history",
+    "endpoint_name": "Call History",
+    "last_fetch": "2025-05-14 18:57:41",
+    "parent": "Callyzer Endpoint Settings",
+    "parentfield": "endpoints",
+    "parenttype": "Callyzer Endpoint Settings"
+   },
+   {
+    "endpoint": "/call-log/get",
+    "endpoint_name": "Call History By Ids",
+    "last_fetch": "2025-05-14 18:57:44",
+    "parent": "Callyzer Endpoint Settings",
+    "parentfield": "endpoints",
+    "parenttype": "Callyzer Endpoint Settings"
+   },
+   {
+    "endpoint": "/call-log/daywise-analytics",
+    "endpoint_name": "Day-wise Analytics",
+    "last_fetch": "2025-05-14 18:57:46",
+    "parent": "Callyzer Endpoint Settings",
+    "parentfield": "endpoints",
+    "parenttype": "Callyzer Endpoint Settings"
+   },
+   {
+    "endpoint": "/employee/get",
+    "endpoint_name": "Fetch Employee Details",
+    "last_fetch": "2025-05-14 18:57:48",
+    "parent": "Callyzer Endpoint Settings",
+    "parentfield": "endpoints",
+    "parenttype": "Callyzer Endpoint Settings"
+   },
+   {
+    "endpoint": "/lead/get",
+    "endpoint_name": "Fetch Leads",
+    "last_fetch": "2025-05-14 18:57:51",
+    "parent": "Callyzer Endpoint Settings",
+    "parentfield": "endpoints",
+    "parenttype": "Callyzer Endpoint Settings"
+   },
+   {
+    "endpoint": "/call-log/hourly-analytics",
+    "endpoint_name": "Hourly Analytics",
+    "last_fetch": "2025-05-13 18:57:54",
+    "parent": "Callyzer Endpoint Settings",
+    "parentfield": "endpoints",
+    "parenttype": "Callyzer Endpoint Settings"
+   },
+   {
+    "endpoint": "/call-log/call-recording/remove",
+    "endpoint_name": "Remove Call Recording",
+    "last_fetch": "2025-05-13 18:58:00",
+    "parent": "Callyzer Endpoint Settings",
+    "parentfield": "endpoints",
+    "parenttype": "Callyzer Endpoint Settings"
+   },
+   {
+    "endpoint": "/lead/save",
+    "endpoint_name": "Save Lead",
+    "last_fetch": "2025-05-14 18:58:04",
+    "parent": "Callyzer Endpoint Settings",
+    "parentfield": "endpoints",
+    "parenttype": "Callyzer Endpoint Settings"
+   },
+   {
+    "endpoint": "/lead/bulksave",
+    "endpoint_name": "Save Leads in Bulk",
+    "last_fetch": "2025-05-14 18:58:07",
+    "parent": "Callyzer Endpoint Settings",
+    "parentfield": "endpoints",
+    "parenttype": "Callyzer Endpoint Settings"
+   },
+   {
+    "endpoint": "/call-log/unique-clients",
+    "endpoint_name": "Unique Clients",
+    "last_fetch": "2025-05-14 18:58:12",
+    "parent": "Callyzer Endpoint Settings",
+    "parentfield": "endpoints",
+    "parenttype": "Callyzer Endpoint Settings"
+   }
+  ],
+  "modified": "2025-05-18 19:00:55.615379",
+  "name": "Callyzer Endpoint Settings"
+ }
+]

@@ -1,7 +1,7 @@
 // Copyright (c) 2025, Mania and contributors
 // For license information, please see license.txt
 
-// frappe.ui.form.on("Callyzer Endpoint", {
+// frappe.ui.form.on("Callyzer Endpoint Settings", {
 // 	refresh(frm) {
 
 // 	},

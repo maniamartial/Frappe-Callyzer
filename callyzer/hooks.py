@@ -11,7 +11,8 @@ app_license = "agpl-3.0"
 # required_apps = []
 
 fixtures = [
-    "Callyzer Endpoint",
+    "Callyzer Endpoint Item",
+    "Callyzer Endpoint Settings"
 ]
 
 # Each item in the list will be shown as an app in the apps page

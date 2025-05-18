@@ -37,7 +37,7 @@
  "modified": "2025-05-18 17:49:57.027246",
  "modified_by": "Administrator",
  "module": "Callyzer",
- "name": "Callyzer Endpoint",
+ "name": "Callyzer Endpoint Item",
  "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [

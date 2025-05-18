@@ -3,12 +3,10 @@
 import frappe
 from datetime import datetime
 from frappe import _
-import json
 
 def get_callyzer_settings(company):
     settings = frappe.get_all("Callyzer Settings", filters={"is_active": 1, "company":company}, fields=["name", "domain_api", "api_key", "company", "call_log"])
-    return settings[0] if settings else None
-
+    return settings if settings else None
 
 def normalize_payload(payload):
     """Normalize input payload to a list of data dictionaries."""
@@ -28,3 +26,4 @@ def get_employees():
 
 def format_time_timestamp_(date):
     return int(datetime.timestamp(date))
+

@@ -1,0 +1,122 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Callyzer Endpoint Item",
+  "endpoint": "/call-log/summary",
+  "endpoint_name": "Summary Report",
+  "modified": "2025-05-18 17:49:42.046734",
+  "name": "Summary Report"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Callyzer Endpoint Item",
+  "endpoint": "/call-log/employee-summary",
+  "endpoint_name": "Employee Summary",
+  "modified": "2025-05-18 17:53:02.454845",
+  "name": "Employee Summary"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Callyzer Endpoint Item",
+  "endpoint": "/call-log/analysis",
+  "endpoint_name": "Analysis Report",
+  "modified": "2025-05-18 17:54:09.169466",
+  "name": "Analysis Report"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Callyzer Endpoint Item",
+  "endpoint": "/call-log/never-attended",
+  "endpoint_name": "Never Attended",
+  "modified": "2025-05-18 17:54:59.274788",
+  "name": "Never Attended"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Callyzer Endpoint Item",
+  "endpoint": "/call-log/not-pickup-by-client",
+  "endpoint_name": "Not Pickup By Client",
+  "modified": "2025-05-18 17:55:28.140115",
+  "name": "Not Pickup By Client"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Callyzer Endpoint Item",
+  "endpoint": "/call-log/unique-clients",
+  "endpoint_name": "Unique Clients",
+  "modified": "2025-05-18 17:55:58.360074",
+  "name": "Unique Clients"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Callyzer Endpoint Item",
+  "endpoint": "/call-log/hourly-analytics",
+  "endpoint_name": "Hourly Analytics",
+  "modified": "2025-05-18 17:59:12.891769",
+  "name": "Hourly Analytics"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Callyzer Endpoint Item",
+  "endpoint": "/call-log/daywise-analytics",
+  "endpoint_name": "Day-wise Analytics",
+  "modified": "2025-05-18 18:07:39.764321",
+  "name": "Day-wise Analytics"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Callyzer Endpoint Item",
+  "endpoint": "/call-log/history",
+  "endpoint_name": "Call History",
+  "modified": "2025-05-18 18:08:25.788536",
+  "name": "Call History"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Callyzer Endpoint Item",
+  "endpoint": "/call-log/get",
+  "endpoint_name": "Call History By Ids",
+  "modified": "2025-05-18 18:08:52.326351",
+  "name": "Call History By Ids"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Callyzer Endpoint Item",
+  "endpoint": "/call-log/call-recording/remove",
+  "endpoint_name": "Remove Call Recording",
+  "modified": "2025-05-18 18:09:19.851194",
+  "name": "Remove Call Recording"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Callyzer Endpoint Item",
+  "endpoint": "/lead/save",
+  "endpoint_name": "Save Lead",
+  "modified": "2025-05-18 18:09:48.985417",
+  "name": "Save Lead"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Callyzer Endpoint Item",
+  "endpoint": "/lead/bulksave",
+  "endpoint_name": "Save Leads in Bulk",
+  "modified": "2025-05-18 18:10:18.422005",
+  "name": "Save Leads in Bulk"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Callyzer Endpoint Item",
+  "endpoint": "/lead/get",
+  "endpoint_name": "Fetch Leads",
+  "modified": "2025-05-18 18:10:42.283126",
+  "name": "Fetch Leads"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Callyzer Endpoint Item",
+  "endpoint": "/employee/get",
+  "endpoint_name": "Fetch Employee Details",
+  "modified": "2025-05-18 18:11:23.676027",
+  "name": "Fetch Employee Details"
+ }
+]

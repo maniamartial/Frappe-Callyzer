@@ -28,15 +28,14 @@
    "fieldname": "last_fetch",
    "fieldtype": "Datetime",
    "in_list_view": 1,
-   "label": "Last Fetch",
-   "reqd": 1
+   "label": "Last Fetch"
   },
   {
    "fieldname": "endpoint_name",
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "EndPoint Name",
-   "options": "Callyzer Endpoint",
+   "options": "Callyzer Endpoint Item",
    "reqd": 1
   }
  ],
@@ -44,7 +43,7 @@
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2025-05-18 17:45:20.802665",
+ "modified": "2025-05-18 18:58:48.673234",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Endpoint Call",

@@ -5,5 +5,5 @@
 from frappe.tests.utils import FrappeTestCase
 
 
-class TestCallyzerEndpoint(FrappeTestCase):
+class TestCallyzerEndpointSettings(FrappeTestCase):
 	pass
