@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "format:CTS-{MM}-{####}",
  "creation": "2025-05-18 15:31:16.269951",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -29,12 +30,18 @@
   {
    "fieldname": "total_incoming_calls",
    "fieldtype": "Int",
-   "label": "Total Incoming Calls"
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Total Incoming Calls",
+   "reqd": 1
   },
   {
    "fieldname": "total_incoming_duration",
    "fieldtype": "Data",
-   "label": "Total Incoming Duration"
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Total Incoming Duration",
+   "reqd": 1
   },
   {
    "fieldname": "column_break_dzjj",
@@ -43,11 +50,16 @@
   {
    "fieldname": "total_outgoing_calls",
    "fieldtype": "Int",
-   "label": "Total Outgoing Calls"
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Total Outgoing Calls",
+   "reqd": 1
   },
   {
    "fieldname": "total_outgoing_duration",
    "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Total Outgoing Duration"
   },
   {
@@ -57,12 +69,14 @@
   {
    "fieldname": "total_missed_calls",
    "fieldtype": "Int",
-   "label": "Total Missed Calls"
+   "label": "Total Missed Calls",
+   "reqd": 1
   },
   {
    "fieldname": "total_rejected_calls",
    "fieldtype": "Int",
-   "label": "Total Rejected Calls"
+   "label": "Total Rejected Calls",
+   "reqd": 1
   },
   {
    "fieldname": "column_break_vcdv",
@@ -71,7 +85,8 @@
   {
    "fieldname": "total_calls",
    "fieldtype": "Int",
-   "label": "Total Calls"
+   "label": "Total Calls",
+   "reqd": 1
   },
   {
    "fieldname": "total_duration",
@@ -85,12 +100,14 @@
   {
    "fieldname": "total_never_attended_calls",
    "fieldtype": "Int",
-   "label": "Total Never Attended Calls"
+   "label": "Total Never Attended Calls",
+   "reqd": 1
   },
   {
    "fieldname": "total_not_pickup_by_clients_calls",
    "fieldtype": "Int",
-   "label": "Total Not Pickup By Clients Calls"
+   "label": "Total Not Pickup By Clients Calls",
+   "reqd": 1
   },
   {
    "fieldname": "total_connected_calls",
@@ -104,7 +121,8 @@
   {
    "fieldname": "total_unique_clients",
    "fieldtype": "Int",
-   "label": "Total Unique Clients"
+   "label": "Total Unique Clients",
+   "reqd": 1
   },
   {
    "fieldname": "total_working_hours",
@@ -114,17 +132,20 @@
   {
    "fieldname": "company",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Company",
-   "options": "Company"
+   "options": "Company",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-18 16:20:40.197822",
+ "modified": "2025-05-18 16:34:30.903673",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Callyzer Total Summary",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {

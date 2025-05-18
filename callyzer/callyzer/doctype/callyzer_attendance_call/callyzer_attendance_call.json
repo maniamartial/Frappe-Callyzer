@@ -7,6 +7,7 @@
  "field_order": [
   "employee",
   "emp_name",
+  "company",
   "column_break_kjym",
   "emp_code",
   "emp_number",
@@ -139,12 +140,19 @@
    "fieldname": "duration",
    "fieldtype": "Int",
    "label": "Duration"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-18 13:02:42.923763",
+ "modified": "2025-05-18 16:50:40.473274",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Callyzer Attendance Call",

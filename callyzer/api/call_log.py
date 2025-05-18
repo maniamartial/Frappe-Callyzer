@@ -25,26 +25,20 @@ def fetch_summary_report():
         "call_to": int(call_to),
         "call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
         "emp_numbers": employee_ids,
-        "duration_les_than": 200,
+        # "duration_les_than": 200,
         "emp_tags": ["api"],
         "is_exclude_numbers": True
     }
+    
     results = post_api(url, token, payload)
     process_total_summary_calls(results, company)
     return results
 
+#Tested working
+@frappe.whitelist()
 def process_total_summary_calls(result, company):
-    """
-    Insert a new Callyzer Total Summary document from API response.
-    
-    :param data: Dictionary with 'result' from Callyzer API.
-    :param company: Optional. Link to Company.
-    :param employee: Optional. Link to Employee.
-    :param for_date: Optional. Date of the summary (default: today).
-    """
     
     doc = frappe.new_doc("Callyzer Total Summary")
-    
     doc.total_incoming_calls = result.get("total_incoming_calls", 0)
     doc.total_incoming_duration = result.get("total_incoming_duration", 0)
     doc.total_outgoing_calls = result.get("total_outgoing_calls", 0)
@@ -61,8 +55,9 @@ def process_total_summary_calls(result, company):
     doc.company = company
     doc.insert(ignore_permissions=True)
     return doc.name
-    
-def process_call_logs(employee_name, call_logs):
+   
+#Tested working
+def process_call_logs(employee_name, call_logs, company):
     """Create new call logs for the employee and return the number created."""
     count = 0
     for call in call_logs:
@@ -86,6 +81,7 @@ def process_call_logs(employee_name, call_logs):
         doc.reminder_time = call.get("reminder_time")
         doc.synced_at = parse_datetime(call.get("synced_at"))
         doc.modified_at = parse_datetime(call.get("modified_at"))
+        doc.company = company
 
         doc.insert(ignore_permissions=True)
         count += 1
@@ -111,7 +107,7 @@ def fetch_employee_summary_report():
         "call_to": call_to,
         "call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
         "emp_numbers": [],
-        "duration_les_than": 20,
+        "duration_les_than": 200,
         "emp_tags": [],
         "is_exclude_numbers": True
     }
@@ -145,6 +141,7 @@ def handle_employee_summary_response(result, company):
         doc.avg_duration_per_call = emp.get("avg_duration_per_call")
         doc.avg_incoming_duration = emp.get("avg_incoming_duration")
         doc.avg_outgoing_duration = emp.get("avg_outgoing_duration")
+        doc.company = company
 
         doc.last_call_log = json.dumps(emp.get("last_call_log", {}))
 
@@ -259,11 +256,11 @@ def fetch_never_attended_calls():
         "page_size": 10
     }
     result = post_api(url, settings.api_key, payload)
-    handle_never_attended_calls(result)
+    handle_never_attended_calls(result, company)
 
     return {"status": "success", "message": "Analysis data inserted"}
 
-def handle_never_attended_calls(response):
+def handle_never_attended_calls(response, company):
     for emp in response:
         emp_number = emp.get("emp_number")
 
@@ -289,10 +286,8 @@ def handle_never_attended_calls(response):
                 doc.call_recording_url = log.get("call_recording_url")
                 doc.synced_at = log.get("synced_at")
                 doc.modified_at = log.get("modified_at")
+                doc.company = company
                 doc.insert(ignore_permissions=True)
-
-    frappe.db.commit()
-
 
 #Fetch Not Pickup By Client.
 @frappe.whitelist()
@@ -321,12 +316,12 @@ def fetch_not_pickup_by_client_calls():
     }
 
     result = post_api(url, settings.api_key, payload)
-    handle_not_pickup_by_client_calls(result)
+    handle_not_pickup_by_client_calls(result, company)
   
     return {"status": "success", "message": "Analysis data inserted"}
 
 
-def handle_not_pickup_by_client_calls(response):
+def handle_not_pickup_by_client_calls(response, company):
     for emp in response:
         emp_number = emp.get("emp_number")
         if not emp_number:
@@ -359,6 +354,7 @@ def handle_not_pickup_by_client_calls(response):
                 doc.call_recording_url = log.get("call_recording_url")
                 doc.synced_at = log.get("synced_at")
                 doc.modified_at = log.get("modified_at")
+                doc.company = company
                 doc.insert(ignore_permissions=True)
 
 # Fetch Unique Clients Report => Tested working fine

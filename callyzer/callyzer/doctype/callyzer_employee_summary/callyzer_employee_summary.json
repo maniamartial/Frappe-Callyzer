@@ -11,6 +11,7 @@
   "column_break_qsat",
   "total_incoming_connected_calls",
   "total_outgoing_calls",
+  "company",
   "section_break_vmrt",
   "total_rejected_calls",
   "total_missed_calls",
@@ -28,13 +29,17 @@
   {
    "fieldname": "employee",
    "fieldtype": "Link",
+   "in_list_view": 1,
    "label": "Employee",
-   "options": "Callyzer Employee"
+   "options": "Callyzer Employee",
+   "reqd": 1
   },
   {
    "fieldname": "total_incoming_calls",
    "fieldtype": "Int",
-   "label": "Total Incoming Calls"
+   "in_list_view": 1,
+   "label": "Total Incoming Calls",
+   "reqd": 1
   },
   {
    "fieldname": "total_incoming_duration",
@@ -62,12 +67,14 @@
   {
    "fieldname": "total_rejected_calls",
    "fieldtype": "Int",
-   "label": "Total Rejected Calls"
+   "label": "Total Rejected Calls",
+   "reqd": 1
   },
   {
    "fieldname": "total_missed_calls",
    "fieldtype": "Int",
-   "label": "Total Missed Calls"
+   "label": "Total Missed Calls",
+   "reqd": 1
   },
   {
    "fieldname": "total_connected_calls",
@@ -86,12 +93,13 @@
   {
    "fieldname": "total_duration",
    "fieldtype": "Int",
-   "label": "Total Duration"
+   "label": "Total Duration",
+   "reqd": 1
   },
   {
    "fieldname": "total_not_picked_by_clients_calls",
    "fieldtype": "Int",
-   "label": "Total Not Picked BY Clients Calls"
+   "label": "Total Not Picked By Clients Calls"
   },
   {
    "fieldname": "total_unique_clients",
@@ -111,12 +119,20 @@
    "fieldname": "last_call_log",
    "fieldtype": "Small Text",
    "label": "Last Call Log"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-15 00:27:05.638217",
+ "modified": "2025-05-18 16:42:46.377490",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Callyzer Employee Summary",
