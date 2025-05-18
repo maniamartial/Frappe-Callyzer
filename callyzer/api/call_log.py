@@ -17,9 +17,7 @@ def fetch_summary_report():
         frappe.throw(_("Call from and call to (timestamps) are required"))
 
     settings = get_callyzer_settings(company)
-    if not settings:
-        frappe.throw(_("Callyzer settings not found for the company"))
-
+ 
     url = f"{settings.domain_api}/call-log/summary"
     token = settings.api_key
 
@@ -36,41 +34,6 @@ def fetch_summary_report():
     }
     results = post_api(url, token, payload)
     return results
-
-#Tested working
-@frappe.whitelist(allow_guest=True)
-def callyzer_call_log_webhook():
-    """Webhook endpoint for receiving and processing Callyzer employee & call log data."""
-    try:
-        if frappe.request.method != "POST":
-            frappe.throw(_("Webhook only accepts POST requests"), frappe.ValidationError)
-
-        payload = frappe.request.get_json()
-        if not payload:
-            frappe.throw(_("Invalid or empty JSON payload"))
-
-        data = normalize_payload(payload)
-
-        total_created = 0
-        total_logs = 0
-
-        for item in data:
-            employee_name, is_new = process_employee(item)
-            if is_new:
-                total_created += 1
-
-            logs_created = process_call_logs(employee_name, item.get("call_logs", []))
-            total_logs += logs_created
-
-        return {
-            "status": "success",
-            "employees_created": total_created,
-            "call_logs_created": total_logs
-        }
-
-    except Exception:
-        frappe.log_error(frappe.get_traceback(), "Webhook: Failed to process Callyzer data")
-        return {"status": "error", "message": "Processing failed"}
 
 
 def process_call_logs(employee_name, call_logs):
@@ -110,18 +73,10 @@ def fetch_employee_summary_report():
     end_date = frappe.form_dict.get("end_date")
     company = frappe.form_dict.get("company")
 
-    if not (start_date and end_date and company):
-        frappe.throw(_("Start Date, End Date and Company are required"))
-
-    try:
-        call_from = format_time_timestamp_(datetime.strptime(start_date, "%Y-%m-%d %H:%M:%S"))
-        call_to = format_time_timestamp_(datetime.strptime(end_date, "%Y-%m-%d %H:%M:%S"))
-    except Exception:
-        frappe.throw(_("Invalid date format. Use 'YYYY-MM-DD HH:MM:SS'"))
+    call_from = format_time_timestamp_(datetime.strptime(start_date, "%Y-%m-%d %H:%M:%S"))
+    call_to = format_time_timestamp_(datetime.strptime(end_date, "%Y-%m-%d %H:%M:%S"))
 
     settings = get_callyzer_settings(company)
-    if not settings:
-        frappe.throw(_("Callyzer settings not found for the company"))
 
     url = f"{settings.domain_api}/call-log/employee-summary"
 
@@ -178,25 +133,13 @@ def fetch_analysis_report():
     start_date = frappe.form_dict.get("start_date")
     end_date = frappe.form_dict.get("end_date")
     company = frappe.form_dict.get("company")
-
-    if not (start_date and end_date and company):
-        frappe.throw(_("Start Date, End Date, and Company are required"))
-
-    try:
-        call_from = int(datetime.strptime(start_date, "%Y-%m-%d %H:%M:%S").timestamp())
-        call_to = int(datetime.strptime(end_date, "%Y-%m-%d %H:%M:%S").timestamp())
-    except Exception:
-        frappe.throw(_("Invalid date format. Use 'YYYY-MM-DD HH:MM:SS'"))
+    
+    call_from = int(datetime.strptime(start_date, "%Y-%m-%d %H:%M:%S").timestamp())
+    call_to = int(datetime.strptime(end_date, "%Y-%m-%d %H:%M:%S").timestamp())
 
     settings = get_callyzer_settings(company)
-    if not settings:
-        frappe.throw(_("Callyzer settings not found for the company"))
-
+ 
     url = f"{settings.domain_api}/call-log/analysis"
-    headers = {
-        "Authorization": f"Bearer {settings.api_key}",
-        "Content-Type": "application/json"
-    }
 
     payload = {
         "call_from": call_from,
@@ -273,17 +216,12 @@ def fetch_never_attended_calls():
     end_date = frappe.form_dict.get("end_date")
     company = frappe.form_dict.get("company")
 
-  
     call_from = format_time_timestamp_(datetime.strptime(start_date, "%Y-%m-%d %H:%M:%S"))
     call_to = format_time_timestamp_(datetime.strptime(end_date, "%Y-%m-%d %H:%M:%S"))
 
     settings = get_callyzer_settings(company)
  
     url = f"{settings.domain_api}/call-log/never-attended"
-    headers = {
-        "Authorization": f"Bearer {settings.api_key}",
-        "Content-Type": "application/json"
-    }
   
     payload = {
         "call_from": call_from,
@@ -344,10 +282,6 @@ def fetch_not_pickup_by_client_calls():
     settings = get_callyzer_settings(company)
  
     url = f"{settings.domain_api}/call-log/not-pickup-by-client"
-    headers = {
-        "Authorization": f"Bearer {settings.api_key}",
-        "Content-Type": "application/json"
-    }
   
     payload = {
         "call_from": call_from,
@@ -401,10 +335,6 @@ def handle_not_pickup_by_client_calls(response):
                 doc.modified_at = log.get("modified_at")
                 doc.insert(ignore_permissions=True)
 
-    frappe.db.commit()
-
-
-
 # Fetch Unique Clients Report => Tested working fine
 @frappe.whitelist()
 def fetch_unique_clients_report():
@@ -419,11 +349,7 @@ def fetch_unique_clients_report():
     settings = get_callyzer_settings(company)
  
     url = f"{settings.domain_api}/call-log/unique-clients"
-    headers = {
-        "Authorization": f"Bearer {settings.api_key}",
-        "Content-Type": "application/json"
-    }
-
+ 
     payload = {
         "call_from": call_from,
         "call_to": call_to,
@@ -609,9 +535,7 @@ def fetch_call_history_report():
         frappe.throw(_("Start date must be before end date"))
 
     settings = get_callyzer_settings(company)
-    if not settings:
-        frappe.throw(_("Callyzer settings not found for the company"))
-
+  
     url = f"{settings.domain_api}/call-log/history"
 
     payload = {
@@ -726,6 +650,43 @@ def remove_call_recording(unique_ids: list[str], company: str = None):
     except requests.RequestException as e:
         frappe.log_error(f"Failed to remove call recording: {e}", "Callyzer Remove Call Recording")
         return {"status": "error", "message": str(e)}
+    
+
+#Tested working
+@frappe.whitelist(allow_guest=True)
+def callyzer_call_log_webhook():
+    """Webhook endpoint for receiving and processing Callyzer employee & call log data."""
+    try:
+        if frappe.request.method != "POST":
+            frappe.throw(_("Webhook only accepts POST requests"), frappe.ValidationError)
+
+        payload = frappe.request.get_json()
+        if not payload:
+            frappe.throw(_("Invalid or empty JSON payload"))
+
+        data = normalize_payload(payload)
+
+        total_created = 0
+        total_logs = 0
+
+        for item in data:
+            employee_name, is_new = process_employee(item)
+            if is_new:
+                total_created += 1
+
+            logs_created = process_call_logs(employee_name, item.get("call_logs", []))
+            total_logs += logs_created
+
+        return {
+            "status": "success",
+            "employees_created": total_created,
+            "call_logs_created": total_logs
+        }
+
+    except Exception:
+        frappe.log_error(frappe.get_traceback(), "Webhook: Failed to process Callyzer data")
+        return {"status": "error", "message": "Processing failed"}
+    
     
 def post_api(url, api_key, payload):
     headers = build_callyzer_headers(api_key)
