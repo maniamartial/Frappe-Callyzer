@@ -728,4 +728,3 @@ def build_callyzer_headers(api_key):
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json"
     }
-    
