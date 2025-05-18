@@ -5,5 +5,5 @@
 from frappe.model.document import Document
 
 
-class CallyzerCallAttendance(Document):
+class CallyzerAttendanceCall(Document):
 	pass

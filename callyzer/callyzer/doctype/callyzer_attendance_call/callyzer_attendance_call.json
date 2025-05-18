@@ -88,7 +88,7 @@
   },
   {
    "fieldname": "call_log",
-   "fieldtype": "Link",
+   "fieldtype": "Data",
    "label": "Call Log",
    "options": "Call History Log"
   },
@@ -144,10 +144,10 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-17 17:39:51.906841",
+ "modified": "2025-05-18 13:02:42.923763",
  "modified_by": "Administrator",
  "module": "Callyzer",
- "name": "Callyzer Call Attendance",
+ "name": "Callyzer Attendance Call",
  "owner": "Administrator",
  "permissions": [
   {

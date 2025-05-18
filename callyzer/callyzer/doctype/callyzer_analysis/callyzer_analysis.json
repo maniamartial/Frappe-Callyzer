@@ -46,7 +46,7 @@
   "longest_call_duration",
   "highest_duration_section",
   "highest_duration_name",
-  "highest_duration_number",
+  "highest_duration_employee",
   "column_break_yiva",
   "highest_duration_tags",
   "highest_total_duration"
@@ -251,11 +251,6 @@
    "label": "Highest Duration Name"
   },
   {
-   "fieldname": "highest_duration_number",
-   "fieldtype": "Data",
-   "label": "Highest Duration Number"
-  },
-  {
    "fieldname": "column_break_yiva",
    "fieldtype": "Column Break"
   },
@@ -268,15 +263,21 @@
    "fieldname": "highest_total_duration",
    "fieldtype": "Int",
    "label": "Highest Total Duration"
+  },
+  {
+   "fieldname": "highest_duration_employee",
+   "fieldtype": "Link",
+   "label": "Highest Duration Employee",
+   "options": "Callyzer Employee"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-17 17:56:12.290403",
+ "modified": "2025-05-18 12:38:38.405419",
  "modified_by": "Administrator",
  "module": "Callyzer",
- "name": "Callyzer Analysis Report",
+ "name": "Callyzer Analysis",
  "owner": "jojomadready@gmail.com",
  "permissions": [
   {

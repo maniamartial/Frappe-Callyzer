@@ -1,7 +1,7 @@
 // Copyright (c) 2025, Mania and contributors
 // For license information, please see license.txt
 
-// frappe.ui.form.on("Callyzer Analysis Report", {
+// frappe.ui.form.on("Callyzer Attendance Call", {
 // 	refresh(frm) {
 
 // 	},

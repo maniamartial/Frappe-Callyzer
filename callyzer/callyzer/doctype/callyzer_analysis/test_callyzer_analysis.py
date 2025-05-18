@@ -12,18 +12,18 @@ EXTRA_TEST_RECORD_DEPENDENCIES = []  # eg. ["User"]
 IGNORE_TEST_RECORD_DEPENDENCIES = []  # eg. ["User"]
 
 
-class UnitTestCallyzerCallAttendance(UnitTestCase):
+class UnitTestCallyzerAnalysis(UnitTestCase):
 	"""
-	Unit tests for CallyzerCallAttendance.
+	Unit tests for CallyzerAnalysis.
 	Use this class for testing individual functions and methods.
 	"""
 
 	pass
 
 
-class IntegrationTestCallyzerCallAttendance(IntegrationTestCase):
+class IntegrationTestCallyzerAnalysis(IntegrationTestCase):
 	"""
-	Integration tests for CallyzerCallAttendance.
+	Integration tests for CallyzerAnalysis.
 	Use this class for testing interactions between multiple components.
 	"""
 

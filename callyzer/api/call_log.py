@@ -317,7 +317,7 @@ def fetch_analysis_report():
         doc.longest_call_duration = long_dur.get("duration")
 
         # Highest Duration
-        high_dur = result.get("highest_duration", {})
+        high_dur = result.get("highest_total_duration", {})
         doc.highest_duration_name = high_dur.get("emp_name")
         doc.highest_duration_number = high_dur.get("emp_number")
         doc.highest_duration_tags = ", ".join(high_dur.get("emp_tags", []))
@@ -361,42 +361,24 @@ def fetch_never_attended_calls():
         "page_size": 10
     }
 
-
-
     response = requests.post(url, headers=headers, json=payload)
-    handle_never_attended_calls(response)
+    result = response.json().get("result", {})
+    handle_never_attended_calls(result)
     if response.status_code != 200:
         frappe.throw(f"Failed to fetch data: {response.status_code} - {response.text}")
 
-    return response.json()
+    return {"status": "success", "message": "Analysis data inserted"}
 
 def handle_never_attended_calls(response):
-    if hasattr(response, "get_json"):
-        response = response.get_json()
-
-    # Ensure we're working with a dictionary
-    if not isinstance(response, dict):
-        frappe.msgprint("Invalid response format.")
-        return
-
-    results = response.get("result")
-    if not results:
-        frappe.msgprint("No records found.")
-        return
-    if not response.get("result"):
-        frappe.msgprint("No records found.")
-        return
-
-    for emp in response["result"]:
+    for emp in response:
         emp_number = emp.get("emp_number")
 
-        # Use your existing function if employee doesn't exist
         if not frappe.db.exists("Callyzer Employee", {"employee_no": emp_number}):
             process_employee(emp)
 
         for log in emp.get("call_logs", []):
-            if not frappe.db.exists("Callyzer Call Attendance", {"call_log": log["id"]}):
-                doc = frappe.new_doc("Callyzer Call Attendance")
+            if not frappe.db.exists("Callyzer Attendance Call", {"call_log": log["id"]}):
+                doc = frappe.new_doc("Callyzer Attendance Call")
                 doc.employee = emp_number
                 doc.emp_code = emp.get("emp_code")
                 doc.emp_name = emp.get("emp_name")
@@ -449,32 +431,19 @@ def fetch_not_pickup_by_client_calls():
     }
 
     response = requests.post(url, headers=headers, json=payload)
-    handle_not_pickup_by_client_calls(response)
+    result = response.json().get("result", {})
+    handle_not_pickup_by_client_calls(result)
     if response.status_code != 200:
         frappe.throw(f"Failed to fetch data: {response.status_code} - {response.text}")
 
-    return response.json()
+    return {"status": "success", "message": "Analysis data inserted"}
 
 
 def handle_not_pickup_by_client_calls(response):
-    # If the response is a Frappe Response object, extract JSON
-    if hasattr(response, "get_json"):
-        response = response.get_json()
-
-    # Ensure we're working with a dictionary
-    if not isinstance(response, dict):
-        frappe.msgprint("Invalid response format.")
-        return
-
-    results = response.get("result")
-    if not results:
-        frappe.msgprint("No records found.")
-        return
-
-    for emp in results:
+    for emp in response:
         emp_number = emp.get("emp_number")
         if not emp_number:
-            continue  # skip if employee number is missing
+            continue 
 
         # Ensure employee exists or process if not
         if not frappe.db.exists("Callyzer Employee", {"employee_no": emp_number}):
@@ -485,8 +454,8 @@ def handle_not_pickup_by_client_calls(response):
             if not call_log_id:
                 continue  # skip if no call log ID
 
-            if not frappe.db.exists("Callyzer Call Attendance", {"call_log": call_log_id}):
-                doc = frappe.new_doc("Callyzer Call Attendance")
+            if not frappe.db.exists("Callyzer Attendance Call", {"call_log": call_log_id}):
+                doc = frappe.new_doc("Callyzer Attendance Call")
                 doc.employee = emp_number
                 doc.emp_code = emp.get("emp_code")
                 doc.emp_name = emp.get("emp_name")
