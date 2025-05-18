@@ -25,7 +25,7 @@ def fetch_summary_report():
         "call_to": int(call_to),
         "call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
         "emp_numbers": employee_ids,
-        "duration_les_than": 20,
+        "duration_les_than": 200,
         "emp_tags": ["api"],
         "is_exclude_numbers": True
     }
@@ -45,7 +45,6 @@ def process_total_summary_calls(result, company):
     
     doc = frappe.new_doc("Callyzer Total Summary")
     
-    # Populate known fields from API result
     doc.total_incoming_calls = result.get("total_incoming_calls", 0)
     doc.total_incoming_duration = result.get("total_incoming_duration", 0)
     doc.total_outgoing_calls = result.get("total_outgoing_calls", 0)
@@ -59,6 +58,7 @@ def process_total_summary_calls(result, company):
     doc.total_unique_clients = result.get("total_unique_clients", 0)
     doc.total_working_hours = result.get("total_working_hours", "00:00:00")
     doc.total_connected_calls = result.get("total_connected_calls", 0)
+    doc.company = company
     doc.insert(ignore_permissions=True)
     return doc.name
     
