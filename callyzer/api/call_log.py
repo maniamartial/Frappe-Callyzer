@@ -1,17 +1,16 @@
 import frappe
 import requests
 import json
-from callyzer.callyzer.utils import get_callyzer_settings
+from callyzer.callyzer.utils import get_callyzer_settings, normalize_payload, get_employees, format_time_timestamp_
 from callyzer.api.fetch_employee import parse_datetime, process_employee
 from frappe import _
-import time
 from datetime import datetime
 
 #Tested working
 @frappe.whitelist()
 def fetch_summary_report():
-    call_from = format_time_timestamp(datetime.strptime(frappe.form_dict.get("start_date"), "%Y-%m-%d %H:%M:%S"))
-    call_to = format_time_timestamp(datetime.strptime(frappe.form_dict.get("end_date"), "%Y-%m-%d %H:%M:%S"))
+    call_from = format_time_timestamp_(datetime.strptime(frappe.form_dict.get("start_date"), "%Y-%m-%d %H:%M:%S"))
+    call_to = format_time_timestamp_(datetime.strptime(frappe.form_dict.get("end_date"), "%Y-%m-%d %H:%M:%S"))
     company = frappe.form_dict.get("company")
     # frappe.throw(str(call_from))
     if not call_from or not call_to:
@@ -86,17 +85,6 @@ def callyzer_call_log_webhook():
         return {"status": "error", "message": "Processing failed"}
 
 
-def normalize_payload(payload):
-    """Normalize input payload to a list of data dictionaries."""
-    if isinstance(payload, list):
-        return payload
-    elif isinstance(payload, dict):
-        return payload.get("result", []) or [payload]
-    else:
-        frappe.throw(_("Unexpected payload format"))
-
-
-
 def process_call_logs(employee_name, call_logs):
     """Create new call logs for the employee and return the number created."""
     count = 0
@@ -126,26 +114,6 @@ def process_call_logs(employee_name, call_logs):
         count += 1
 
     return count
-
-def get_employees():
-    employees_id = []
-    all_callyzer_employee = frappe.get_all("Callyzer Employee", fields=["name"])
-    for employee in all_callyzer_employee:
-        employees_id.append(employee.name)
-    return employees_id
-
-
-def format_time_timestamp(dt=None):
-    """
-    Convert a datetime object to Unix timestamp (seconds since epoch).
-    If no datetime is provided, use the current time.
-    """
-    if dt is None:
-        dt = datetime.now()
-    return int(time.mktime(dt.timetuple()))
-
-def format_time_timestamp_(date):
-    return int(datetime.timestamp(date))
 
 #Tested working
 @frappe.whitelist()
