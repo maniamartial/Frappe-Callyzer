@@ -1,7 +1,7 @@
 import frappe
 import requests
 import json
-from callyzer.callyzer.utils import get_callyzer_settings, normalize_payload, get_employees, format_time_timestamp_
+from callyzer.callyzer.utils import get_callyzer_settings, normalize_payload, get_employees, format_time_timestamp_, get_endpoint
 from callyzer.api.fetch_employee import parse_datetime, process_employee
 from frappe import _
 from datetime import datetime
@@ -9,29 +9,31 @@ from datetime import datetime
 #Tested working
 @frappe.whitelist()
 def fetch_summary_report():
-    call_from = format_time_timestamp_(datetime.strptime(frappe.form_dict.get("start_date"), "%Y-%m-%d %H:%M:%S"))
-    call_to = format_time_timestamp_(datetime.strptime(frappe.form_dict.get("end_date"), "%Y-%m-%d %H:%M:%S"))
-    company = frappe.form_dict.get("company")
+    end_point_name = "Summary Report"
 
-    settings = get_callyzer_settings(company)
+    settings = get_callyzer_settings()
+    
+    for setting in settings:
+        company = setting["company"]
+        endpoint, call_from, call_to = get_endpoint(end_point_name) 
+
+        url = f"{setting.domain_api}{endpoint}"
+        token = setting.api_key
  
-    url = f"{settings.domain_api}/call-log/summary"
-    token = settings.api_key
-
-    employee_ids = get_employees()
-    
-    payload = {
-        "call_from": int(call_from),
-        "call_to": int(call_to),
-        "call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
-        "emp_numbers": employee_ids,
-        # "duration_les_than": 200,
-        "emp_tags": ["api"],
-        "is_exclude_numbers": True
-    }
-    
-    results = post_api(url, token, payload)
-    process_total_summary_calls(results, company)
+        employee_ids = get_employees()
+        
+        payload = {
+            "call_from": int(call_from),
+            "call_to": int(call_to),
+            "call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
+            "emp_numbers": employee_ids,
+            # "duration_les_than": 200,
+            "emp_tags": ["api"],
+            "is_exclude_numbers": True
+        }
+        
+        results = post_api(url, token, payload)
+        process_total_summary_calls(results, company)
     return results
 
 #Tested working
@@ -91,6 +93,7 @@ def process_call_logs(employee_name, call_logs, company):
 #Tested working
 @frappe.whitelist()
 def fetch_employee_summary_report():
+    endpoint_name ="Fetch Employee Details"
     start_date = frappe.form_dict.get("start_date")
     end_date = frappe.form_dict.get("end_date")
     company = frappe.form_dict.get("company")
@@ -117,6 +120,7 @@ def fetch_employee_summary_report():
    
 #Tested working
 def handle_employee_summary_response(result, company):
+    
     for emp in result:
         if not frappe.db.exists("Callyzer Employee", {"employee_no": emp.get("emp_number")}):
             process_employee(emp)
@@ -153,6 +157,7 @@ def handle_employee_summary_response(result, company):
 # Fetch analysis report
 @frappe.whitelist()
 def fetch_analysis_report():
+    endpoint_name = "Analysis Report"
     start_date = frappe.form_dict.get("start_date")
     end_date = frappe.form_dict.get("end_date")
     company = frappe.form_dict.get("company")
@@ -235,6 +240,7 @@ def handle_analysis_report(start_date, end_date, company, result):
 #Fetch Never Attended Report
 @frappe.whitelist()
 def fetch_never_attended_calls():
+    endpoint_name ="Never Attended"
     start_date = frappe.form_dict.get("start_date")
     end_date = frappe.form_dict.get("end_date")
     company = frappe.form_dict.get("company")
@@ -292,6 +298,7 @@ def handle_never_attended_calls(response, company):
 #Fetch Not Pickup By Client.
 @frappe.whitelist()
 def fetch_not_pickup_by_client_calls():
+    endpoint_name = "Not Pickup By Client"
     start_date = frappe.form_dict.get("start_date")
     end_date = frappe.form_dict.get("end_date")
     company = frappe.form_dict.get("company")
@@ -360,6 +367,7 @@ def handle_not_pickup_by_client_calls(response, company):
 # Fetch Unique Clients Report => Tested working fine
 @frappe.whitelist()
 def fetch_unique_clients_report():
+    endpoint_name = "Unique Clients"
     start_date = frappe.form_dict.get("start_date")
     end_date = frappe.form_dict.get("end_date")
     company = frappe.form_dict.get("company")
@@ -428,6 +436,7 @@ def process_unique_clients_response(result, company):
 # Fetch Hourly Analytics Report
 @frappe.whitelist()
 def fetch_hourly_analytics_report():
+    endpoint_name = "Hourly Analytics"
     start_date = frappe.form_dict.get("start_date")
     end_date = frappe.form_dict.get("end_date")
     company = frappe.form_dict.get("company")
@@ -489,6 +498,7 @@ def process_hourly_analytics_response(result, company, call_date):
 #Fetch Day-wise Analytics Report
 @frappe.whitelist()
 def fetch_day_wise_analytics_report():
+    endpoint_name = "Day-wise Analytics"
     start_date = frappe.form_dict.get("start_date")
     end_date = frappe.form_dict.get("end_date")
     company = frappe.form_dict.get("company")
@@ -546,6 +556,7 @@ def process_daywise_analytics_response(response_json, company):
 ##Fetch Call History Report #Tested working
 @frappe.whitelist()
 def fetch_call_history_report():
+    endpoint_name = "Call History"
     start_date = frappe.form_dict.get("start_date")
     end_date = frappe.form_dict.get("end_date")
     company = frappe.form_dict.get("company")
@@ -627,6 +638,7 @@ def process_call_history_response(result, company):
 #Fetch Call History By Ids
 @frappe.whitelist()
 def fetch_call_history_by_ids():
+    endpoint_name = "Call History By Ids"
     unique_ids = frappe.form_dict.get("unique_ids")
     company = frappe.form_dict.get("company")
 
@@ -650,6 +662,7 @@ def fetch_call_history_by_ids():
 #Remove Call Recording
 @frappe.whitelist()
 def remove_call_recording(unique_ids: list[str], company: str = None):
+    endpoint_name = "Remove Call Recording"
     if not unique_ids:
         frappe.throw(_("Unique IDs are required"))
 

@@ -4,9 +4,18 @@ import frappe
 from datetime import datetime
 from frappe import _
 
-def get_callyzer_settings(company):
-    settings = frappe.get_all("Callyzer Settings", filters={"is_active": 1, "company":company}, fields=["name", "domain_api", "api_key", "company", "call_log"])
+def get_callyzer_settings(company=None):
+    filters = {"is_active": 1}
+    if company:
+        filters["company"] = company
+
+    settings = frappe.get_all(
+        "Callyzer Settings",
+        filters=filters,
+        fields=["name", "domain_api", "api_key", "company", "call_log"]
+    )
     return settings if settings else None
+
 
 def normalize_payload(payload):
     """Normalize input payload to a list of data dictionaries."""
@@ -24,6 +33,40 @@ def get_employees():
         employees_id.append(employee.name)
     return employees_id
 
-def format_time_timestamp_(date):
-    return int(datetime.timestamp(date))
 
+def format_time_timestamp_(date):
+    if isinstance(date, str):
+        # Try parsing the common Frappe datetime format
+        try:
+            date = frappe.utils.get_datetime(date)
+        except Exception:
+            # Fallback if parsing fails
+            date = datetime.strptime(date, "%Y-%m-%d %H:%M:%S")
+    
+    return int(date.timestamp())
+
+
+def get_endpoint_settings():
+    settings = frappe.get_single("Callyzer Endpoint Settings")
+    endpoints = []
+
+    for endpoint_item in settings.endpoints:
+        endpoints.append({
+            "endpoint_name": endpoint_item.endpoint_name,
+            "endpoint": endpoint_item.endpoint,
+            "last_fetched": endpoint_item.last_fetch,
+        })
+    
+    return endpoints
+
+def get_endpoint(endpoint_name):
+    call_from = None
+    call_to = format_time_timestamp_(frappe.utils.now())
+    for endpoint in get_endpoint_settings():
+        if endpoint["endpoint_name"] == endpoint_name:
+            endpoint_url = endpoint["endpoint"]
+            call_from = format_time_timestamp_(endpoint["last_fetched"])
+            break
+        
+    return endpoint_url, call_from, call_to
+    
