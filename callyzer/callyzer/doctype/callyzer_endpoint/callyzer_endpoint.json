@@ -7,8 +7,8 @@
  "engine": "InnoDB",
  "field_order": [
   "endpoint_name",
-  "column_break_xwgy",
-  "endpoint"
+  "endpoint",
+  "column_break_xwgy"
  ],
  "fields": [
   {
@@ -34,7 +34,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-18 17:22:22.248014",
+ "modified": "2025-05-18 17:49:57.027246",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Callyzer Endpoint",

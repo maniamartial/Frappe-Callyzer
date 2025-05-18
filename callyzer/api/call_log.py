@@ -150,7 +150,7 @@ def handle_employee_summary_response(result, company):
 
     return {"status": "success", "inserted": inserted}
 
-#Fetch analysis report
+# Fetch analysis report
 @frappe.whitelist()
 def fetch_analysis_report():
     start_date = frappe.form_dict.get("start_date")
