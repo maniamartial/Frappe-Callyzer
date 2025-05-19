@@ -11,17 +11,16 @@ from datetime import datetime
 def fetch_summary_report():
     end_point_name = "Summary Report"
 
+
+    endpoint, call_from, call_to = get_endpoint(end_point_name) 
     settings = get_callyzer_settings()
+    employee_ids = get_employees()
     
     for setting in settings:
         company = setting["company"]
-        endpoint, call_from, call_to = get_endpoint(end_point_name) 
-
-        url = f"{setting.domain_api}{endpoint}"
-        token = setting.api_key
- 
-        employee_ids = get_employees()
-        
+        url = f"{setting["domain_api"]}{endpoint}"
+        token = setting["api_key"]
+    
         payload = {
             "call_from": int(call_from),
             "call_to": int(call_to),
@@ -93,29 +92,32 @@ def process_call_logs(employee_name, call_logs, company):
 #Tested working
 @frappe.whitelist()
 def fetch_employee_summary_report():
-    endpoint_name ="Fetch Employee Details"
-    start_date = frappe.form_dict.get("start_date")
-    end_date = frappe.form_dict.get("end_date")
-    company = frappe.form_dict.get("company")
+    end_point_name ="Fetch Employee Details"
+    endpoint, call_from, call_to = get_endpoint(end_point_name)
+    employee_ids = get_employees()
 
-    call_from = format_time_timestamp_(datetime.strptime(start_date, "%Y-%m-%d %H:%M:%S"))
-    call_to = format_time_timestamp_(datetime.strptime(end_date, "%Y-%m-%d %H:%M:%S"))
+    settings = get_callyzer_settings()
+    
+    for setting in settings:
+        company = setting["company"]
+        
+        url = f"{setting["domain_api"]}{endpoint}"
+        token = setting["api_key"]
 
-    settings = get_callyzer_settings(company)
-
-    url = f"{settings.domain_api}/call-log/employee-summary"
-
-    payload = {
-        "call_from": call_from,
-        "call_to": call_to,
-        "call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
-        "emp_numbers": [],
-        "duration_les_than": 200,
-        "emp_tags": [],
-        "is_exclude_numbers": True
+        payload = {
+            "call_from": int(call_from),
+            "call_to": int(call_to),
+            "call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
+            "emp_numbers": employee_ids,
+            "emp_tags": ["api"],
+            "is_exclude_numbers": True
     }
-    result = post_api(url, settings.api_key, payload)
-    handle_employee_summary_response(result, company)
+
+
+
+    
+        result = post_api(url, token, payload)
+        handle_employee_summary_response(result, company)
     return {"status": "success", "message": "Employee summary report fetched successfully"}
    
 #Tested working
@@ -157,26 +159,24 @@ def handle_employee_summary_response(result, company):
 # Fetch analysis report
 @frappe.whitelist()
 def fetch_analysis_report():
-    endpoint_name = "Analysis Report"
-    start_date = frappe.form_dict.get("start_date")
-    end_date = frappe.form_dict.get("end_date")
-    company = frappe.form_dict.get("company")
-    
-    call_from = int(datetime.strptime(start_date, "%Y-%m-%d %H:%M:%S").timestamp())
-    call_to = int(datetime.strptime(end_date, "%Y-%m-%d %H:%M:%S").timestamp())
+    end_point_name = "Analysis Report"
+    endpoint, call_from, call_to = get_endpoint(end_point_name)
 
     settings = get_callyzer_settings(company)
- 
-    url = f"{settings.domain_api}/call-log/analysis"
+    for setting in settings:
+        company = setting["company"]
 
-    payload = {
-        "call_from": call_from,
-        "call_to": call_to,
-        "call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
-        "is_exclude_numbers": True
-    }
-    result = post_api(url, settings.api_key, payload)
-    handle_analysis_report(start_date, end_date, company, result)
+        url = f"{setting["domain_api"]}{endpoint}"
+        token = setting["api_key"]
+
+        payload = {
+            "call_from": int(call_from),
+            "call_to": int(call_to),
+            "call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
+            "is_exclude_numbers": True
+        }
+        result = post_api(url, token, payload)
+        handle_analysis_report(call_from, call_to, company, result)
     return {"status": "success", "message": "Analysis report fetched successfully"}
 
 
@@ -240,29 +240,28 @@ def handle_analysis_report(start_date, end_date, company, result):
 #Fetch Never Attended Report
 @frappe.whitelist()
 def fetch_never_attended_calls():
-    endpoint_name ="Never Attended"
-    start_date = frappe.form_dict.get("start_date")
-    end_date = frappe.form_dict.get("end_date")
-    company = frappe.form_dict.get("company")
+    end_point_name = "Never Attended"
+    endpoint, call_from, call_to = get_endpoint(end_point_name)
 
-    call_from = format_time_timestamp_(datetime.strptime(start_date, "%Y-%m-%d %H:%M:%S"))
-    call_to = format_time_timestamp_(datetime.strptime(end_date, "%Y-%m-%d %H:%M:%S"))
+    employee_ids = get_employees()
+    settings = get_callyzer_settings()
 
-    settings = get_callyzer_settings(company)
- 
-    url = f"{settings.domain_api}/call-log/never-attended"
+    for setting in settings:
+        comapany = setting["company"]
+        url = f"{setting["domain_api"]}{endpoint}"
+        token = setting["api_key"]
   
-    payload = {
-        "call_from": call_from,
-        "call_to": call_to,
-        "emp_numbers": [],
-        "emp_tags": [],
-        "is_exclude_numbers": True,
-        "page_no": 1,
-        "page_size": 10
-    }
-    result = post_api(url, settings.api_key, payload)
-    handle_never_attended_calls(result, company)
+        payload = {
+            "call_from": int(call_from),
+            "call_to": int(call_to),
+            "emp_numbers": employee_ids,
+            "emp_tags": ["api"],
+            "is_exclude_numbers": True,
+            "page_no": 1,
+            "page_size": 10
+        }
+        result = post_api(url, token, payload)
+        handle_never_attended_calls(result, company)
 
     return {"status": "success", "message": "Analysis data inserted"}
 
@@ -298,33 +297,30 @@ def handle_never_attended_calls(response, company):
 #Fetch Not Pickup By Client.
 @frappe.whitelist()
 def fetch_not_pickup_by_client_calls():
-    endpoint_name = "Not Pickup By Client"
-    start_date = frappe.form_dict.get("start_date")
-    end_date = frappe.form_dict.get("end_date")
-    company = frappe.form_dict.get("company")
+    settings = get_callyzer_settings()
+    employee_ids = get_employees()
+    end_point_name = "Not Pickup By Client"
+    endpoint, call_from, call_to = get_endpoint(end_point_name)
 
-  
-    call_from = format_time_timestamp_(datetime.strptime(start_date, "%Y-%m-%d %H:%M:%S"))
-    call_to = format_time_timestamp_(datetime.strptime(end_date, "%Y-%m-%d %H:%M:%S"))
+    for setting in settings:
+        company = setting["company"]
+        token = setting["api_key"]
+        url = f"{setting["domain_api"]}{endpoint}"
 
-    settings = get_callyzer_settings(company)
- 
-    url = f"{settings.domain_api}/call-log/not-pickup-by-client"
-  
-    payload = {
-        "call_from": call_from,
-        "call_to": call_to,
-        "call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
-        "emp_numbers": [],
-        "emp_tags": [],
-        "is_exclude_numbers": True,
-        "page_no": 1,
-        "page_size": 10
-    }
+        payload = {
+            "call_from": int(call_from),
+            "call_to": int(call_to),
+            "call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
+            "emp_numbers": employee_ids,
+            "emp_tags": ["api"],
+            "is_exclude_numbers": True,
+            "page_no": 1,
+            "page_size": 10
+        }
 
-    result = post_api(url, settings.api_key, payload)
-    handle_not_pickup_by_client_calls(result, company)
-  
+        result = post_api(url, token, payload)
+        handle_not_pickup_by_client_calls(result, company)
+      
     return {"status": "success", "message": "Analysis data inserted"}
 
 
@@ -367,32 +363,30 @@ def handle_not_pickup_by_client_calls(response, company):
 # Fetch Unique Clients Report => Tested working fine
 @frappe.whitelist()
 def fetch_unique_clients_report():
-    endpoint_name = "Unique Clients"
-    start_date = frappe.form_dict.get("start_date")
-    end_date = frappe.form_dict.get("end_date")
-    company = frappe.form_dict.get("company")
+    settings = get_callyzer_settings()
+    employee_ids = get_employees()
 
-  
-    call_from = format_time_timestamp_(datetime.strptime(start_date, "%Y-%m-%d %H:%M:%S"))
-    call_to = format_time_timestamp_(datetime.strptime(end_date, "%Y-%m-%d %H:%M:%S"))
+    end_point_name = "Unique Clients"
+    endpoint, call_from, call_to = get_endpoint(end_point_name)
 
-    settings = get_callyzer_settings(company)
+    for setting in settings:
+        company = setting["company"]
+        token = setting["api_key"]
+        url = f"{setting["domain_api"]}{endpoint}"
  
-    url = f"{settings.domain_api}/call-log/unique-clients"
- 
-    payload = {
-        "call_from": call_from,
-        "call_to": call_to,
-        "call_types": ["Incoming", "Outgoing"],
-        "emp_numbers": [],
-        "emp_tags": [],
-        "is_exclude_numbers": True,
-        "page_no": 1,
-        "page_size": 100
-    }
+        payload = {
+            "call_from": int(call_from),
+            "call_to": int(call_to),
+            "call_types": ["Incoming", "Outgoing"],
+            "emp_numbers": employee_ids,
+            "emp_tags": ["api"],
+            "is_exclude_numbers": True,
+            "page_no": 1,
+            "page_size": 100
+        }
 
-    result = post_api(url, settings.api_key, payload)
-    process_unique_clients_response(result, company)
+        result = post_api(url, token, payload)
+        process_unique_clients_response(result, company)
     
     return {"status": "success", "message": "Unique clients report fetched successfully"}
 
@@ -436,29 +430,27 @@ def process_unique_clients_response(result, company):
 # Fetch Hourly Analytics Report
 @frappe.whitelist()
 def fetch_hourly_analytics_report():
-    endpoint_name = "Hourly Analytics"
-    start_date = frappe.form_dict.get("start_date")
-    end_date = frappe.form_dict.get("end_date")
-    company = frappe.form_dict.get("company")
+    end_point_name = "Hourly Analytics"
+    endpoint, call_from, call_to = get_endpoint(end_point_name)
 
-    call_from = format_time_timestamp_(datetime.strptime(start_date, "%Y-%m-%d %H:%M:%S"))
-    call_to = format_time_timestamp_(datetime.strptime(end_date, "%Y-%m-%d %H:%M:%S"))
+    settings = get_callyzer_settings()
+    for setting in settings:
+        company = setting["company"]
+        token = setting["api_key"]
 
-    settings = get_callyzer_settings(company)
+        url = f"{setting["domain_api"]}{endpoint}"
 
-    url = f"{settings.domain_api}/call-log/hourly-analytics"
+        payload = {
+            "call_from": int(call_from),
+            "call_to": int(call_to),
+            "call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
+            "working_hour_from": "10:00",
+            "working_hour_to": "11:00",
+            "is_exclude_numbers": True
+        }
 
-    payload = {
-        "call_from": call_from,
-        "call_to": call_to,
-        "call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
-        "working_hour_from": "10:00",
-        "working_hour_to": "11:00",
-        "is_exclude_numbers": True
-    }
-
-    result =  post_api(url, settings.api_key, payload)
-    process_hourly_analytics_response(result, company, start_date)
+        result =  post_api(url, token, payload)
+        process_hourly_analytics_response(result, company, call_from)
     return {"status": "success", "message": "Hourly analytics report fetched successfully"}
  
 
@@ -498,29 +490,29 @@ def process_hourly_analytics_response(result, company, call_date):
 #Fetch Day-wise Analytics Report
 @frappe.whitelist()
 def fetch_day_wise_analytics_report():
-    endpoint_name = "Day-wise Analytics"
-    start_date = frappe.form_dict.get("start_date")
-    end_date = frappe.form_dict.get("end_date")
-    company = frappe.form_dict.get("company")
+    end_point_name = "Day-wise Analytics"
+    endpoint, call_from, call_to = get_endpoint(end_point_name)
 
-    call_from = format_time_timestamp_(datetime.strptime(start_date, "%Y-%m-%d %H:%M:%S"))
-    call_to = format_time_timestamp_(datetime.strptime(end_date, "%Y-%m-%d %H:%M:%S"))
+    employee_ids = get_employees()
+    settings = get_callyzer_settings()
+    for setting in settings:
+        company = setting["company"]
+        token = setting["api_key"]
 
-    settings = get_callyzer_settings(company)
-  
-    url = f"{settings.domain_api}/call-log/daywise-analytics"
+        url = f"{setting["domain_api"]}{endpoint}"
 
-    payload = {
-        "call_from": call_from,
-        "call_to": call_to,
-        "emp_numbers": [],
-        "working_hour_from": "00:00",
-        "working_hour_to": "20:59",
-        "is_exclude_numbers": True
-    }
 
-    result = post_api(url, settings.api_key, payload)
-    process_daywise_analytics_response(result, company)
+        payload = {
+            "call_from": int(call_from),
+            "call_to": int(call_to),
+            "emp_numbers": employee_ids,
+            "working_hour_from": "00:00",
+            "working_hour_to": "20:59",
+            "is_exclude_numbers": True
+        }
+
+        result = post_api(url, token, payload)
+        process_daywise_analytics_response(result, company)
     return {"status": "success", "message": "Day-wise analytics report fetched successfully"}
   
 def process_daywise_analytics_response(response_json, company):
@@ -556,31 +548,29 @@ def process_daywise_analytics_response(response_json, company):
 ##Fetch Call History Report #Tested working
 @frappe.whitelist()
 def fetch_call_history_report():
-    endpoint_name = "Call History"
-    start_date = frappe.form_dict.get("start_date")
-    end_date = frappe.form_dict.get("end_date")
-    company = frappe.form_dict.get("company")
+    end_point_name = "Call History"
+    endpoint, call_from, call_to = get_endpoint(end_point_name)
 
-    call_from = format_time_timestamp_(datetime.strptime(start_date, "%Y-%m-%d %H:%M:%S"))
-    call_to = format_time_timestamp_(datetime.strptime(end_date, "%Y-%m-%d %H:%M:%S"))
+    employee_ids = get_employees()
+    settings = get_callyzer_settings()
+    for setting in settings:
+        company = setting["company"]
+        token = setting["api_key"]
 
-    settings = get_callyzer_settings(company)
-  
-    url = f"{settings.domain_api}/call-log/history"
-
-    payload = {
-        "call_from": call_from,
-        "call_to": call_to,
-        "call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
-        "emp_numbers": [],
-        "is_exclude_numbers": True,
-        "page_no": 1,
-        "page_size": 100
-    }
-    result = post_api(url, settings.api_key, payload)
-    process_call_history_response(result, company)
+        url = f"{setting["domain_api"]}{endpoint}"
+        payload = {
+            "call_from": int(call_from),
+            "call_to": int(call_to),
+            "call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
+            "emp_numbers": employee_ids,
+            "is_exclude_numbers": True,
+            "page_no": 1,
+            "page_size": 100
+        }
+        result = post_api(url, token, payload)
+        process_call_history_response(result, company)
     return {"status": "success", "message": "Call history report fetched successfully"}
-   
+       
 
 def process_call_history_response(result, company):
     call_logs = result
