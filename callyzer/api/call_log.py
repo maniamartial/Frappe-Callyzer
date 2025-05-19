@@ -1,7 +1,7 @@
 import frappe
 import requests
 import json
-from callyzer.callyzer.utils import get_callyzer_settings, normalize_payload, get_employees, format_time_timestamp_, get_endpoint
+from callyzer.callyzer.utils import get_callyzer_settings, normalize_payload, get_employees, format_time_timestamp_, get_endpoint, update_last_fetched_time
 from callyzer.api.fetch_employee import parse_datetime, process_employee
 from frappe import _
 from datetime import datetime
@@ -10,8 +10,6 @@ from datetime import datetime
 @frappe.whitelist()
 def fetch_summary_report():
     end_point_name = "Summary Report"
-
-
     endpoint, call_from, call_to = get_endpoint(end_point_name) 
     settings = get_callyzer_settings()
     employee_ids = get_employees()
@@ -33,6 +31,7 @@ def fetch_summary_report():
         
         results = post_api(url, token, payload)
         process_total_summary_calls(results, company)
+        update_last_fetched_time(end_point_name)
     return results
 
 #Tested working
@@ -111,13 +110,11 @@ def fetch_employee_summary_report():
             "emp_numbers": employee_ids,
             "emp_tags": ["api"],
             "is_exclude_numbers": True
-    }
+        }
 
-
-
-    
         result = post_api(url, token, payload)
         handle_employee_summary_response(result, company)
+        update_last_fetched_time(end_point_name)
     return {"status": "success", "message": "Employee summary report fetched successfully"}
    
 #Tested working
@@ -162,7 +159,7 @@ def fetch_analysis_report():
     end_point_name = "Analysis Report"
     endpoint, call_from, call_to = get_endpoint(end_point_name)
 
-    settings = get_callyzer_settings(company)
+    settings = get_callyzer_settings()
     for setting in settings:
         company = setting["company"]
 
@@ -177,6 +174,7 @@ def fetch_analysis_report():
         }
         result = post_api(url, token, payload)
         handle_analysis_report(call_from, call_to, company, result)
+        update_last_fetched_time(end_point_name)
     return {"status": "success", "message": "Analysis report fetched successfully"}
 
 
@@ -262,7 +260,7 @@ def fetch_never_attended_calls():
         }
         result = post_api(url, token, payload)
         handle_never_attended_calls(result, company)
-
+        update_last_fetched_time(end_point_name)
     return {"status": "success", "message": "Analysis data inserted"}
 
 def handle_never_attended_calls(response, company):
@@ -320,7 +318,8 @@ def fetch_not_pickup_by_client_calls():
 
         result = post_api(url, token, payload)
         handle_not_pickup_by_client_calls(result, company)
-      
+        update_last_fetched_time(end_point_name)
+
     return {"status": "success", "message": "Analysis data inserted"}
 
 
@@ -387,7 +386,8 @@ def fetch_unique_clients_report():
 
         result = post_api(url, token, payload)
         process_unique_clients_response(result, company)
-    
+        update_last_fetched_time(end_point_name)
+
     return {"status": "success", "message": "Unique clients report fetched successfully"}
 
 def process_unique_clients_response(result, company):
@@ -451,6 +451,8 @@ def fetch_hourly_analytics_report():
 
         result =  post_api(url, token, payload)
         process_hourly_analytics_response(result, company, call_from)
+        update_last_fetched_time(end_point_name)
+
     return {"status": "success", "message": "Hourly analytics report fetched successfully"}
  
 
@@ -513,6 +515,8 @@ def fetch_day_wise_analytics_report():
 
         result = post_api(url, token, payload)
         process_daywise_analytics_response(result, company)
+        update_last_fetched_time(end_point_name)
+
     return {"status": "success", "message": "Day-wise analytics report fetched successfully"}
   
 def process_daywise_analytics_response(response_json, company):
@@ -569,6 +573,8 @@ def fetch_call_history_report():
         }
         result = post_api(url, token, payload)
         process_call_history_response(result, company)
+        update_last_fetched_time(end_point_name)
+
     return {"status": "success", "message": "Call history report fetched successfully"}
        
 
@@ -646,6 +652,8 @@ def fetch_call_history_by_ids():
     }
     result = post_api(url, settings.api_key, payload)
     process_call_history_response(result, company)
+    update_last_fetched_time(end_point_name)
+
     return {"status": "success", "message": "Call history fetched successfully"}
   
   
@@ -668,6 +676,7 @@ def remove_call_recording(unique_ids: list[str], company: str = None):
             timeout=30
         )
         res.raise_for_status()
+        update_last_fetched_time(end_point_name)
         return {"status": "success", "message": res.json()}
     except requests.RequestException as e:
         frappe.log_error(f"Failed to remove call recording: {e}", "Callyzer Remove Call Recording")
