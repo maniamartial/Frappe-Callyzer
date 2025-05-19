@@ -79,6 +79,6 @@ def update_last_fetched_time(endpoint_name):
             break
 
     #     # return True
-    # else:
-    #     frappe.throw("{endpoint_name} not found in settings")
+    else:
+        frappe.throw("{endpoint_name} not found in settings")
     
