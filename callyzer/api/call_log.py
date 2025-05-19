@@ -1,7 +1,7 @@
 import frappe
 import requests
 import json
-from callyzer.callyzer.utils import get_callyzer_settings, normalize_payload, get_employees, format_time_timestamp_, get_endpoint
+from callyzer.callyzer.utils import get_callyzer_settings, normalize_payload, get_employees, format_time_timestamp_, get_endpoint, update_last_fetched_time
 from callyzer.api.fetch_employee import parse_datetime, process_employee
 from frappe import _
 from datetime import datetime
@@ -740,20 +740,3 @@ def build_callyzer_headers(api_key):
         "Authorization": f"Bearer {api_key}",
         "Content-Type": "application/json"
     }
-
-def update_last_fetched_time(endpoint_name):
-    found = False
-    settings = frappe.get_single("Callyzer Endpoint Settings")
-
-    for row in settings.endpoints:
-        if row.endpoint_name == endpoint_name:
-            row.last_fetch = frappe.utils.nowdate()
-            found = True
-            break
-
-    if found:
-        settings.save(ignore_permissions=True)
-        return True
-    else:
-        frappe.throw("{endpoint_name} not found in settings")
-
