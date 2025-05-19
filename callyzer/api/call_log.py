@@ -247,7 +247,7 @@ def fetch_never_attended_calls():
     settings = get_callyzer_settings()
 
     for setting in settings:
-        comapany = setting["company"]
+        company = setting["company"]
         url = f"{setting["domain_api"]}{endpoint}"
         token = setting["api_key"]
   
