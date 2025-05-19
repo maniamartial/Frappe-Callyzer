@@ -38,8 +38,7 @@
    "fieldname": "total_incoming_calls",
    "fieldtype": "Int",
    "in_list_view": 1,
-   "label": "Total Incoming Calls",
-   "reqd": 1
+   "label": "Total Incoming Calls"
   },
   {
    "fieldname": "total_incoming_duration",
@@ -67,14 +66,12 @@
   {
    "fieldname": "total_rejected_calls",
    "fieldtype": "Int",
-   "label": "Total Rejected Calls",
-   "reqd": 1
+   "label": "Total Rejected Calls"
   },
   {
    "fieldname": "total_missed_calls",
    "fieldtype": "Int",
-   "label": "Total Missed Calls",
-   "reqd": 1
+   "label": "Total Missed Calls"
   },
   {
    "fieldname": "total_connected_calls",
@@ -93,8 +90,7 @@
   {
    "fieldname": "total_duration",
    "fieldtype": "Int",
-   "label": "Total Duration",
-   "reqd": 1
+   "label": "Total Duration"
   },
   {
    "fieldname": "total_not_picked_by_clients_calls",
@@ -132,7 +128,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-18 16:42:46.377490",
+ "modified": "2025-05-19 23:02:00.590468",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Callyzer Employee Summary",

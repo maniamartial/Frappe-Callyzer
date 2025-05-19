@@ -69,18 +69,16 @@ def get_endpoint(endpoint_name):
     return endpoint_url, call_from, call_to
 
 def update_last_fetched_time(endpoint_name):
-    found = False
+    # found = False
     settings = frappe.get_single("Callyzer Endpoint Settings")
 
     for row in settings.endpoints:
         if row.endpoint_name == endpoint_name:
-            row.last_fetch = frappe.utils.nowdate()
-            found = True
+            row.last_fetch = frappe.utils.now()
+            settings.save(ignore_permissions=True)
             break
 
-    if found:
-        settings.save(ignore_permissions=True)
-        return True
-    else:
-        frappe.throw("{endpoint_name} not found in settings")
+    #     # return True
+    # else:
+    #     frappe.throw("{endpoint_name} not found in settings")
     
