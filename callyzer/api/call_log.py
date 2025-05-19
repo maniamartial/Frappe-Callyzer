@@ -105,8 +105,8 @@ def fetch_employee_summary_report():
         token = setting["api_key"]
 
         payload = {
-            "call_from": call_from,
-            "call_to": call_to,
+            "call_from": int(call_from),
+            "call_to": int(call_to),
             "call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
             "emp_numbers": employee_ids,
             "emp_tags": ["api"],
@@ -170,8 +170,8 @@ def fetch_analysis_report():
         token = setting["api_key"]
 
         payload = {
-            "call_from": call_from,
-            "call_to": call_to,
+            "call_from": int(call_from),
+            "call_to": int(call_to),
             "call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
             "is_exclude_numbers": True
         }
@@ -252,8 +252,8 @@ def fetch_never_attended_calls():
         token = setting["api_key"]
   
         payload = {
-            "call_from": call_from,
-            "call_to": call_to,
+            "call_from": int(call_from),
+            "call_to": int(call_to),
             "emp_numbers": employee_ids,
             "emp_tags": ["api"],
             "is_exclude_numbers": True,
@@ -308,8 +308,8 @@ def fetch_not_pickup_by_client_calls():
         url = f"{setting["domain_api"]}{endpoint}"
 
         payload = {
-            "call_from": call_from,
-            "call_to": call_to,
+            "call_from": int(call_from),
+            "call_to": int(call_to),
             "call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
             "emp_numbers": employee_ids,
             "emp_tags": ["api"],
@@ -375,11 +375,11 @@ def fetch_unique_clients_report():
         url = f"{setting["domain_api"]}{endpoint}"
  
         payload = {
-            "call_from": call_from,
-            "call_to": call_to,
+            "call_from": int(call_from),
+            "call_to": int(call_to),
             "call_types": ["Incoming", "Outgoing"],
-            "emp_numbers": [],
-            "emp_tags": [],
+            "emp_numbers": employee_ids,
+            "emp_tags": ["api"],
             "is_exclude_numbers": True,
             "page_no": 1,
             "page_size": 100
@@ -430,11 +430,10 @@ def process_unique_clients_response(result, company):
 # Fetch Hourly Analytics Report
 @frappe.whitelist()
 def fetch_hourly_analytics_report():
-    settings = get_callyzer_settings()
-
     end_point_name = "Hourly Analytics"
     endpoint, call_from, call_to = get_endpoint(end_point_name)
 
+    settings = get_callyzer_settings()
     for setting in settings:
         company = setting["company"]
         token = setting["api_key"]
@@ -442,8 +441,8 @@ def fetch_hourly_analytics_report():
         url = f"{setting["domain_api"]}{endpoint}"
 
         payload = {
-            "call_from": call_from,
-            "call_to": call_to,
+            "call_from": int(call_from),
+            "call_to": int(call_to),
             "call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
             "working_hour_from": "10:00",
             "working_hour_to": "11:00",
@@ -494,10 +493,8 @@ def fetch_day_wise_analytics_report():
     end_point_name = "Day-wise Analytics"
     endpoint, call_from, call_to = get_endpoint(end_point_name)
 
-    settings = get_callyzer_settings()
-
     employee_ids = get_employees()
-
+    settings = get_callyzer_settings()
     for setting in settings:
         company = setting["company"]
         token = setting["api_key"]
@@ -506,8 +503,8 @@ def fetch_day_wise_analytics_report():
 
 
         payload = {
-            "call_from": call_from,
-            "call_to": call_to,
+            "call_from": int(call_from),
+            "call_to": int(call_to),
             "emp_numbers": employee_ids,
             "working_hour_from": "00:00",
             "working_hour_to": "20:59",
@@ -551,22 +548,19 @@ def process_daywise_analytics_response(response_json, company):
 ##Fetch Call History Report #Tested working
 @frappe.whitelist()
 def fetch_call_history_report():
-    settings = get_callyzer_settings()
-    employee_ids = get_employees()
-
     end_point_name = "Call History"
     endpoint, call_from, call_to = get_endpoint(end_point_name)
 
+    employee_ids = get_employees()
+    settings = get_callyzer_settings()
     for setting in settings:
         company = setting["company"]
         token = setting["api_key"]
 
         url = f"{setting["domain_api"]}{endpoint}"
-
-
         payload = {
-            "call_from": call_from,
-            "call_to": call_to,
+            "call_from": int(call_from),
+            "call_to": int(call_to),
             "call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
             "emp_numbers": employee_ids,
             "is_exclude_numbers": True,
