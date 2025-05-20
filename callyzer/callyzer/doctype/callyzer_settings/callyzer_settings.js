@@ -2,7 +2,7 @@ frappe.ui.form.on('Callyzer Settings', {
     refresh: function(frm) {
         frm.add_custom_button(__('Fetch Employees'), function() {
             frappe.call({
-                method: "callyzer.api.fetch_employee.fetch_employees",
+                method: "callyzer.api.call_log.fetch_employee.fetch_employees",
                 callback: function(r) {
                     if (r.message) {
                         frappe.msgprint(r.message);
@@ -27,10 +27,12 @@ frappe.ui.form.on('Callyzer Settings', {
                     d.hide();
 
                     frappe.call({
-                        method: "callyzer.api.fetch_call_history.fetch_call_history_by_ids",
+                        method: "callyzer.api.call_log.fetch_call_history_by_ids",
                         args: {
-                            unique_ids: [values.unique_id],
-                            company: frm.doc.name
+                            unique_ids: values.unique_id,
+                            company: frm.doc.name,
+                            api_key: frm.doc.api_key,
+                            domain_api: frm.doc.domain_api
                         },
                         callback: function(r) {
                             if (r.message && r.message.status === "success") {

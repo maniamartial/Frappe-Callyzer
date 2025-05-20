@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "format:HA-{MM}-{####}",
  "creation": "2025-05-16 13:42:13.831336",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -85,10 +86,11 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-16 14:18:52.892446",
- "modified_by": "jojomadready@gmail.com",
+ "modified": "2025-05-20 22:55:28.130854",
+ "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Hourly Analytics",
+ "naming_rule": "Expression",
  "owner": "jojomadready@gmail.com",
  "permissions": [
   {

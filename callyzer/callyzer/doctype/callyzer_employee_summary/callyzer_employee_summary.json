@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "format:CES-{MM}-{#####}",
  "creation": "2025-05-15 00:22:28.843496",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -128,10 +129,11 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-19 23:02:00.590468",
+ "modified": "2025-05-20 22:36:13.020375",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Callyzer Employee Summary",
+ "naming_rule": "Expression",
  "owner": "Administrator",
  "permissions": [
   {

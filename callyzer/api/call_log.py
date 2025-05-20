@@ -28,8 +28,9 @@ def fetch_summary_report():
             "is_exclude_numbers": True
         }
         
-        results = post_api(url, token, payload)
         update_last_fetched_time(end_point_name)
+        results = post_api(url, token, payload)
+        
         process_total_summary_calls(results, company)
         
     return results
@@ -111,9 +112,8 @@ def fetch_employee_summary_report():
             "emp_tags": ["api"],
             "is_exclude_numbers": True
         }
-
-        result = get_api(url, token, payload)
         update_last_fetched_time(end_point_name)
+        result = get_api(url, token, payload)
         handle_employee_summary_response(result, company)
         
     return {"status": "success", "message": "Employee summary report fetched successfully"}
@@ -154,7 +154,7 @@ def handle_employee_summary_response(result, company):
 
     return {"status": "success", "inserted": count}
 
-# Fetch analysis report
+# Fetch analysis report => Has an issue
 @frappe.whitelist()
 def fetch_analysis_report():
     end_point_name = "Analysis Report"
@@ -173,8 +173,8 @@ def fetch_analysis_report():
             "call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
             "is_exclude_numbers": True
         }
-        result = post_api(url, token, payload)
         update_last_fetched_time(end_point_name)
+        result = post_api(url, token, payload)
         handle_analysis_report(call_from, call_to, company, result)
         
     return {"status": "success", "message": "Analysis report fetched successfully"}
@@ -260,8 +260,8 @@ def fetch_never_attended_calls():
             "page_no": 1,
             "page_size": 10
         }
-        result = post_api(url, token, payload)
         update_last_fetched_time(end_point_name)
+        result = post_api(url, token, payload)
         handle_never_attended_calls(result, company)
         
     # return {"status": "success", "message": "Analysis data inserted"}
@@ -318,11 +318,10 @@ def fetch_not_pickup_by_client_calls():
             "page_no": 1,
             "page_size": 10
         }
-
-        result = post_api(url, token, payload)
         
-        handle_not_pickup_by_client_calls(result, company)
         update_last_fetched_time(end_point_name)
+        result = post_api(url, token, payload)
+        handle_not_pickup_by_client_calls(result, company)
         
     return {"status": "success", "message": "Analysis data inserted"}
 
@@ -452,9 +451,8 @@ def fetch_hourly_analytics_report():
             "working_hour_to": "11:00",
             "is_exclude_numbers": True
         }
-
-        result =  post_api(url, token, payload)
         update_last_fetched_time(end_point_name)
+        result =  post_api(url, token, payload)
         process_hourly_analytics_response(result, company)
 
     return {"status": "success", "message": "Hourly analytics report fetched successfully"}
@@ -515,19 +513,18 @@ def fetch_day_wise_analytics_report():
             "working_hour_to": "20:59",
             "is_exclude_numbers": True
         }
-
-        result = post_api(url, token, payload)
         update_last_fetched_time(end_point_name)
+        result = post_api(url, token, payload)
         process_daywise_analytics_response(result, company)
 
     return {"status": "success", "message": "Day-wise analytics report fetched successfully"}
-  
+
+
 def process_daywise_analytics_response(response_json, company):
-    result = response_json.get("result", {})
+    result = response_json or {}
+
     if not result:
         return {"status": "error", "message": "No day-wise analytics found in response"}
-
-    inserted = 0
 
     time_slots = result.get("time_slots", [])
     for slot in time_slots:
@@ -544,13 +541,9 @@ def process_daywise_analytics_response(response_json, company):
             doc.total_connected_calls = row.get("total_connected_calls", 0)
             doc.total_duration = row.get("total_duration", 0)
             doc.insert(ignore_permissions=True)
-            inserted += 1
 
-    return {
-        "status": "success",
-        "inserted": inserted,
-        "days_processed": inserted
-    }
+    
+
 
 ##Fetch Call History Report #Tested working
 @frappe.whitelist()
@@ -640,22 +633,18 @@ def fetch_call_history_by_ids():
     end_point_name = "Call History By Ids"
     unique_ids = frappe.form_dict.get("unique_ids")
     company = frappe.form_dict.get("company")
-    
     endpoint, call_from, call_to = get_endpoint(end_point_name)
-    
-    if not unique_ids or not isinstance(unique_ids, list):
-        frappe.throw(_("Please provide a valid list of Unique IDs"))
-
-    settings = get_callyzer_settings(company)
-    if not settings:
-        frappe.throw(_("Callyzer settings not found for the company"))
-
-    url = settings.domain_api + endpoint
+    api_key = frappe.form_dict.get("api_key")
+    domain_api = frappe.form_dict.get("domain_api")
+    # if not unique_ids or not isinstance(unique_ids, list):
+    #     frappe.throw(_("Please provide a valid list of Unique IDs"))
+    # frappe.throw(str(api_key))
+    url = domain_api + endpoint
     
     payload = {
         "unique_ids": unique_ids
     }
-    result = post_api(url, settings.api_key, payload)
+    result = post_api(url, api_key, payload)
     update_last_fetched_time(end_point_name)
     process_call_history_response(result, company)
 
@@ -681,7 +670,6 @@ def remove_call_recording(unique_ids: list[str], company: str = None):
             timeout=30
         )
         res.raise_for_status()
-        update_last_fetched_time(end_point_name)
         return {"status": "success", "message": res.json()}
     except requests.RequestException as e:
         frappe.log_error(f"Failed to remove call recording: {e}", "Callyzer Remove Call Recording")
@@ -839,7 +827,7 @@ def bg_fetch_day_wise_analytics_report():
     frappe.enqueue(
         "callyzer.api.call_log.fetch_day_wise_analytics_report",
         queue='default',  
-        timeout=60,  
+        timeout=600,  
         now=False
     )
     return _("Day-wise analytics report job has been queued. You will be notified once it's complete.")

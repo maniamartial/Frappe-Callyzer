@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "field:client_name",
+ "autoname": "format:CUC-{MM}-{#####}",
  "creation": "2025-05-16 12:33:28.605693",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -24,18 +24,21 @@
  "fields": [
   {
    "fieldname": "company",
-   "fieldtype": "Data",
-   "label": "Company"
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
   },
   {
    "fieldname": "client_name",
    "fieldtype": "Data",
-   "label": "Client Name",
-   "unique": 1
+   "label": "Client Name"
   },
   {
    "fieldname": "client_number",
    "fieldtype": "Data",
+   "in_list_view": 1,
    "label": "Client Number"
   },
   {
@@ -46,6 +49,7 @@
   {
    "fieldname": "total_calls",
    "fieldtype": "Int",
+   "in_list_view": 1,
    "label": "Total Calls"
   },
   {
@@ -93,11 +97,11 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-16 13:36:20.915624",
- "modified_by": "jojomadready@gmail.com",
+ "modified": "2025-05-20 22:48:27.856459",
+ "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Callyzer Unique Client",
- "naming_rule": "By fieldname",
+ "naming_rule": "Expression",
  "owner": "jojomadready@gmail.com",
  "permissions": [
   {

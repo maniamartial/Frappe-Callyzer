@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "format:DA-{MM}-{####}",
  "creation": "2025-05-16 14:24:09.130051",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -46,10 +47,11 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-16 14:43:28.752559",
- "modified_by": "jojomadready@gmail.com",
+ "modified": "2025-05-20 23:10:58.707065",
+ "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Daywise Analyicts",
+ "naming_rule": "Expression",
  "owner": "jojomadready@gmail.com",
  "permissions": [
   {

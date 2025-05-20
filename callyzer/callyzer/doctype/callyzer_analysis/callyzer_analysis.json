@@ -1,6 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
+ "autoname": "format:CA-{MM}-{####}",
  "creation": "2025-05-17 12:56:06.122916",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -276,10 +277,11 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-18 16:49:31.459852",
+ "modified": "2025-05-20 22:38:23.105109",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Callyzer Analysis",
+ "naming_rule": "Expression",
  "owner": "jojomadready@gmail.com",
  "permissions": [
   {

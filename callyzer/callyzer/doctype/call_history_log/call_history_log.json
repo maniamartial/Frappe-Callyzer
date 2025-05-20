@@ -1,6 +1,6 @@
 {
  "actions": [],
- "autoname": "field:external_id",
+ "autoname": "format:CHL-{MM}-{#####}",
  "creation": "2025-05-16 14:46:11.210973",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -179,11 +179,11 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-17 17:05:09.698765",
+ "modified": "2025-05-20 23:27:18.751118",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Call History Log",
- "naming_rule": "By fieldname",
+ "naming_rule": "Expression",
  "owner": "jojomadready@gmail.com",
  "permissions": [
   {
