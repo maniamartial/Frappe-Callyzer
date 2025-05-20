@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "autoname": "format:DA-{MM}-{####}",
+ "autoname": "format:DA-{MM}-{#####}",
  "creation": "2025-05-16 14:24:09.130051",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -47,7 +47,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-20 23:10:58.707065",
+ "modified": "2025-05-21 00:13:36.480846",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Daywise Analyicts",

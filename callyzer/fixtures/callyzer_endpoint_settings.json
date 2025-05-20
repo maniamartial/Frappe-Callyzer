@@ -6,7 +6,7 @@
    {
     "endpoint": "/call-log/history",
     "endpoint_name": "Call History",
-    "last_fetch": "2025-05-14 18:57:41",
+    "last_fetch": "2025-05-21 00:00:53.499924",
     "parent": "Callyzer Endpoint Settings",
     "parentfield": "endpoints",
     "parenttype": "Callyzer Endpoint Settings"
@@ -22,7 +22,7 @@
    {
     "endpoint": "/call-log/daywise-analytics",
     "endpoint_name": "Day-wise Analytics",
-    "last_fetch": "2025-05-14 18:57:46",
+    "last_fetch": "2025-05-21 00:10:57.943541",
     "parent": "Callyzer Endpoint Settings",
     "parentfield": "endpoints",
     "parenttype": "Callyzer Endpoint Settings"
@@ -30,7 +30,7 @@
    {
     "endpoint": "/employee/get",
     "endpoint_name": "Fetch Employee Details",
-    "last_fetch": "2025-05-14 18:57:48",
+    "last_fetch": "2025-05-21 00:00:50.418223",
     "parent": "Callyzer Endpoint Settings",
     "parentfield": "endpoints",
     "parenttype": "Callyzer Endpoint Settings"
@@ -46,7 +46,7 @@
    {
     "endpoint": "/call-log/hourly-analytics",
     "endpoint_name": "Hourly Analytics",
-    "last_fetch": "2025-05-13 18:57:54",
+    "last_fetch": "2025-05-21 00:00:55.761876",
     "parent": "Callyzer Endpoint Settings",
     "parentfield": "endpoints",
     "parenttype": "Callyzer Endpoint Settings"
@@ -78,13 +78,45 @@
    {
     "endpoint": "/call-log/unique-clients",
     "endpoint_name": "Unique Clients",
-    "last_fetch": "2025-05-14 18:58:12",
+    "last_fetch": "2025-05-21 00:00:46.799149",
+    "parent": "Callyzer Endpoint Settings",
+    "parentfield": "endpoints",
+    "parenttype": "Callyzer Endpoint Settings"
+   },
+   {
+    "endpoint": "/call-log/summary",
+    "endpoint_name": "Summary Report",
+    "last_fetch": "2025-05-21 00:00:57.398322",
+    "parent": "Callyzer Endpoint Settings",
+    "parentfield": "endpoints",
+    "parenttype": "Callyzer Endpoint Settings"
+   },
+   {
+    "endpoint": "/call-log/analysis",
+    "endpoint_name": "Analysis Report",
+    "last_fetch": "2025-05-21 00:00:44.410667",
+    "parent": "Callyzer Endpoint Settings",
+    "parentfield": "endpoints",
+    "parenttype": "Callyzer Endpoint Settings"
+   },
+   {
+    "endpoint": "/call-log/never-attended",
+    "endpoint_name": "Never Attended",
+    "last_fetch": "2025-05-21 00:00:41.203638",
+    "parent": "Callyzer Endpoint Settings",
+    "parentfield": "endpoints",
+    "parenttype": "Callyzer Endpoint Settings"
+   },
+   {
+    "endpoint": "/call-log/not-pickup-by-client",
+    "endpoint_name": "Not Pickup By Client",
+    "last_fetch": "2025-05-21 00:00:54.387064",
     "parent": "Callyzer Endpoint Settings",
     "parentfield": "endpoints",
     "parenttype": "Callyzer Endpoint Settings"
    }
   ],
-  "modified": "2025-05-18 19:00:55.615379",
+  "modified": "2025-05-21 00:10:57.944851",
   "name": "Callyzer Endpoint Settings"
  }
 ]

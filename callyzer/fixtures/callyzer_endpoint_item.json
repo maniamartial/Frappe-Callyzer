@@ -2,18 +2,18 @@
  {
   "docstatus": 0,
   "doctype": "Callyzer Endpoint Item",
-  "endpoint": "/call-log/summary",
-  "endpoint_name": "Summary Report",
-  "modified": "2025-05-18 17:49:42.046734",
-  "name": "Summary Report"
- },
- {
-  "docstatus": 0,
-  "doctype": "Callyzer Endpoint Item",
   "endpoint": "/call-log/employee-summary",
   "endpoint_name": "Employee Summary",
   "modified": "2025-05-18 17:53:02.454845",
   "name": "Employee Summary"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Callyzer Endpoint Item",
+  "endpoint": "/call-log/summary",
+  "endpoint_name": "Summary Report",
+  "modified": "2025-05-18 17:49:42.046734",
+  "name": "Summary Report"
  },
  {
   "docstatus": 0,
