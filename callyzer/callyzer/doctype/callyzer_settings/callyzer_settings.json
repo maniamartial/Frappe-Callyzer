@@ -10,11 +10,7 @@
   "is_active",
   "column_break_wpda",
   "domain_api",
-  "api_key",
-  "section_break_effl",
-  "employee",
-  "column_break_rada",
-  "call_log"
+  "api_key"
  ],
  "fields": [
   {
@@ -43,28 +39,6 @@
    "reqd": 1
   },
   {
-   "fieldname": "section_break_effl",
-   "fieldtype": "Section Break"
-  },
-  {
-   "default": "/employee/get",
-   "fieldname": "employee",
-   "fieldtype": "Data",
-   "label": "Employee",
-   "reqd": 1
-  },
-  {
-   "fieldname": "column_break_rada",
-   "fieldtype": "Column Break"
-  },
-  {
-   "default": "/call-log/",
-   "fieldname": "call_log",
-   "fieldtype": "Data",
-   "label": "Call Log",
-   "reqd": 1
-  },
-  {
    "default": "0",
    "fieldname": "is_active",
    "fieldtype": "Check",
@@ -74,7 +48,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-20 22:20:48.147525",
+ "modified": "2025-05-20 22:21:59.475682",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Callyzer Settings",
