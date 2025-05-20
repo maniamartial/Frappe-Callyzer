@@ -156,14 +156,14 @@ fixtures = [
 scheduler_events = {
     "hourly": [
         "callyzer.api.call_log.bg_fetch_summary_report",
-        "callyzer.api.call_log.bg_fetch_employee_summary_report",
-        "callyzer.api.call_log.bg_fetch_analysis_report",
-        "callyzer.api.call_log.bg_fetch_never_attended_calls",
-        "callyzer.api.call_log.bg_fetch_not_pickup_by_client_calls",
-        "callyzer.api.call_log.bg_fetch_unique_clients_report",
-        "callyzer.api.call_log.bg_fetch_hourly_analytics_report",
-        "callyzer.api.call_log.bg_fetch_day_wise_analytics_report",
-        "callyzer.api.call_log.bg_fetch_call_history_report",
+        # "callyzer.api.call_log.bg_fetch_employee_summary_report",
+        # "callyzer.api.call_log.bg_fetch_analysis_report",
+        # "callyzer.api.call_log.bg_fetch_never_attended_calls",
+        # "callyzer.api.call_log.bg_fetch_not_pickup_by_client_calls",
+        # "callyzer.api.call_log.bg_fetch_unique_clients_report",
+        # "callyzer.api.call_log.bg_fetch_hourly_analytics_report",
+        # "callyzer.api.call_log.bg_fetch_day_wise_analytics_report",
+        # "callyzer.api.call_log.bg_fetch_call_history_report",
         
     ]
 }

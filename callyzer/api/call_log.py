@@ -8,6 +8,7 @@ from frappe import _
 #Tested working
 @frappe.whitelist()
 def fetch_summary_report():
+
     end_point_name = "Summary Report"
     endpoint, call_from, call_to = get_endpoint(end_point_name) 
     settings = get_callyzer_settings()

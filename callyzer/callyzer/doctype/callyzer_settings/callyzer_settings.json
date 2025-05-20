@@ -14,9 +14,7 @@
   "section_break_effl",
   "employee",
   "column_break_rada",
-  "call_log",
-  "section_break_gttk",
-  "endpoint"
+  "call_log"
  ],
  "fields": [
   {
@@ -71,22 +69,12 @@
    "fieldname": "is_active",
    "fieldtype": "Check",
    "label": "Is Active"
-  },
-  {
-   "fieldname": "section_break_gttk",
-   "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "endpoint",
-   "fieldtype": "Table",
-   "label": "Endpoint",
-   "options": "Endpoint Call"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-18 17:17:38.219828",
+ "modified": "2025-05-20 22:20:48.147525",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Callyzer Settings",
