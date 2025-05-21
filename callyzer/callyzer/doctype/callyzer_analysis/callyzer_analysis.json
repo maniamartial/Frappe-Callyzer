@@ -60,9 +60,10 @@
   },
   {
    "fieldname": "company",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "in_list_view": 1,
    "label": "Company",
+   "options": "Company",
    "reqd": 1
   },
   {
@@ -277,7 +278,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-20 22:38:23.105109",
+ "modified": "2025-05-21 11:24:49.047115",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Callyzer Analysis",

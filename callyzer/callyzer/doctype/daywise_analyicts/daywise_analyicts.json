@@ -16,8 +16,11 @@
  "fields": [
   {
    "fieldname": "company",
-   "fieldtype": "Data",
-   "label": "Company"
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Company",
+   "options": "Company",
+   "reqd": 1
   },
   {
    "fieldname": "call_date",
@@ -47,7 +50,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-21 00:13:36.480846",
+ "modified": "2025-05-21 11:19:49.469087",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Daywise Analyicts",
