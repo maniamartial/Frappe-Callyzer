@@ -77,8 +77,6 @@ def update_last_fetched_time(endpoint_name):
             row.last_fetch = frappe.utils.now()
             settings.save(ignore_permissions=True)
             break
-
-    #     # return True
     else:
-        frappe.throw("{endpoint_name} not found in settings")
+        frappe.throw(f"{endpoint_name} not found in settings")
     
