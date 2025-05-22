@@ -1,17 +1,17 @@
 import frappe
-def convert_sec(seconds):
-	hours = seconds // 3600
-	minutes = (seconds % 3600) // 60
-	seconds = seconds % 60
-
-	return f"{hours} hr {minutes} min {seconds} sec"
+from frappe.utils import format_duration, getdate, nowdate, add_days
 
 @frappe.whitelist()
 def get_formated_duration():
-    call_logs = frappe.get_all("Call History Log", fields=["duration"])
+
+    today = getdate(nowdate())
+
+    start_date = today
+    end_date = today
+    call_logs = frappe.get_all("Call History Log", filters={"call_date":["between", [start_date, end_date ]]}, fields=["duration"])
 
     total_duration = sum(log["duration"] for log in call_logs if log["duration"])
-    formated_duration = convert_sec(total_duration)
+    formated_duration = format_duration(total_duration) or 0
 
     return {
         "value": formated_duration,

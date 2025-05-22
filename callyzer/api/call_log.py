@@ -4,6 +4,7 @@ import json
 from callyzer.callyzer.utils import get_callyzer_settings, normalize_payload, get_employees, format_time_timestamp_, get_endpoint, update_last_fetched_time
 from callyzer.api.fetch_employee import parse_datetime, process_employee
 from frappe import _
+from frappe.utils import getdate
 
 #Tested working
 @frappe.whitelist()
@@ -72,7 +73,8 @@ def process_call_logs(employee_name, call_logs, company):
         doc.client_no = call["client_number"]
         doc.duration = call["duration"]
         doc.call_type = call["call_type"]
-        doc.call_date = call["call_date"]
+        call_date = call["call_date"]
+        doc.call_date = getdate(call_date)
         doc.call_time = call["call_time"]
         doc.note = json.dumps(call.get("note", ""))
         doc.call_recording_url = call["call_recording_url"]
@@ -285,7 +287,8 @@ def handle_never_attended_calls(response, company):
                 doc.call_log = log.get("id")
                 doc.duration = log.get("duration")
                 doc.call_type = log.get("call_type")
-                doc.call_date = log.get("call_date")
+                call_date = log.get("call_date")
+                doc.call_date = getdate(call_date)
                 doc.call_time = log.get("call_time")
                 doc.note = log.get("note")
                 doc.call_recording_url = log.get("call_recording_url")
@@ -352,7 +355,8 @@ def handle_not_pickup_by_client_calls(response, company):
                 doc.call_log = call_log_id
                 doc.duration = log.get("duration")
                 doc.call_type = log.get("call_type")
-                doc.call_date = log.get("call_date")
+                call_date = log.get("call_date")
+                doc.call_date = getdate(call_date)
                 doc.call_time = log.get("call_time")
                 doc.note = log.get("note")
                 doc.call_recording_url = log.get("call_recording_url")
@@ -419,7 +423,8 @@ def process_unique_clients_response(result, company):
 
         last_call_log = client.get("last_call_log", {})
         if last_call_log:
-            doc.last_call_date = last_call_log.get("call_date")
+            last_call_date = last_call_log.get("call_date")
+            doc.last_call_date = get_datetime(last_call_date).date()
             doc.last_call_time = last_call_log.get("call_time")
             doc.last_call_type = last_call_log.get("call_type")
 
@@ -605,7 +610,8 @@ def process_call_history_response(result, company):
         doc.client_country_code = call.get("client_country_code")
         doc.duration = call.get("duration")
         doc.call_type = call.get("call_type")
-        doc.call_date = call.get("call_date")
+        call_date = call.get("call_date")
+        doc.call_date = getdate(call_date)
         doc.call_time = call.get("call_time")
         doc.note = call.get("note")
         doc.call_recording_url = call.get("call_recording_url")
