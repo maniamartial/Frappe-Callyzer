@@ -1,0 +1,49 @@
+{
+ "cards": [
+  {
+   "card": "Total Calls"
+  },
+  {
+   "card": "Call Duration"
+  },
+  {
+   "card": "Incoming"
+  },
+  {
+   "card": "Incoming Duration"
+  },
+  {
+   "card": "Outgoing"
+  },
+  {
+   "card": "Outgoing Duration"
+  },
+  {
+   "card": "Missed"
+  },
+  {
+   "card": "Never Attended"
+  },
+  {
+   "card": "Unique Clients"
+  }
+ ],
+ "charts": [
+  {
+   "chart": "Call Attendance",
+   "width": "Full"
+  }
+ ],
+ "creation": "2025-05-21 23:55:05.048003",
+ "dashboard_name": "Callyzer Analytics",
+ "docstatus": 0,
+ "doctype": "Dashboard",
+ "idx": 0,
+ "is_default": 0,
+ "is_standard": 1,
+ "modified": "2025-05-22 03:18:32.828599",
+ "modified_by": "Administrator",
+ "module": "Callyzer",
+ "name": "Callyzer Analytics",
+ "owner": "Administrator"
+}
