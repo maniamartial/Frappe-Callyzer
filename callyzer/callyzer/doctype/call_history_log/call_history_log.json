@@ -113,12 +113,14 @@
   },
   {
    "fieldname": "duration",
-   "fieldtype": "Int",
+   "fieldtype": "Duration",
    "label": "Duration"
   },
   {
    "fieldname": "call_date",
-   "fieldtype": "Data",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
    "label": "Call Date"
   },
   {
@@ -182,7 +184,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-21 11:26:10.776978",
+ "modified": "2025-05-22 14:49:17.092620",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Call History Log",

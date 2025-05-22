@@ -1,6 +1,6 @@
 {
  "actions": [],
- "allow_rename": 1,
+ "autoname": "field:call_log",
  "creation": "2025-05-17 16:09:45.605190",
  "doctype": "DocType",
  "engine": "InnoDB",
@@ -89,13 +89,14 @@
   },
   {
    "fieldname": "call_log",
-   "fieldtype": "Data",
+   "fieldtype": "Link",
    "label": "Call Log",
-   "options": "Call History Log"
+   "options": "Call History Log",
+   "unique": 1
   },
   {
    "fieldname": "call_date",
-   "fieldtype": "Data",
+   "fieldtype": "Date",
    "label": "Call Date"
   },
   {
@@ -138,7 +139,7 @@
   },
   {
    "fieldname": "duration",
-   "fieldtype": "Int",
+   "fieldtype": "Duration",
    "label": "Duration"
   },
   {
@@ -152,10 +153,11 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-18 16:50:40.473274",
+ "modified": "2025-05-22 11:54:01.385510",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Callyzer Attendance Call",
+ "naming_rule": "By fieldname",
  "owner": "Administrator",
  "permissions": [
   {

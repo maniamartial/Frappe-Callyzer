@@ -43,14 +43,14 @@
   },
   {
    "fieldname": "total_duration",
-   "fieldtype": "Int",
+   "fieldtype": "Duration",
    "label": "Total Duration"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-21 11:19:49.469087",
+ "modified": "2025-05-22 12:09:39.354596",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Daywise Analyicts",

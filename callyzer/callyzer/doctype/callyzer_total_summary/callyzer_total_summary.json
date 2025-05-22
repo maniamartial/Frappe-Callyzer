@@ -37,7 +37,7 @@
   },
   {
    "fieldname": "total_incoming_duration",
-   "fieldtype": "Data",
+   "fieldtype": "Duration",
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Total Incoming Duration",
@@ -57,7 +57,7 @@
   },
   {
    "fieldname": "total_outgoing_duration",
-   "fieldtype": "Data",
+   "fieldtype": "Duration",
    "in_list_view": 1,
    "in_standard_filter": 1,
    "label": "Total Outgoing Duration"
@@ -90,7 +90,7 @@
   },
   {
    "fieldname": "total_duration",
-   "fieldtype": "Data",
+   "fieldtype": "Duration",
    "label": "Total Duration"
   },
   {
@@ -141,7 +141,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-18 16:34:30.903673",
+ "modified": "2025-05-22 11:41:03.748250",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Callyzer Total Summary",

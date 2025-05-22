@@ -1,0 +1,103 @@
+{
+ "cards": [
+  {
+   "card": "Total Calls"
+  },
+  {
+   "card": "Call Duration"
+  },
+  {
+   "card": "Incoming"
+  },
+  {
+   "card": "Incoming Duration"
+  },
+  {
+   "card": "Outgoing"
+  },
+  {
+   "card": "Outgoing Duration"
+  },
+  {
+   "card": "Missed"
+  },
+  {
+   "card": "Never Attended"
+  },
+  {
+   "card": "Unique Clients"
+  },
+  {
+   "card": "Total Calls(Yesterday)"
+  },
+  {
+   "card": "Call Duration(Yesterday)"
+  },
+  {
+   "card": "Incoming(Yesterday)"
+  },
+  {
+   "card": "Incoming Duration(Yesterday)"
+  },
+  {
+   "card": "Outgoing(Yesterday)"
+  },
+  {
+   "card": "Outgoing Duration(Yesterday)"
+  },
+  {
+   "card": "Missed(Yesterday)"
+  },
+  {
+   "card": "Never Attended(Yesterday)"
+  },
+  {
+   "card": "Unique Clients(Yesterday)"
+  },
+  {
+   "card": "Total Calls(Last Week)"
+  },
+  {
+   "card": "Call Duration(Last Week)"
+  },
+  {
+   "card": "Incoming(Last Week)"
+  },
+  {
+   "card": "Incoming Duration(Last Week)"
+  },
+  {
+   "card": "Outgoing(Last Week)"
+  },
+  {
+   "card": "Outgoing Duration(Last Week)"
+  },
+  {
+   "card": "Missed(Last Week)"
+  },
+  {
+   "card": "Never Attended(Last Week)"
+  },
+  {
+   "card": "Unique Clients(Last Week)"
+  }
+ ],
+ "charts": [
+  {
+   "chart": "Call Attendance",
+   "width": "Full"
+  }
+ ],
+ "creation": "2025-05-21 23:55:05.048003",
+ "dashboard_name": "Callyzer Analytics",
+ "docstatus": 0,
+ "doctype": "Dashboard",
+ "idx": 0,
+ "is_default": 0,
+ "is_standard": 1,
+ "modified": "2025-05-22 14:53:41.334179",
+ "modified_by": "Administrator",
+ "module": "Callyzer",
+ "name": "Callyzer Analytics",
+ "owner": "Administrator"
+}

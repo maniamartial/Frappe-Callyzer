@@ -91,7 +91,7 @@
   },
   {
    "fieldname": "total_duration",
-   "fieldtype": "Int",
+   "fieldtype": "Duration",
    "label": "Total Duration"
   },
   {
@@ -265,7 +265,7 @@
   },
   {
    "fieldname": "highest_total_duration",
-   "fieldtype": "Int",
+   "fieldtype": "Duration",
    "label": "Highest Total Duration"
   },
   {
@@ -278,7 +278,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-21 11:24:49.047115",
+ "modified": "2025-05-22 11:49:43.147142",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Callyzer Analysis",
