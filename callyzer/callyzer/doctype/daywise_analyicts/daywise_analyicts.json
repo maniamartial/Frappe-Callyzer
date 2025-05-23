@@ -7,11 +7,19 @@
  "engine": "InnoDB",
  "field_order": [
   "company",
-  "call_date",
-  "total_calls",
   "column_break_odbq",
+  "slot",
+  "section_break_aigt",
+  "call_date",
   "total_connected_calls",
-  "total_duration"
+  "column_break_heca",
+  "total_calls",
+  "total_duration",
+  "section_break_bzvz",
+  "total_connected_calls_perc",
+  "total_call_perc",
+  "column_break_mnka",
+  "total_duration_perc"
  ],
  "fields": [
   {
@@ -43,14 +51,50 @@
   },
   {
    "fieldname": "total_duration",
-   "fieldtype": "Duration",
+   "fieldtype": "Float",
    "label": "Total Duration"
+  },
+  {
+   "fieldname": "slot",
+   "fieldtype": "Data",
+   "label": "Slot"
+  },
+  {
+   "fieldname": "section_break_aigt",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "column_break_heca",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "section_break_bzvz",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "total_connected_calls_perc",
+   "fieldtype": "Int",
+   "label": "Total Connected Calls Perc"
+  },
+  {
+   "fieldname": "total_call_perc",
+   "fieldtype": "Int",
+   "label": "Total Call Perc"
+  },
+  {
+   "fieldname": "column_break_mnka",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_duration_perc",
+   "fieldtype": "Float",
+   "label": "Total Duration Perc"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-22 12:09:39.354596",
+ "modified": "2025-05-22 23:49:06.417473",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Daywise Analyicts",

@@ -531,20 +531,32 @@ def process_daywise_analytics_response(response_json, company):
         return {"status": "error", "message": "No day-wise analytics found in response"}
 
     time_slots = result.get("time_slots", [])
-    for slot in time_slots:
-        day_wise_data = slot.get("day_wise", [])
-        for row in day_wise_data:
-            call_date = row.get("date")
-            if not call_date:
-                continue
+    # for slot in time_slots:
+    #     day_wise_data = slot.get("day_wise", [])
+    #     for row in day_wise_data:
+    #         call_date = row.get("date")
+    #         if not call_date:
+    #             continue
 
-            doc = frappe.new_doc("Daywise Analyicts")
-            doc.company = company
-            doc.call_date = call_date
-            doc.total_calls = row.get("total_calls", 0)
-            doc.total_connected_calls = row.get("total_connected_calls", 0)
-            doc.total_duration = row.get("total_duration", 0)
-            doc.insert(ignore_permissions=True)
+    #         doc = frappe.new_doc("Daywise Analyicts")
+    #         doc.company = company
+    #         doc.call_date = call_date
+    #         doc.total_calls = row.get("total_calls", 0)
+    #         doc.total_connected_calls = row.get("total_connected_calls", 0)
+    #         doc.total_duration = row.get("total_duration", 0)
+    #         doc.insert(ignore_permissions=True)
+    
+    for slot in time_slots:
+        doc = frappe.new_doc("Daywise Analyicts")
+        doc.company = company
+        doc.slot = slot.get("slot")
+        doc.total_calls = slot.get("total_calls", 0)
+        doc.total_connected_calls = slot.get("total_connected_calls", 0)
+        doc.total_duration = slot.get("total_duration", 0)
+        doc.total_call_perc = slot.get("total_call_perc", 0.0)
+        doc.total_connected_calls_perc = slot.get("total_connected_calls_perc", 0.0)
+        doc.total_duration_perc = slot.get("total_duration_perc", 0.0)
+        doc.insert(ignore_permissions=True)
 
     
 
