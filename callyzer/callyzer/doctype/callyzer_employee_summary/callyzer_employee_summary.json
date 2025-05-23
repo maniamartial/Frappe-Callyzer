@@ -7,9 +7,11 @@
  "engine": "InnoDB",
  "field_order": [
   "employee",
+  "employee_name",
   "total_incoming_calls",
   "total_incoming_duration",
   "column_break_qsat",
+  "employee_code",
   "total_incoming_connected_calls",
   "total_outgoing_calls",
   "company",
@@ -125,12 +127,22 @@
    "label": "Company",
    "options": "Company",
    "reqd": 1
+  },
+  {
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "label": "Employee Name"
+  },
+  {
+   "fieldname": "employee_code",
+   "fieldtype": "Data",
+   "label": "Employee Code"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-22 11:46:58.116005",
+ "modified": "2025-05-23 23:56:37.002888",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Callyzer Employee Summary",
