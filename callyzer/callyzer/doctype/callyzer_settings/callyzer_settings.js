@@ -2,7 +2,7 @@ frappe.ui.form.on('Callyzer Settings', {
     refresh: function(frm) {
         frm.add_custom_button(__('Fetch Employees'), function() {
             frappe.call({
-                method: "callyzer.api.call_log.fetch_employee.fetch_employees",
+                method: "callyzer.api.call_log.fetch_unique_clients_report",
                 callback: function(r) {
                     if (r.message) {
                         frappe.msgprint(r.message);

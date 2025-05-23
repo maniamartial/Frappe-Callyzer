@@ -424,7 +424,7 @@ def process_unique_clients_response(result, company):
         last_call_log = client.get("last_call_log", {})
         if last_call_log:
             last_call_date = last_call_log.get("call_date")
-            doc.last_call_date = get_datetime(last_call_date).date()
+            doc.last_call_date = last_call_date
             doc.last_call_time = last_call_log.get("call_time")
             doc.last_call_type = last_call_log.get("call_type")
 

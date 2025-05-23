@@ -134,8 +134,9 @@
   },
   {
    "fieldname": "call_type",
-   "fieldtype": "Data",
-   "label": "Call Type"
+   "fieldtype": "Select",
+   "label": "Call Type",
+   "options": "Incoming\nOutgoing\nMissed\nRejected"
   },
   {
    "fieldname": "call_recording_url",
@@ -184,7 +185,7 @@
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-22 14:49:17.092620",
+ "modified": "2025-05-23 14:22:10.175632",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Call History Log",
