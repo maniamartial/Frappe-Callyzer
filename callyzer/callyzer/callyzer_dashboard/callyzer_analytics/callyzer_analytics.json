@@ -25,6 +25,12 @@
    "card": "Rejected(Today)"
   },
   {
+   "card": "Not Pickup Client(Today)"
+  },
+  {
+   "card": "Connected Calls(Today)"
+  },
+  {
    "card": "Never Attended"
   },
   {
@@ -53,6 +59,12 @@
   },
   {
    "card": "Rejected(Yesterday)"
+  },
+  {
+   "card": "Not Pickup Client(Yesterday)"
+  },
+  {
+   "card": "Connected Calls(Yesterday)"
   },
   {
    "card": "Never Attended(Yesterday)"
@@ -85,10 +97,19 @@
    "card": "Rejected(Last Week)"
   },
   {
+   "card": "Not Pickup Client(Last Week)"
+  },
+  {
+   "card": "Connected Calls(Last Week)"
+  },
+  {
    "card": "Never Attended(Last Week)"
   },
   {
    "card": "Unique Clients(Last Week)"
+  },
+  {
+   "card": "Top Dialer"
   }
  ],
  "charts": [
@@ -104,7 +125,7 @@
  "idx": 0,
  "is_default": 0,
  "is_standard": 1,
- "modified": "2025-05-23 14:27:06.564062",
+ "modified": "2025-05-23 20:26:52.262091",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Callyzer Analytics",
