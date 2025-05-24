@@ -275,16 +275,23 @@ def handle_never_attended_calls(response, company):
 			process_employee(emp)
 
 		for log in emp.get("call_logs", []):
-			if not frappe.db.exists("Callyzer Attendance Call", {"call_log": log["id"]}):
+			call_log = frappe.db.get_value(
+                "Call History Log",
+                {"external_id": log.get("id")},
+                "name"
+            )
+			if not call_log:
+				continue
+			if not frappe.db.exists("Callyzer Attendance Call", {"call_log": call_log}):
 				doc = frappe.new_doc("Callyzer Attendance Call")
 				doc.employee = emp_number
 				doc.emp_code = emp.get("emp_code")
 				doc.emp_name = emp.get("emp_name")
 				doc.emp_number = emp_number
-				doc.call_status = "Unattended"
+				doc.call_status = "Unattended Incoming"
 				doc.client_name = emp.get("client_name")
 				doc.client_number = emp.get("client_number")
-				doc.call_log = log.get("id")
+				doc.call_log = call_log
 				doc.duration = log.get("duration")
 				doc.call_type = log.get("call_type")
 				call_date = log.get("call_date")
@@ -339,20 +346,23 @@ def handle_not_pickup_by_client_calls(response, company):
 			process_employee(emp)
 
 		for log in emp.get("call_logs", []):
-			call_log_id = log.get("id")
-			if not call_log_id:
+			call_log = frappe.db.get_value(
+                "Call History Log",
+                {"external_id": log.get("id")},
+                "name"
+            )
+			if not call_log:
 				continue
-			
-			if not frappe.db.exists("Callyzer Attendance Call", {"call_log": call_log_id}):
+			if not frappe.db.exists("Callyzer Attendance Call", {"call_log": call_log}):
 				doc = frappe.new_doc("Callyzer Attendance Call")
 				doc.employee = emp_number
 				doc.emp_code = emp.get("emp_code")
 				doc.emp_name = emp.get("emp_name")
 				doc.emp_number = emp_number
-				doc.call_status = "Missed"
+				doc.call_status = "Unattended Outgoing"
 				doc.client_name = emp.get("client_name")
 				doc.client_number = emp.get("client_number")
-				doc.call_log = call_log_id
+				doc.call_log = call_log
 				doc.duration = log.get("duration")
 				doc.call_type = log.get("call_type")
 				call_date = log.get("call_date")
