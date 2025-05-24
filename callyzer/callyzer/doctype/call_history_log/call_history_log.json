@@ -108,10 +108,11 @@
    "fieldname": "column_break_vdwm",
    "fieldtype": "Column Break"
   },
-  {
+ {
    "fieldname": "call_type",
-   "fieldtype": "Data",
-   "label": "Call Type"
+   "fieldtype": "Select",
+   "label": "Call Type",
+   "options": "Incoming\nOutgoing\nMissed\nRejected"
   },
   {
    "fieldname": "call_recording_url",

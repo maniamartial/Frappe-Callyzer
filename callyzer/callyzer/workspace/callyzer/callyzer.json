@@ -1,6 +1,7 @@
 {
+ "app": "callyzer",
  "charts": [],
- "content": "[{\"id\":\"p0Q_yYZNUP\",\"type\":\"header\",\"data\":{\"text\":\"<span style=\\\"font-size: 18px; letter-spacing: 0.18px;\\\"><b>Shortcut</b></span>\",\"col\":12}},{\"id\":\"VNn9yQ5ou8\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Callyzer Settings\",\"col\":5}},{\"id\":\"LZfuvoZRCY\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Callyzer Employee\",\"col\":4}},{\"id\":\"PJ9ec-7UcS\",\"type\":\"card\",\"data\":{\"card_name\":\"Master Doctypes\",\"col\":4}},{\"id\":\"C2nPMBgQgS\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}},{\"id\":\"ZdZOQC8ALY\",\"type\":\"spacer\",\"data\":{\"col\":12}}]",
+ "content": "[{\"id\":\"p0Q_yYZNUP\",\"type\":\"header\",\"data\":{\"text\":\"<span style=\\\"font-size: 18px; letter-spacing: 0.18px;\\\"><b>Shortcut</b></span>\",\"col\":12}},{\"id\":\"VNn9yQ5ou8\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Callyzer Settings\",\"col\":5}},{\"id\":\"LZfuvoZRCY\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Callyzer Employee\",\"col\":4}},{\"id\":\"sRPngGtfi6\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Callyzer Analytics Dashboard\",\"col\":3}},{\"id\":\"PJ9ec-7UcS\",\"type\":\"card\",\"data\":{\"card_name\":\"Master Doctypes\",\"col\":4}},{\"id\":\"C2nPMBgQgS\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}},{\"id\":\"ZdZOQC8ALY\",\"type\":\"spacer\",\"data\":{\"col\":12}}]",
  "creation": "2025-05-17 10:04:40.693662",
  "custom_blocks": [],
  "docstatus": 0,
@@ -177,6 +178,13 @@
   {
    "color": "Grey",
    "doc_view": "List",
+   "label": "Callyzer Analytics Dashboard",
+   "link_to": "Callyzer Analytics",
+   "type": "Dashboard"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
    "label": "Callyzer Settings",
    "link_to": "Callyzer Settings",
    "stats_filter": "[]",
@@ -191,5 +199,6 @@
    "type": "DocType"
   }
  ],
- "title": "Callyzer"
+ "title": "Callyzer",
+ "type": "Workspace"
 }

@@ -1,10 +1,10 @@
 {
  "cards": [
   {
-   "card": "Total Calls"
+   "card": "Total Calls(Today)"
   },
   {
-   "card": "Call Duration"
+   "card": "Call Duration(Today)"
   },
   {
    "card": "Incoming"
@@ -20,6 +20,15 @@
   },
   {
    "card": "Missed"
+  },
+  {
+   "card": "Rejected(Today)"
+  },
+  {
+   "card": "Not Pickup Client(Today)"
+  },
+  {
+   "card": "Connected Calls(Today)"
   },
   {
    "card": "Never Attended"
@@ -49,6 +58,15 @@
    "card": "Missed(Yesterday)"
   },
   {
+   "card": "Rejected(Yesterday)"
+  },
+  {
+   "card": "Not Pickup Client(Yesterday)"
+  },
+  {
+   "card": "Connected Calls(Yesterday)"
+  },
+  {
    "card": "Never Attended(Yesterday)"
   },
   {
@@ -76,15 +94,48 @@
    "card": "Missed(Last Week)"
   },
   {
+   "card": "Rejected(Last Week)"
+  },
+  {
+   "card": "Not Pickup Client(Last Week)"
+  },
+  {
+   "card": "Connected Calls(Last Week)"
+  },
+  {
    "card": "Never Attended(Last Week)"
   },
   {
    "card": "Unique Clients(Last Week)"
+  },
+  {
+   "card": "Top Dialer"
+  },
+  {
+   "card": "Top Answered"
+  },
+  {
+   "card": "Top Caller"
+  },
+  {
+   "card": "Highest caller Total Duration"
+  },
+  {
+   "card": "Total Calls"
+  },
+  {
+   "card": "Average Per Call"
+  },
+  {
+   "card": "Average Duration Per Incoming Call"
+  },
+  {
+   "card": "Average Duration Per Outgoing Calls"
   }
  ],
  "charts": [
   {
-   "chart": "Call Attendance",
+   "chart": "Call Types Summary",
    "width": "Full"
   }
  ],
@@ -95,7 +146,7 @@
  "idx": 0,
  "is_default": 0,
  "is_standard": 1,
- "modified": "2025-05-22 14:53:41.334179",
+ "modified": "2025-05-24 19:28:37.492696",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Callyzer Analytics",
