@@ -4,7 +4,7 @@ def execute(filters=None):
     columns = get_columns()
     data = get_data(filters)
 
-    chart = get_chart(data)
+    chart = get_chart(data, filters)
 
     return columns, data, None, chart
 
