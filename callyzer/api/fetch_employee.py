@@ -5,6 +5,8 @@ from datetime import datetime
 import json
 import requests
 from frappe import _
+from callyzer.callyzer.utils import get_callyzer_settings, normalize_payload, get_employees, format_time_timestamp_, get_endpoint, update_last_fetched_time
+
 
 def fetch_employee_data_from_api(setting):
     url = setting.domain_api + setting.employee
@@ -32,12 +34,14 @@ def fetch_employee_data_from_api(setting):
 
 @frappe.whitelist()
 def fetch_employees():
+    end_point_name = "Fetch Employee Details"
+    endpoint, call_from, call_to = get_endpoint(end_point_name) 
     settings_list = get_callyzer_settings()
     total_created = 0
 
     for setting in settings_list:
         try:
-            res = fetch_employee_data_from_api(setting)
+            res = fetch_employee_data_from_api(setting, endpoint)
             data = res.get("result", [])
             created = process_employee_response(data)
             total_created += created
@@ -56,8 +60,8 @@ def process_employee_response(data):
         created += 1
     return created
 
-def fetch_employee_data_from_api(setting):
-    url = setting.domain_api + setting.employee
+def fetch_employee_data_from_api(setting, endpoint):
+    url = setting.domain_api + endpoint
     headers = {
         "Authorization": f"Bearer {setting.api_key}",
         "Content-Type": "application/json"
