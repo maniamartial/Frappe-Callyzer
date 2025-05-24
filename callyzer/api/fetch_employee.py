@@ -83,7 +83,7 @@ def fetch_employee_data_from_api(setting):
 def get_callyzer_settings():
     return frappe.get_all(
         "Callyzer Settings",
-        fields=["name", "domain_api", "employee", "call_log", "api_key", "company"]
+        fields=["name", "domain_api", "api_key", "company"]
     )
 
 @frappe.whitelist(allow_guest=True)

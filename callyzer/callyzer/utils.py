@@ -10,7 +10,7 @@ def get_callyzer_settings(company=None):
     settings = frappe.get_all(
         "Callyzer Settings",
         filters=filters,
-        fields=["name", "domain_api", "api_key", "company", "call_log"]
+        fields=["name", "domain_api", "api_key", "company"]
     )
     return settings if settings else None
 
