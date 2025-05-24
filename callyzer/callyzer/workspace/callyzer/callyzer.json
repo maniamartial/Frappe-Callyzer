@@ -1,6 +1,6 @@
 {
  "charts": [],
- "content": "[{\"id\":\"p0Q_yYZNUP\",\"type\":\"header\",\"data\":{\"text\":\"<span style=\\\"font-size: 18px; letter-spacing: 0.18px;\\\"><b>Shortcut</b></span>\",\"col\":12}},{\"id\":\"VNn9yQ5ou8\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Callyzer Settings\",\"col\":5}},{\"id\":\"LZfuvoZRCY\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Callyzer Employee\",\"col\":4}},{\"id\":\"PJ9ec-7UcS\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}},{\"id\":\"ZdZOQC8ALY\",\"type\":\"spacer\",\"data\":{\"col\":12}}]",
+ "content": "[{\"id\":\"p0Q_yYZNUP\",\"type\":\"header\",\"data\":{\"text\":\"<span style=\\\"font-size: 18px; letter-spacing: 0.18px;\\\"><b>Shortcut</b></span>\",\"col\":12}},{\"id\":\"VNn9yQ5ou8\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Callyzer Settings\",\"col\":5}},{\"id\":\"LZfuvoZRCY\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Callyzer Employee\",\"col\":4}},{\"id\":\"PJ9ec-7UcS\",\"type\":\"card\",\"data\":{\"card_name\":\"Master Doctypes\",\"col\":4}},{\"id\":\"C2nPMBgQgS\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}},{\"id\":\"ZdZOQC8ALY\",\"type\":\"spacer\",\"data\":{\"col\":12}}]",
  "creation": "2025-05-17 10:04:40.693662",
  "custom_blocks": [],
  "docstatus": 0,
@@ -16,7 +16,7 @@
   {
    "hidden": 0,
    "is_query_report": 0,
-   "label": "Reports",
+   "label": "Master Doctypes",
    "link_count": 6,
    "link_type": "DocType",
    "onboard": 0,
@@ -81,9 +81,88 @@
    "link_type": "DocType",
    "onboard": 0,
    "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Reports",
+   "link_count": 7,
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Call History",
+   "link_count": 0,
+   "link_to": "Callyzer Call History",
+   "link_type": "Report",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Daywise Analysis",
+   "link_count": 0,
+   "link_to": "Daywise Analysis",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Hourly Analysis",
+   "link_count": 0,
+   "link_to": "Hourly Analysis",
+   "link_type": "Report",
+   "onboard": 1,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Never Attended",
+   "link_count": 0,
+   "link_to": "Never Attended",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Not Picked by Clients",
+   "link_count": 0,
+   "link_to": "Not Picked by Clients",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Unique Clients",
+   "link_count": 0,
+   "link_to": "Unique Clients",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 1,
+   "label": "Employee Summary",
+   "link_count": 0,
+   "link_to": "Callyzer Employee Summary",
+   "link_type": "Report",
+   "onboard": 0,
+   "type": "Link"
   }
  ],
- "modified": "2025-05-17 10:10:53.033703",
+ "modified": "2025-05-24 10:59:59.333655",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Callyzer",

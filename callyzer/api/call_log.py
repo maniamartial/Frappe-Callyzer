@@ -783,7 +783,7 @@ def bg_fetch_summary_report():
 	frappe.enqueue(
 		"callyzer.api.call_log.fetch_summary_report",
 		queue='default',  
-		timeout=60,  
+		timeout=600,  
 		now=False
 	)
 	return _("Summary report job has been queued. You will be notified once it's complete.")
@@ -793,7 +793,7 @@ def bg_fetch_employee_summary_report():
 	frappe.enqueue(
 		"callyzer.api.call_log.fetch_employee_summary_report",
 		queue='default',  
-		timeout=60,  
+		timeout=600,  
 		now=False
 	)
 	return _("Employee summary report job has been queued. You will be notified once it's complete.")
@@ -803,7 +803,7 @@ def bg_fetch_analysis_report():
 	frappe.enqueue(
 		"callyzer.api.call_log.fetch_analysis_report",
 		queue='default',  
-		timeout=60,  
+		timeout=600,  
 		now=False
 	)
 	return _("Analysis report job has been queued. You will be notified once it's complete.")
@@ -813,7 +813,7 @@ def bg_fetch_never_attended_calls():
 	frappe.enqueue(
 		"callyzer.api.call_log.fetch_never_attended_calls",
 		queue='default',  
-		timeout=60,  
+		timeout=600,  
 		now=False
 	)
 	return _("Never attended calls job has been queued. You will be notified once it's complete.")
@@ -823,7 +823,7 @@ def bg_fetch_not_pickup_by_client_calls():
 	frappe.enqueue(
 		"callyzer.api.call_log.fetch_not_pickup_by_client_calls",
 		queue='default',  
-		timeout=60,  
+		timeout=600,  
 		now=False
 	)
 	return _("Not pickup by client calls job has been queued. You will be notified once it's complete.")
@@ -843,7 +843,7 @@ def bg_fetch_hourly_analytics_report():
 	frappe.enqueue(
 		"callyzer.api.call_log.fetch_hourly_analytics_report",
 		queue='default',  
-		timeout=60,  
+		timeout=600,  
 		now=False
 	)
 	return _("Hourly analytics report job has been queued. You will be notified once it's complete.")
@@ -863,7 +863,7 @@ def bg_fetch_call_history_report():
 	frappe.enqueue(
 		"callyzer.api.call_log.fetch_call_history_report",
 		queue='default',  
-		timeout=60,  
+		timeout=600,  
 		now=False
 	)
 	return _("Call history report job has been queued. You will be notified once it's complete.")
