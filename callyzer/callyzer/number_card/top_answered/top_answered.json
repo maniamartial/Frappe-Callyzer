@@ -1,0 +1,23 @@
+{
+ "creation": "2025-05-24 18:10:04.910889",
+ "currency": "",
+ "docstatus": 0,
+ "doctype": "Number Card",
+ "filters_json": "null",
+ "function": "Count",
+ "idx": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "label": "Top Answered",
+ "method": "callyzer.callyzer.number_card.top_answered.get_top_answered.top_answered",
+ "modified": "2025-05-24 19:40:35.554236",
+ "modified_by": "Administrator",
+ "module": "Callyzer",
+ "name": "Top Answered",
+ "owner": "Administrator",
+ "report_function": "Sum",
+ "show_full_number": 0,
+ "show_percentage_stats": 1,
+ "stats_time_interval": "Daily",
+ "type": "Custom"
+}

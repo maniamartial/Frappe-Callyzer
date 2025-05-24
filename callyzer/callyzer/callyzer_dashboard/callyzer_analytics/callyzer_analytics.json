@@ -1,10 +1,10 @@
 {
  "cards": [
   {
-   "card": "Total Calls"
+   "card": "Total Calls(Today)"
   },
   {
-   "card": "Call Duration"
+   "card": "Call Duration(Today)"
   },
   {
    "card": "Incoming"
@@ -110,6 +110,27 @@
   },
   {
    "card": "Top Dialer"
+  },
+  {
+   "card": "Top Answered"
+  },
+  {
+   "card": "Top Caller"
+  },
+  {
+   "card": "Highest caller Total Duration"
+  },
+  {
+   "card": "Total Calls"
+  },
+  {
+   "card": "Average Per Call"
+  },
+  {
+   "card": "Average Duration Per Incoming Call"
+  },
+  {
+   "card": "Average Duration Per Outgoing Calls"
   }
  ],
  "charts": [
@@ -125,7 +146,7 @@
  "idx": 0,
  "is_default": 0,
  "is_standard": 1,
- "modified": "2025-05-23 20:26:52.262091",
+ "modified": "2025-05-24 19:28:37.492696",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Callyzer Analytics",

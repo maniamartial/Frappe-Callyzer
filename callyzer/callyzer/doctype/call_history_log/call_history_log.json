@@ -108,7 +108,7 @@
    "fieldname": "column_break_vdwm",
    "fieldtype": "Column Break"
   },
-  {
+ {
    "fieldname": "call_type",
    "fieldtype": "Select",
    "label": "Call Type",
