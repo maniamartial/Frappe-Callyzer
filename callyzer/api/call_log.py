@@ -9,852 +9,857 @@ from frappe.utils import getdate
 #Tested working
 @frappe.whitelist()
 def fetch_summary_report():
-    end_point_name = "Summary Report"
-    endpoint, call_from, call_to = get_endpoint(end_point_name) 
-    settings = get_callyzer_settings()
-    employee_ids = get_employees()
-    
-    for setting in settings:
-        company = setting["company"]
-        url = setting['domain_api']+endpoint
-        token = setting["api_key"]
-        payload = {
-            "call_from": int(call_from),
-            "call_to": int(call_to),
-            "call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
-            "emp_numbers": employee_ids,
-            # "duration_les_than": 200,
-            "emp_tags": ["api"],
-            "is_exclude_numbers": True
-        }
-        
-        update_last_fetched_time(end_point_name)
-        results = post_api(url, token, payload)
-        
-        process_total_summary_calls(results, company)
-        
-    return results
+	end_point_name = "Summary Report"
+	endpoint, call_from, call_to = get_endpoint(end_point_name) 
+	settings = get_callyzer_settings()
+	employee_ids = get_employees()
+	
+	for setting in settings:
+		company = setting["company"]
+		url = setting['domain_api']+endpoint
+		token = setting["api_key"]
+		payload = {
+			"call_from": int(call_from),
+			"call_to": int(call_to),
+			"call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
+			"emp_numbers": employee_ids,
+			# "duration_les_than": 200,
+			"emp_tags": ["api"],
+			"is_exclude_numbers": True
+		}
+		
+		update_last_fetched_time(end_point_name)
+		results = post_api(url, token, payload)
+		
+		process_total_summary_calls(results, company)
+		
+	return results
 
 #Tested working
 @frappe.whitelist()
 def process_total_summary_calls(result, company):
-    
-    doc = frappe.new_doc("Callyzer Total Summary")
-    doc.total_incoming_calls = result.get("total_incoming_calls", 0)
-    doc.total_incoming_duration = result.get("total_incoming_duration", 0)
-    doc.total_outgoing_calls = result.get("total_outgoing_calls", 0)
-    doc.total_outgoing_duration = result.get("total_outgoing_duration", 0)
-    doc.total_missed_calls = result.get("total_missed_calls", 0)
-    doc.total_rejected_calls = result.get("total_rejected_calls", 0)
-    doc.total_calls = result.get("total_calls", 0)
-    doc.total_duration = result.get("total_duration", 0)
-    doc.total_never_attended_calls = result.get("total_never_attended_calls", 0)
-    doc.total_not_pickup_by_clients_calls = result.get("total_not_pickup_by_clients_calls", 0)
-    doc.total_unique_clients = result.get("total_unique_clients", 0)
-    doc.total_working_hours = result.get("total_working_hours", "00:00:00")
-    doc.total_connected_calls = result.get("total_connected_calls", 0)
-    doc.company = company
-    doc.insert(ignore_permissions=True)
-    return doc.name
+	
+	doc = frappe.new_doc("Callyzer Total Summary")
+	doc.total_incoming_calls = result.get("total_incoming_calls", 0)
+	doc.total_incoming_duration = result.get("total_incoming_duration", 0)
+	doc.total_outgoing_calls = result.get("total_outgoing_calls", 0)
+	doc.total_outgoing_duration = result.get("total_outgoing_duration", 0)
+	doc.total_missed_calls = result.get("total_missed_calls", 0)
+	doc.total_rejected_calls = result.get("total_rejected_calls", 0)
+	doc.total_calls = result.get("total_calls", 0)
+	doc.total_duration = result.get("total_duration", 0)
+	doc.total_never_attended_calls = result.get("total_never_attended_calls", 0)
+	doc.total_not_pickup_by_clients_calls = result.get("total_not_pickup_by_clients_calls", 0)
+	doc.total_unique_clients = result.get("total_unique_clients", 0)
+	doc.total_working_hours = result.get("total_working_hours", "00:00:00")
+	doc.total_connected_calls = result.get("total_connected_calls", 0)
+	doc.company = company
+	doc.insert(ignore_permissions=True)
+	return doc.name
    
 #Tested working
 def process_call_logs(employee_name, call_logs, company):
-    """Create new call logs for the employee and return the number created."""
-    count = 0
-    for call in call_logs:
-        if frappe.db.exists("Callyzer Call Log", {"external_id": call["id"]}):
-            continue
+	"""Create new call logs for the employee and return the number created."""
+	count = 0
+	for call in call_logs:
+		if frappe.db.exists("Callyzer Call Log", {"external_id": call["id"]}):
+			continue
 
-        doc = frappe.new_doc("Callyzer Call Log")
-        doc.employee = employee_name
-        doc.call_log_id = call["id"]
-        doc.client_name = call["client_name"]
-        doc.client_country_code = call["client_country_code"]
-        doc.client_no = call["client_number"]
-        doc.duration = call["duration"]
-        doc.call_type = call["call_type"]
-        call_date = call["call_date"]
-        doc.call_date = getdate(call_date)
-        doc.call_time = call["call_time"]
-        doc.note = json.dumps(call.get("note", ""))
-        doc.call_recording_url = call["call_recording_url"]
-        doc.crm_status = call.get("crm_status")
-        doc.reminder_date = call.get("reminder_date")
-        doc.reminder_time = call.get("reminder_time")
-        doc.synced_at = parse_datetime(call.get("synced_at"))
-        doc.modified_at = parse_datetime(call.get("modified_at"))
-        doc.company = company
+		doc = frappe.new_doc("Callyzer Call Log")
+		doc.employee = employee_name
+		doc.call_log_id = call["id"]
+		doc.client_name = call["client_name"]
+		doc.client_country_code = call["client_country_code"]
+		doc.client_no = call["client_number"]
+		doc.duration = call["duration"]
+		doc.call_type = call["call_type"]
+		call_date = call["call_date"]
+		doc.call_date = getdate(call_date)
+		doc.call_time = call["call_time"]
+		doc.note = json.dumps(call.get("note", ""))
+		doc.call_recording_url = call["call_recording_url"]
+		doc.crm_status = call.get("crm_status")
+		doc.reminder_date = call.get("reminder_date")
+		doc.reminder_time = call.get("reminder_time")
+		doc.synced_at = parse_datetime(call.get("synced_at"))
+		doc.modified_at = parse_datetime(call.get("modified_at"))
+		doc.company = company
 
-        doc.insert(ignore_permissions=True)
-        count += 1
+		doc.insert(ignore_permissions=True)
+		count += 1
 
-    return count
+	return count
 
 
 #Tested working
 @frappe.whitelist()
 def fetch_employee_summary_report():
-    end_point_name ="Fetch Employee Details"
-    endpoint, call_from, call_to = get_endpoint(end_point_name)
-    employee_ids = get_employees()
+	end_point_name ="Fetch Employee Details"
+	endpoint, call_from, call_to = get_endpoint(end_point_name)
+	employee_ids = get_employees()
 
-    settings = get_callyzer_settings()
-    
-    for setting in settings:
-        company = setting["company"]
-        
-        url = setting['domain_api'] + endpoint
-        token = setting["api_key"]
-        payload = {
-            "call_from": int(call_from),
-            "call_to": int(call_to),
-            "call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
-            "emp_numbers": employee_ids,
-            "emp_tags": ["api"],
-            "is_exclude_numbers": True
-        }
-        update_last_fetched_time(end_point_name)
-        result = get_api(url, token, payload)
-        handle_employee_summary_response(result, company)
-        
-    return {"status": "success", "message": "Employee summary report fetched successfully"}
+	settings = get_callyzer_settings()
+	
+	for setting in settings:
+		company = setting["company"]
+		
+		url = setting['domain_api'] + endpoint
+		token = setting["api_key"]
+		payload = {
+			"call_from": int(call_from),
+			"call_to": int(call_to),
+			"call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
+			"emp_numbers": employee_ids,
+			"emp_tags": ["api"],
+			"is_exclude_numbers": True
+		}
+		update_last_fetched_time(end_point_name)
+		result = get_api(url, token, payload)
+		handle_employee_summary_response(result, company)
+		
+	return {"status": "success", "message": "Employee summary report fetched successfully"}
 
 #Tested working
 def handle_employee_summary_response(result, company):
-    count = 0
-    for emp in result:
-        if not frappe.db.exists("Callyzer Employee", {"employee_no": emp.get("emp_number")}):
-            process_employee(emp)
+	count = 0
+	for emp in result:
+		if not frappe.db.exists("Callyzer Employee", {"employee_no": emp.get("emp_number")}):
+			process_employee(emp)
 
-        doc = frappe.new_doc("Callyzer Employee Summary")
-        doc.employee_name = emp.get("emp_name")
-        doc.employee_code = emp.get("emp_code")
-        doc.emp_country_code = emp.get("emp_country_code")
-        doc.employee = emp.get("emp_number")
-        doc.emp_tags = ", ".join(emp.get("emp_tags", []))
-        doc.total_incoming_calls = emp.get("total_incoming_calls")
-        doc.total_outgoing_calls = emp.get("total_outgoing_calls")
-        doc.total_missed_calls = emp.get("total_missed_calls")
-        doc.total_rejected_calls = emp.get("total_rejected_calls")
-        doc.total_calls = emp.get("total_calls")
-        doc.total_duration = emp.get("total_duration")
-        doc.total_connected_calls = emp.get("total_connected_calls")
-        doc.total_never_attended_calls = emp.get("total_never_attended_calls")
-        doc.total_not_pickup_by_clients_calls = emp.get("total_not_pickup_by_clients_calls")
-        doc.total_unique_clients = emp.get("total_unique_clients")
-        doc.total_working_hours = emp.get("total_working_hours")
-        doc.avg_duration_per_call = emp.get("avg_duration_per_call")
-        doc.avg_incoming_duration = emp.get("avg_incoming_duration")
-        doc.avg_outgoing_duration = emp.get("avg_outgoing_duration")
-        doc.company = company
+		doc = frappe.new_doc("Callyzer Employee Summary")
+		doc.employee_name = emp.get("emp_name")
+		doc.employee_code = emp.get("emp_code")
+		doc.emp_country_code = emp.get("emp_country_code")
+		doc.employee = emp.get("emp_number")
+		doc.emp_tags = ", ".join(emp.get("emp_tags", []))
+		doc.total_incoming_calls = emp.get("total_incoming_calls")
+		doc.total_outgoing_calls = emp.get("total_outgoing_calls")
+		doc.total_missed_calls = emp.get("total_missed_calls")
+		doc.total_rejected_calls = emp.get("total_rejected_calls")
+		doc.total_calls = emp.get("total_calls")
+		doc.total_duration = emp.get("total_duration")
+		doc.total_connected_calls = emp.get("total_connected_calls")
+		doc.total_never_attended_calls = emp.get("total_never_attended_calls")
+		doc.total_not_pickup_by_clients_calls = emp.get("total_not_pickup_by_clients_calls")
+		doc.total_unique_clients = emp.get("total_unique_clients")
+		doc.total_working_hours = emp.get("total_working_hours")
+		doc.avg_duration_per_call = emp.get("avg_duration_per_call")
+		doc.avg_incoming_duration = emp.get("avg_incoming_duration")
+		doc.avg_outgoing_duration = emp.get("avg_outgoing_duration")
+		doc.company = company
 
-        doc.last_call_log = json.dumps(emp.get("last_call_log", {}))
+		doc.last_call_log = json.dumps(emp.get("last_call_log", {}))
 
-        doc.insert(ignore_permissions=True)
-        count += 1
+		doc.insert(ignore_permissions=True)
+		count += 1
 
-    return {"status": "success", "inserted": count}
+	return {"status": "success", "inserted": count}
 
 # Fetch analysis report => Has an issue
 @frappe.whitelist()
 def fetch_analysis_report():
-    end_point_name = "Analysis Report"
-    endpoint, call_from, call_to = get_endpoint(end_point_name)
+	end_point_name = "Analysis Report"
+	endpoint, call_from, call_to = get_endpoint(end_point_name)
 
-    settings = get_callyzer_settings()
-    for setting in settings:
-        company = setting["company"]
+	settings = get_callyzer_settings()
+	for setting in settings:
+		company = setting["company"]
 
-        url = setting['domain_api'] + endpoint
-        token = setting["api_key"]
+		url = setting['domain_api'] + endpoint
+		token = setting["api_key"]
 
-        payload = {
-            "call_from": int(call_from),
-            "call_to": int(call_to),
-            "call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
-            "is_exclude_numbers": True
-        }
-        update_last_fetched_time(end_point_name)
-        result = post_api(url, token, payload)
-        handle_analysis_report(call_from, call_to, company, result)
-        
-    return {"status": "success", "message": "Analysis report fetched successfully"}
+		payload = {
+			"call_from": int(call_from),
+			"call_to": int(call_to),
+			"call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
+			"is_exclude_numbers": True
+		}
+		update_last_fetched_time(end_point_name)
+		result = post_api(url, token, payload)
+		handle_analysis_report(call_from, call_to, company, result)
+		
+	return {"status": "success", "message": "Analysis report fetched successfully"}
 
 
 def handle_analysis_report(start_date, end_date, company, result):
-    doc = frappe.new_doc("Callyzer Analysis")
-    doc.start_date = start_date
-    doc.end_date = end_date
-    doc.company = company
+	doc = frappe.new_doc("Callyzer Analysis")
+	doc.start_date = start_date
+	doc.end_date = end_date
+	doc.company = company
 
-    # Average Duration
-    avg = result.get("average_duration", {})
-    doc.total_duration = avg.get("total_duration")
-    doc.avg_per_call = avg.get("per_call")
-    doc.total_calls = avg.get("total_calls")
-    doc.avg_per_day = avg.get("per_day")
-    doc.total_days = avg.get("total_days")
-    doc.avg_per_incoming = avg.get("per_incoming_call")
-    doc.total_incoming_calls = avg.get("total_incoming_calls")
-    doc.avg_per_outgoing = avg.get("per_outgoing_call")
-    doc.total_outgoing_calls = avg.get("total_outgoing_calls")
+	# Average Duration
+	avg = result.get("average_duration", {})
+	doc.total_duration = avg.get("total_duration")
+	doc.avg_per_call = avg.get("per_call")
+	doc.total_calls = avg.get("total_calls")
+	doc.avg_per_day = avg.get("per_day")
+	doc.total_days = avg.get("total_days")
+	doc.avg_per_incoming = avg.get("per_incoming_call")
+	doc.total_incoming_calls = avg.get("total_incoming_calls")
+	doc.avg_per_outgoing = avg.get("per_outgoing_call")
+	doc.total_outgoing_calls = avg.get("total_outgoing_calls")
 
-    # Top Dialer
-    dialer = result.get("top_dialer", {})
-    doc.top_dialer_name = dialer.get("emp_name")
-    doc.top_dialer_number = dialer.get("emp_number")
-    doc.top_dialer_tags = ", ".join(dialer.get("emp_tags", []))
-    doc.top_dialer_outgoing_calls = dialer.get("total_outgoing_calls")
+	# Top Dialer
+	dialer = result.get("top_dialer", {})
+	doc.top_dialer_name = dialer.get("emp_name")
+	doc.top_dialer_number = dialer.get("emp_number")
+	doc.top_dialer_tags = ", ".join(dialer.get("emp_tags", []))
+	doc.top_dialer_outgoing_calls = dialer.get("total_outgoing_calls")
 
-    # Top Answered
-    answered = result.get("top_answered", {})
-    doc.top_answered_name = answered.get("emp_name")
-    doc.top_answered_number = answered.get("emp_number")
-    doc.top_answered_tags = ", ".join(answered.get("emp_tags", []))
-    doc.top_answered_incoming_calls = answered.get("total_incoming_calls")
+	# Top Answered
+	answered = result.get("top_answered", {})
+	doc.top_answered_name = answered.get("emp_name")
+	doc.top_answered_number = answered.get("emp_number")
+	doc.top_answered_tags = ", ".join(answered.get("emp_tags", []))
+	doc.top_answered_incoming_calls = answered.get("total_incoming_calls")
 
-    # Top Caller
-    caller = result.get("top_caller", {})
-    doc.top_caller_name = caller.get("emp_name")
-    doc.top_caller_number = caller.get("emp_number")
-    doc.top_caller_tags = ", ".join(caller.get("emp_tags", []))
-    doc.top_caller_total_calls = caller.get("total_calls")
+	# Top Caller
+	caller = result.get("top_caller", {})
+	doc.top_caller_name = caller.get("emp_name")
+	doc.top_caller_number = caller.get("emp_number")
+	doc.top_caller_tags = ", ".join(caller.get("emp_tags", []))
+	doc.top_caller_total_calls = caller.get("total_calls")
 
-    # Longest Duration
-    long_dur = result.get("longest_duration", {})
-    doc.longest_duration_name = long_dur.get("emp_name")
-    doc.longest_duration_number = long_dur.get("emp_number")
-    doc.longest_duration_tags = ", ".join(long_dur.get("emp_tags", []))
-    doc.longest_call_duration = long_dur.get("duration")
+	# Longest Duration
+	long_dur = result.get("longest_duration", {})
+	doc.longest_duration_name = long_dur.get("emp_name")
+	doc.longest_duration_number = long_dur.get("emp_number")
+	doc.longest_duration_tags = ", ".join(long_dur.get("emp_tags", []))
+	doc.longest_call_duration = long_dur.get("duration")
 
-    # Highest Duration
-    high_dur = result.get("highest_total_duration", {})
-    doc.highest_duration_name = high_dur.get("emp_name")
-    doc.highest_duration_number = high_dur.get("emp_number")
-    doc.highest_duration_tags = ", ".join(high_dur.get("emp_tags", []))
-    doc.highest_total_duration = high_dur.get("total_duration")
+	# Highest Duration
+	high_dur = result.get("highest_total_duration", {})
+	doc.highest_duration_name = high_dur.get("emp_name")
+	doc.highest_duration_number = high_dur.get("emp_number")
+	doc.highest_duration_tags = ", ".join(high_dur.get("emp_tags", []))
+	doc.highest_total_duration = high_dur.get("total_duration")
 
-    doc.insert(ignore_permissions=True)
-    return {"status": "success", "message": "Analysis data inserted"}
+	doc.insert(ignore_permissions=True)
+	return {"status": "success", "message": "Analysis data inserted"}
 
-        
+		
 #Fetch Never Attended Report
 @frappe.whitelist()
 def fetch_never_attended_calls():
-    end_point_name = "Never Attended"
-    endpoint, call_from, call_to = get_endpoint(end_point_name)
+	end_point_name = "Never Attended"
+	endpoint, call_from, call_to = get_endpoint(end_point_name)
 
-    employee_ids = get_employees()
-    settings = get_callyzer_settings()
+	employee_ids = get_employees()
+	settings = get_callyzer_settings()
 
-    for setting in settings:
-        company = setting["company"]
-        url = setting['domain_api'] + endpoint
-        token = setting["api_key"]
+	for setting in settings:
+		company = setting["company"]
+		url = setting['domain_api'] + endpoint
+		token = setting["api_key"]
   
-        payload = {
-            "call_from": int(call_from),
-            "call_to": int(call_to),
-            "emp_numbers": employee_ids,
-            "emp_tags": ["api"],
-            "is_exclude_numbers": True,
-            "page_no": 1,
-            "page_size": 10
-        }
-        update_last_fetched_time(end_point_name)
-        result = post_api(url, token, payload)
-        handle_never_attended_calls(result, company)
-        
-    # return {"status": "success", "message": "Analysis data inserted"}
+		payload = {
+			"call_from": int(call_from),
+			"call_to": int(call_to),
+			"emp_numbers": employee_ids,
+			"emp_tags": ["api"],
+			"is_exclude_numbers": True,
+			"page_no": 1,
+			"page_size": 10
+		}
+		update_last_fetched_time(end_point_name)
+		result = post_api(url, token, payload)
+		handle_never_attended_calls(result, company)
+		
+	# return {"status": "success", "message": "Analysis data inserted"}
 
 def handle_never_attended_calls(response, company):
-    for emp in response:
-        emp_number = emp.get("emp_number")
+	for emp in response:
+		emp_number = emp.get("emp_number")
 
-        if not frappe.db.exists("Callyzer Employee", {"employee_no": emp_number}):
-            process_employee(emp)
+		if not frappe.db.exists("Callyzer Employee", {"employee_no": emp_number}):
+			process_employee(emp)
 
-        for log in emp.get("call_logs", []):
-            if not frappe.db.exists("Callyzer Attendance Call", {"call_log": log["id"]}):
-                doc = frappe.new_doc("Callyzer Attendance Call")
-                doc.employee = emp_number
-                doc.emp_code = emp.get("emp_code")
-                doc.emp_name = emp.get("emp_name")
-                doc.emp_number = emp_number
-                doc.call_status = "Unattended"
-                doc.client_name = emp.get("client_name")
-                doc.client_number = emp.get("client_number")
-                doc.call_log = log.get("id")
-                doc.duration = log.get("duration")
-                doc.call_type = log.get("call_type")
-                call_date = log.get("call_date")
-                doc.call_date = getdate(call_date)
-                doc.call_time = log.get("call_time")
-                doc.note = log.get("note")
-                doc.call_recording_url = log.get("call_recording_url")
-                doc.synced_at = log.get("synced_at")
-                doc.modified_at = log.get("modified_at")
-                doc.company = company
-                doc.insert(ignore_permissions=True)
+		for log in emp.get("call_logs", []):
+			if not frappe.db.exists("Callyzer Attendance Call", {"call_log": log["id"]}):
+				doc = frappe.new_doc("Callyzer Attendance Call")
+				doc.employee = emp_number
+				doc.emp_code = emp.get("emp_code")
+				doc.emp_name = emp.get("emp_name")
+				doc.emp_number = emp_number
+				doc.call_status = "Unattended"
+				doc.client_name = emp.get("client_name")
+				doc.client_number = emp.get("client_number")
+				doc.call_log = log.get("id")
+				doc.duration = log.get("duration")
+				doc.call_type = log.get("call_type")
+				call_date = log.get("call_date")
+				doc.call_date = getdate(call_date)
+				doc.call_time = log.get("call_time")
+				doc.note = log.get("note")
+				doc.call_recording_url = log.get("call_recording_url")
+				doc.synced_at = log.get("synced_at")
+				doc.modified_at = log.get("modified_at")
+				doc.company = company
+				doc.insert(ignore_permissions=True)
 
 #Fetch Not Pickup By Client.
 @frappe.whitelist()
 def fetch_not_pickup_by_client_calls():
-    settings = get_callyzer_settings()
-    employee_ids = get_employees()
-    end_point_name = "Not Pickup By Client"
-    endpoint, call_from, call_to = get_endpoint(end_point_name)
+	settings = get_callyzer_settings()
+	employee_ids = get_employees()
+	end_point_name = "Not Pickup By Client"
+	endpoint, call_from, call_to = get_endpoint(end_point_name)
 
-    for setting in settings:
-        company = setting["company"]
-        token = setting["api_key"]
-        url = setting['domain_api'] + endpoint
+	for setting in settings:
+		company = setting["company"]
+		token = setting["api_key"]
+		url = setting['domain_api'] + endpoint
 
-        payload = {
-            "call_from": int(call_from),
-            "call_to": int(call_to),
-            "call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
-            "emp_numbers": employee_ids,
-            "emp_tags": ["api"],
-            "is_exclude_numbers": True,
-            "page_no": 1,
-            "page_size": 10
-        }
-        
-        update_last_fetched_time(end_point_name)
-        result = post_api(url, token, payload)
-        handle_not_pickup_by_client_calls(result, company)
-        
-    return {"status": "success", "message": "Analysis data inserted"}
+		payload = {
+			"call_from": int(call_from),
+			"call_to": int(call_to),
+			"call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
+			"emp_numbers": employee_ids,
+			"emp_tags": ["api"],
+			"is_exclude_numbers": True,
+			"page_no": 1,
+			"page_size": 10
+		}
+		
+		update_last_fetched_time(end_point_name)
+		result = post_api(url, token, payload)
+		handle_not_pickup_by_client_calls(result, company)
+		
+	return {"status": "success", "message": "Analysis data inserted"}
 
 
 def handle_not_pickup_by_client_calls(response, company):
-    for emp in response:
-        emp_number = emp.get("emp_number")
-        if not emp_number:
-            continue 
+	for emp in response:
+		emp_number = emp.get("emp_number")
+		if not emp_number:
+			continue 
 
-        # Ensure employee exists or process if not
-        if not frappe.db.exists("Callyzer Employee", {"employee_no": emp_number}):
-            process_employee(emp)
+		# Ensure employee exists or process if not
+		if not frappe.db.exists("Callyzer Employee", {"employee_no": emp_number}):
+			process_employee(emp)
 
-        for log in emp.get("call_logs", []):
-            call_log_id = log.get("id")
-            if not call_log_id:
-                continue
-            
-            if not frappe.db.exists("Callyzer Attendance Call", {"call_log": call_log_id}):
-                doc = frappe.new_doc("Callyzer Attendance Call")
-                doc.employee = emp_number
-                doc.emp_code = emp.get("emp_code")
-                doc.emp_name = emp.get("emp_name")
-                doc.emp_number = emp_number
-                doc.call_status = "Missed"
-                doc.client_name = emp.get("client_name")
-                doc.client_number = emp.get("client_number")
-                doc.call_log = call_log_id
-                doc.duration = log.get("duration")
-                doc.call_type = log.get("call_type")
-                call_date = log.get("call_date")
-                doc.call_date = getdate(call_date)
-                doc.call_time = log.get("call_time")
-                doc.note = log.get("note")
-                doc.call_recording_url = log.get("call_recording_url")
-                doc.synced_at = log.get("synced_at")
-                doc.modified_at = log.get("modified_at")
-                doc.company = company
-                doc.insert(ignore_permissions=True)
+		for log in emp.get("call_logs", []):
+			call_log_id = log.get("id")
+			if not call_log_id:
+				continue
+			
+			if not frappe.db.exists("Callyzer Attendance Call", {"call_log": call_log_id}):
+				doc = frappe.new_doc("Callyzer Attendance Call")
+				doc.employee = emp_number
+				doc.emp_code = emp.get("emp_code")
+				doc.emp_name = emp.get("emp_name")
+				doc.emp_number = emp_number
+				doc.call_status = "Missed"
+				doc.client_name = emp.get("client_name")
+				doc.client_number = emp.get("client_number")
+				doc.call_log = call_log_id
+				doc.duration = log.get("duration")
+				doc.call_type = log.get("call_type")
+				call_date = log.get("call_date")
+				doc.call_date = getdate(call_date)
+				doc.call_time = log.get("call_time")
+				doc.note = log.get("note")
+				doc.call_recording_url = log.get("call_recording_url")
+				doc.synced_at = log.get("synced_at")
+				doc.modified_at = log.get("modified_at")
+				doc.company = company
+				doc.insert(ignore_permissions=True)
 
 # Fetch Unique Clients Report => Tested working fine
 @frappe.whitelist()
 def fetch_unique_clients_report():
-    settings = get_callyzer_settings()
-    employee_ids = get_employees()
+	settings = get_callyzer_settings()
+	employee_ids = get_employees()
 
-    end_point_name = "Unique Clients"
-    endpoint, call_from, call_to = get_endpoint(end_point_name)
+	end_point_name = "Unique Clients"
+	endpoint, call_from, call_to = get_endpoint(end_point_name)
 
-    for setting in settings:
-        company = setting["company"]
-        token = setting["api_key"]
-        url = setting['domain_api'] + endpoint
+	for setting in settings:
+		company = setting["company"]
+		token = setting["api_key"]
+		url = setting['domain_api'] + endpoint
  
-        payload = {
-            "call_from": int(call_from),
-            "call_to": int(call_to),
-            "call_types": ["Incoming", "Outgoing"],
-            "emp_numbers": employee_ids,
-            "emp_tags": ["api"],
-            "is_exclude_numbers": True,
-            "page_no": 1,
-            "page_size": 100
-        }
+		payload = {
+			"call_from": int(call_from),
+			"call_to": int(call_to),
+			"call_types": ["Incoming", "Outgoing"],
+			"emp_numbers": employee_ids,
+			"emp_tags": ["api"],
+			"is_exclude_numbers": True,
+			"page_no": 1,
+			"page_size": 100
+		}
 
-        result = post_api(url, token, payload)
-        update_last_fetched_time(end_point_name)
-        process_unique_clients_response(result, company)
+		result = post_api(url, token, payload)
+		update_last_fetched_time(end_point_name)
+		process_unique_clients_response(result, company)
 
-    return {"status": "success", "message": "Unique clients report fetched successfully"}
+	return {"status": "success", "message": "Unique clients report fetched successfully"}
 
 def process_unique_clients_response(result, company):
-    clients = result
-    inserted = 0
+	clients = result
+	inserted = 0
 
-    for client in clients:
-        if not (client.get("client_number") and client.get("client_country_code")):
-            continue
+	for client in clients:
+		if not (client.get("client_number") and client.get("client_country_code")):
+			continue
 
-        exists = frappe.db.exists("Callyzer Unique Client", {
-            "client_number": client["client_number"],
-            "client_country_code": client["client_country_code"],
-            "company": company
-        })
-        if exists:
-            continue
+		exists = frappe.db.exists("Callyzer Unique Client", {
+			"client_number": client["client_number"],
+			"client_country_code": client["client_country_code"],
+			"company": company
+		})
+		if exists:
+			continue
 
-        doc = frappe.new_doc("Callyzer Unique Client")
-        doc.client_name = client.get("client_name")
-        doc.client_number = client.get("client_number")
-        doc.client_country_code = client.get("client_country_code")
-        doc.total_calls = client.get("total_calls")
-        doc.total_incoming_calls = client.get("total_incoming_calls")
-        doc.total_outgoing_calls = client.get("total_outgoing_calls")
-        doc.company = company
+		doc = frappe.new_doc("Callyzer Unique Client")
+		doc.client_name = client.get("client_name")
+		doc.client_number = client.get("client_number")
+		doc.client_country_code = client.get("client_country_code")
+		doc.total_calls = client.get("total_calls")
+		doc.total_incoming_calls = client.get("total_incoming_calls")
+		doc.total_outgoing_calls = client.get("total_outgoing_calls")
+		doc.total_incoming_duration = client.get("total_incoming_duration")
+		doc.total_outgoing_duration = client.get("total_outgoing_duration")
+		doc.total_missed_calls = client.get("total_missed_calls")
+		doc.total_rejected_calls = client.get("total_rejected_calls")
+		doc.total_connected_calls = client.get("total_connected_calls")
+		doc.total_never_attended = client.get("total_never_attended")
+		doc.total_not_picked_by_client = client.get("total_not_picked_by_client")
+		doc.last_call_details = json.dumps(client.get("last_call_log"))
+		doc.company = company
 
-        last_call_log = client.get("last_call_log", {})
-        if last_call_log:
-            last_call_date = last_call_log.get("call_date")
-            doc.last_call_date = last_call_date
-            doc.last_call_time = last_call_log.get("call_time")
-            doc.last_call_type = last_call_log.get("call_type")
+		last_call_log = client.get("last_call_log", {})
+		if last_call_log:
+			last_call_date = last_call_log.get("call_date")
+			doc.last_call_date = getdate(last_call_date)
+			doc.last_call_time = last_call_log.get("call_time")
+			doc.last_call_type = last_call_log.get("call_type")
 
-        doc.insert(ignore_permissions=True)
-        inserted += 1
+		doc.insert(ignore_permissions=True)
+		inserted += 1
 
-    return {"status": "success", "inserted": inserted}
+	return {"status": "success", "inserted": inserted}
 
 
 # Fetch Hourly Analytics Report
 @frappe.whitelist()
 def fetch_hourly_analytics_report():
-    end_point_name = "Hourly Analytics"
-    endpoint, call_from, call_to = get_endpoint(end_point_name)
+	end_point_name = "Hourly Analytics"
+	endpoint, call_from, call_to = get_endpoint(end_point_name)
 
-    settings = get_callyzer_settings()
-    for setting in settings:
-        company = setting["company"]
-        token = setting["api_key"]
+	settings = get_callyzer_settings()
+	for setting in settings:
+		company = setting["company"]
+		token = setting["api_key"]
 
-        url = setting['domain_api'] + endpoint
+		url = setting['domain_api'] + endpoint
 
-        payload = {
-            "call_from": int(call_from),
-            "call_to": int(call_to),
-            "call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
-            "working_hour_from": "10:00",
-            "working_hour_to": "11:00",
-            "is_exclude_numbers": True
-        }
-        update_last_fetched_time(end_point_name)
-        result =  post_api(url, token, payload)
-        process_hourly_analytics_response(result, company)
+		payload = {
+			"call_from": int(call_from),
+			"call_to": int(call_to),
+			"call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
+			"working_hour_from": "10:00",
+			"working_hour_to": "11:00",
+			"is_exclude_numbers": True
+		}
+		update_last_fetched_time(end_point_name)
+		result =  post_api(url, token, payload)
+		process_hourly_analytics_response(result, company)
 
-    return {"status": "success", "message": "Hourly analytics report fetched successfully"}
+	return {"status": "success", "message": "Hourly analytics report fetched successfully"}
  
 
 def process_hourly_analytics_response(result, company):
-    result = result
-    if not result:
-        return {"status": "error", "message": "No result found in response"}
+	result = result
+	if not result:
+		return {"status": "error", "message": "No result found in response"}
 
-    total_calls = result.get("total_calls", 0)
-    total_connected_calls = result.get("total_connected_calls", 0)
-    total_duration = result.get("total_duration", 0)
-    time_slots = result.get("time_slots", [])
+	total_calls = result.get("total_calls", 0)
+	total_connected_calls = result.get("total_connected_calls", 0)
+	total_duration = result.get("total_duration", 0)
+	time_slots = result.get("time_slots", [])
 
-    inserted = 0
-    for slot in time_slots:
-        doc = frappe.new_doc("Hourly Analytics")
-        doc.company = company
-        doc.hour = slot.get("hour")
-        doc.call_count = slot.get("call_count", 0)
-        doc.connected_call_count = slot.get("connected_call_count", 0)
-        doc.duration = slot.get("duration", 0)
-        doc.total_calls = total_calls
-        doc.total_connected_calls = total_connected_calls
-        doc.total_duration = total_duration
-        doc.insert(ignore_permissions=True)
-        inserted += 1
+	inserted = 0
+	for slot in time_slots:
+		doc = frappe.new_doc("Hourly Analytics")
+		doc.company = company
+		doc.hour = slot.get("hour")
+		doc.call_count = slot.get("call_count", 0)
+		doc.connected_call_count = slot.get("connected_call_count", 0)
+		doc.duration = slot.get("duration", 0)
+		doc.total_calls = total_calls
+		doc.total_connected_calls = total_connected_calls
+		doc.total_duration = total_duration
+		doc.insert(ignore_permissions=True)
+		inserted += 1
 
-    return {
-        "status": "success",
-        "inserted": inserted,
-        "total_slots": len(time_slots),
-        "total_calls": total_calls,
-        "total_connected_calls": total_connected_calls
-    }
+	return {
+		"status": "success",
+		"inserted": inserted,
+		"total_slots": len(time_slots),
+		"total_calls": total_calls,
+		"total_connected_calls": total_connected_calls
+	}
 
 
 #Fetch Day-wise Analytics Report
 @frappe.whitelist()
 def fetch_day_wise_analytics_report():
-    end_point_name = "Day-wise Analytics"
-    endpoint, call_from, call_to = get_endpoint(end_point_name)
+	end_point_name = "Day-wise Analytics"
+	endpoint, call_from, call_to = get_endpoint(end_point_name)
 
-    employee_ids = get_employees()
-    settings = get_callyzer_settings()
-    for setting in settings:
-        company = setting["company"]
-        token = setting["api_key"]
+	employee_ids = get_employees()
+	settings = get_callyzer_settings()
+	for setting in settings:
+		company = setting["company"]
+		token = setting["api_key"]
 
-        url = setting['domain_api'] + endpoint
+		url = setting['domain_api'] + endpoint
 
-        payload = {
-            "call_from": int(call_from),
-            "call_to": int(call_to),
-            "emp_numbers": employee_ids,
-            "working_hour_from": "00:00",
-            "working_hour_to": "20:59",
-            "is_exclude_numbers": True
-        }
-        update_last_fetched_time(end_point_name)
-        result = post_api(url, token, payload)
-        process_daywise_analytics_response(result, company)
+		payload = {
+			"call_from": int(call_from),
+			"call_to": int(call_to),
+			"emp_numbers": employee_ids,
+			"working_hour_from": "00:00",
+			"working_hour_to": "20:59",
+			"is_exclude_numbers": True
+		}
+		update_last_fetched_time(end_point_name)
+		result = post_api(url, token, payload)
+		# frappe.throw(str(result))
+		process_daywise_analytics_response(result, company)
 
-    return {"status": "success", "message": "Day-wise analytics report fetched successfully"}
-
+	return {"status": "success", "message": "Day-wise analytics report fetched successfully"}
 
 def process_daywise_analytics_response(response_json, company):
-    result = response_json or {}
+	result = response_json or {}
 
-    if not result:
-        return {"status": "error", "message": "No day-wise analytics found in response"}
+	if not result:
+		return {"status": "error", "message": "No day-wise analytics found in response"}
 
-    time_slots = result.get("time_slots", [])
-    # for slot in time_slots:
-    #     day_wise_data = slot.get("day_wise", [])
-    #     for row in day_wise_data:
-    #         call_date = row.get("date")
-    #         if not call_date:
-    #             continue
+	time_slots = result.get("time_slots", [])
+	
+	for slot in time_slots:
+		doc = frappe.new_doc("Daywise Analyicts")
+		doc.company = company
+		doc.slot = slot.get("slot")
+		doc.total_calls = slot.get("total_calls", 0)
+		doc.total_connected_calls = slot.get("total_connected_calls", 0)
+		doc.total_duration = slot.get("total_duration", 0)
+		doc.total_call_perc = slot.get("total_call_perc", 0.0)
+		doc.total_connected_calls_perc = slot.get("total_connected_calls_perc", 0.0)
+		doc.total_duration_perc = slot.get("total_duration_perc", 0.0)
 
-    #         doc = frappe.new_doc("Daywise Analyicts")
-    #         doc.company = company
-    #         doc.call_date = call_date
-    #         doc.total_calls = row.get("total_calls", 0)
-    #         doc.total_connected_calls = row.get("total_connected_calls", 0)
-    #         doc.total_duration = row.get("total_duration", 0)
-    #         doc.insert(ignore_permissions=True)
-    
-    for slot in time_slots:
-        doc = frappe.new_doc("Daywise Analyicts")
-        doc.company = company
-        doc.slot = slot.get("slot")
-        doc.total_calls = slot.get("total_calls", 0)
-        doc.total_connected_calls = slot.get("total_connected_calls", 0)
-        doc.total_duration = slot.get("total_duration", 0)
-        doc.total_call_perc = slot.get("total_call_perc", 0.0)
-        doc.total_connected_calls_perc = slot.get("total_connected_calls_perc", 0.0)
-        doc.total_duration_perc = slot.get("total_duration_perc", 0.0)
-        doc.insert(ignore_permissions=True)
+		day_wise_entries = slot.get("day_wise", [])
+		for entry in day_wise_entries:
+			doc.append("daywise_calls", {
+				"date": entry.get("date"),
+				"day": entry.get("day"),
+				"total_calls": entry.get("total_calls", 0),
+				"total_connected_calls": entry.get("total_connected_calls", 0),
+				"total_duration": entry.get("total_duration", 0)
+			})
+		
+		doc.insert(ignore_permissions=True)
 
-    
 
 
 ##Fetch Call History Report #Tested working
 @frappe.whitelist()
 def fetch_call_history_report():
-    end_point_name = "Call History"
-    endpoint, call_from, call_to = get_endpoint(end_point_name)
+	end_point_name = "Call History"
+	endpoint, call_from, call_to = get_endpoint(end_point_name)
 
-    employee_ids = get_employees()
-    settings = get_callyzer_settings()
-    for setting in settings:
-        company = setting["company"]
-        token = setting["api_key"]
+	employee_ids = get_employees()
+	settings = get_callyzer_settings()
+	for setting in settings:
+		company = setting["company"]
+		token = setting["api_key"]
 
-        url = setting['domain_api'] + endpoint
-        payload = {
-            "call_from": int(call_from),
-            "call_to": int(call_to),
-            "call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
-            "emp_numbers": employee_ids,
-            "is_exclude_numbers": True,
-            "page_no": 1,
-            "page_size": 100
-        }
-        result = post_api(url, token, payload)
-        update_last_fetched_time(end_point_name)
-        process_call_history_response(result, company)
-        
-    return {"status": "success", "message": "Call history report fetched successfully"}
-       
+		url = setting['domain_api'] + endpoint
+		payload = {
+			"call_from": int(call_from),
+			"call_to": int(call_to),
+			"call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
+			"emp_numbers": employee_ids,
+			"is_exclude_numbers": True,
+			"page_no": 1,
+			"page_size": 100
+		}
+		result = post_api(url, token, payload)
+		update_last_fetched_time(end_point_name)
+		process_call_history_response(result, company)
+		
+	return {"status": "success", "message": "Call history report fetched successfully"}
+	   
 
 def process_call_history_response(result, company):
-    call_logs = result
-    if not call_logs:
-        return {"status": "error", "message": "No call history data found in response"}
+	call_logs = result
+	if not call_logs:
+		return {"status": "error", "message": "No call history data found in response"}
 
-    inserted = 0
-    for call in call_logs:
-        if not (call.get("id") and call.get("client_number")):
-            continue
+	inserted = 0
+	for call in call_logs:
+		if not (call.get("id") and call.get("client_number")):
+			continue
 
-        exists = frappe.db.exists("Call History Log", {
-            "external_id": call["id"],
-            "client_number": call["client_number"],
-            "company": company
-        })
-        if exists:
-            continue
-        if not frappe.db.exists("Callyzer Employee", {"employee_no": call.get("emp_number")}):
-                process_employee(call)
+		exists = frappe.db.exists("Call History Log", {
+			"external_id": call["id"],
+			"client_number": call["client_number"],
+			"company": company
+		})
+		if exists:
+			continue
+		if not frappe.db.exists("Callyzer Employee", {"employee_no": call.get("emp_number")}):
+				process_employee(call)
 
-        doc = frappe.new_doc("Call History Log")
-        doc.external_id = call.get("id")
-        doc.emp_name = call.get("emp_name")
-        doc.emp_code = call.get("emp_code")
-        doc.emp_number = call.get("emp_number")
-        doc.emp_country_code = call.get("emp_country_code")
-        doc.emp_tags = ", ".join(call.get("emp_tags") or [])
-        doc.client_name = call.get("client_name")
-        doc.client_number = call.get("client_number")
-        doc.client_country_code = call.get("client_country_code")
-        doc.duration = call.get("duration")
-        doc.call_type = call.get("call_type")
-        call_date = call.get("call_date")
-        doc.call_date = getdate(call_date)
-        doc.call_time = call.get("call_time")
-        doc.note = call.get("note")
-        doc.call_recording_url = call.get("call_recording_url")
-        doc.crm_status = call.get("crm_status")
-        doc.reminder_date = call.get("reminder_date")
-        doc.reminder_time = call.get("reminder_time")
-        doc.synced_at = call.get("synced_at")
-        doc.modified_at = call.get("modified_at")
-        doc.lead_id = call.get("lead_id")
-        doc.company = company
+		doc = frappe.new_doc("Call History Log")
+		doc.external_id = call.get("id")
+		doc.employee = call.get("emp_number")
+		doc.employee_name = call.get("emp_name")
+		doc.employee_code = call.get("emp_code")
+		doc.employee_number = call.get("emp_number")
+		doc.employee_country_code = call.get("emp_country_code")
+		doc.employee_tags = ", ".join(call.get("emp_tags") or [])
+		doc.client_name = call.get("client_name")
+		doc.client_number = call.get("client_number")
+		doc.client_country_code = call.get("client_country_code")
+		doc.duration = call.get("duration")
+		doc.call_type = call.get("call_type")
+		call_date = call.get("call_date")
+		doc.call_date = getdate(call_date)
+		doc.call_time = call.get("call_time")
+		doc.note = call.get("note")
+		doc.call_recording_url = call.get("call_recording_url")
+		doc.crm_status = call.get("crm_status")
+		doc.reminder_date = call.get("reminder_date")
+		doc.reminder_time = call.get("reminder_time")
+		doc.synced_at = call.get("synced_at")
+		doc.modified_at = call.get("modified_at")
+		doc.lead_id = call.get("lead_id")
+		doc.company = company
 
-        doc.insert(ignore_permissions=True)
-        inserted += 1
+		doc.insert(ignore_permissions=True)
+		inserted += 1
 
-    return {
-        "status": "success",
-        "inserted": inserted,
-        "records_fetched": len(call_logs)
-    }
+	return {
+		"status": "success",
+		"inserted": inserted,
+		"records_fetched": len(call_logs)
+	}
 
 #Fetch Call History By Ids
 @frappe.whitelist()
 def fetch_call_history_by_ids():
-    end_point_name = "Call History By Ids"
-    unique_ids = frappe.form_dict.get("unique_ids")
-    company = frappe.form_dict.get("company")
-    endpoint, call_from, call_to = get_endpoint(end_point_name)
-    api_key = frappe.form_dict.get("api_key")
-    domain_api = frappe.form_dict.get("domain_api")
-    # if not unique_ids or not isinstance(unique_ids, list):
-    #     frappe.throw(_("Please provide a valid list of Unique IDs"))
-    # frappe.throw(str(api_key))
-    url = domain_api + endpoint
-    
-    payload = {
-        "unique_ids": unique_ids
-    }
-    result = post_api(url, api_key, payload)
-    update_last_fetched_time(end_point_name)
-    process_call_history_response(result, company)
+	end_point_name = "Call History By Ids"
+	unique_ids = frappe.form_dict.get("unique_ids")
+	company = frappe.form_dict.get("company")
+	endpoint, call_from, call_to = get_endpoint(end_point_name)
+	api_key = frappe.form_dict.get("api_key")
+	domain_api = frappe.form_dict.get("domain_api")
+	# if not unique_ids or not isinstance(unique_ids, list):
+	#     frappe.throw(_("Please provide a valid list of Unique IDs"))
+	# frappe.throw(str(api_key))
+	url = domain_api + endpoint
+	
+	payload = {
+		"unique_ids": unique_ids
+	}
+	result = post_api(url, api_key, payload)
+	update_last_fetched_time(end_point_name)
+	process_call_history_response(result, company)
 
-    return {"status": "success", "message": "Call history fetched successfully"}
+	return {"status": "success", "message": "Call history fetched successfully"}
   
   
 #Remove Call Recording
 @frappe.whitelist()
 def remove_call_recording(unique_ids: list[str], company: str = None):
-    end_point_name = "Remove Call Recording"
-    if not unique_ids:
-        frappe.throw(_("Unique IDs are required"))
+	end_point_name = "Remove Call Recording"
+	if not unique_ids:
+		frappe.throw(_("Unique IDs are required"))
 
-    settings = frappe.get_doc("Callyzer Settings", company)
-    base_url = settings.api_url.rstrip("/")
-    api_key = settings.api_key
+	settings = frappe.get_doc("Callyzer Settings", company)
+	base_url = settings.api_url.rstrip("/")
+	api_key = settings.api_key
 
-    try:
-        res = requests.delete(
-            f"{base_url}/call-log/call-recording/remove",
-            headers={"api-key": api_key},
-            json={"unique_ids": unique_ids},
-            timeout=30
-        )
-        res.raise_for_status()
-        return {"status": "success", "message": res.json()}
-    except requests.RequestException as e:
-        frappe.log_error(f"Failed to remove call recording: {e}", "Callyzer Remove Call Recording")
-        return {"status": "error", "message": str(e)}
+	try:
+		res = requests.delete(
+			f"{base_url}/call-log/call-recording/remove",
+			headers={"api-key": api_key},
+			json={"unique_ids": unique_ids},
+			timeout=30
+		)
+		res.raise_for_status()
+		return {"status": "success", "message": res.json()}
+	except requests.RequestException as e:
+		frappe.log_error(f"Failed to remove call recording: {e}", "Callyzer Remove Call Recording")
+		return {"status": "error", "message": str(e)}
 
 #Tested working
 @frappe.whitelist(allow_guest=True)
 def callyzer_call_log_webhook():
-    """Webhook endpoint for receiving and processing Callyzer employee & call log data."""
-    try:
-        if frappe.request.method != "POST":
-            frappe.throw(_("Webhook only accepts POST requests"), frappe.ValidationError)
+	"""Webhook endpoint for receiving and processing Callyzer employee & call log data."""
+	try:
+		if frappe.request.method != "POST":
+			frappe.throw(_("Webhook only accepts POST requests"), frappe.ValidationError)
 
-        payload = frappe.request.get_json()
-        if not payload:
-            frappe.throw(_("Invalid or empty JSON payload"))
+		payload = frappe.request.get_json()
+		if not payload:
+			frappe.throw(_("Invalid or empty JSON payload"))
 
-        data = normalize_payload(payload)
+		data = normalize_payload(payload)
 
-        total_created = 0
-        total_logs = 0
+		total_created = 0
+		total_logs = 0
 
-        for item in data:
-            employee_name, is_new = process_employee(item)
-            if is_new:
-                total_created += 1
+		for item in data:
+			employee_name, is_new = process_employee(item)
+			if is_new:
+				total_created += 1
 
-            logs_created = process_call_logs(employee_name, item.get("call_logs", []))
-            total_logs += logs_created
+			logs_created = process_call_logs(employee_name, item.get("call_logs", []))
+			total_logs += logs_created
 
-        return {
-            "status": "success",
-            "employees_created": total_created,
-            "call_logs_created": total_logs
-        }
+		return {
+			"status": "success",
+			"employees_created": total_created,
+			"call_logs_created": total_logs
+		}
 
-    except Exception:
-        frappe.log_error(frappe.get_traceback(), "Webhook: Failed to process Callyzer data")
-        return {"status": "error", "message": "Processing failed"}
+	except Exception:
+		frappe.log_error(frappe.get_traceback(), "Webhook: Failed to process Callyzer data")
+		return {"status": "error", "message": "Processing failed"}
 
 #Tested working
 def post_api(url, api_key, payload):
-    headers = build_callyzer_headers(api_key)
-    try:
-        response = requests.post(url, headers=headers, data=json.dumps(payload), timeout=20)
+	headers = build_callyzer_headers(api_key)
+	try:
+		response = requests.post(url, headers=headers, data=json.dumps(payload), timeout=20)
 
-        if response.status_code != 200:
-            frappe.throw(_(f"Callyzer API request failed with status {response.status_code}: {response.text}"))
+		if response.status_code != 200:
+			frappe.throw(_(f"Callyzer API request failed with status {response.status_code}: {response.text}"))
 
-        return response.json().get("result", {})
-        
-    except requests.exceptions.RequestException as e:
-        frappe.log_error(frappe.get_traceback(), _("Callyzer API Error"))
-        frappe.throw(_("Error communicating with Callyzer API: ") + str(e))
+		return response.json().get("result", {})
+		
+	except requests.exceptions.RequestException as e:
+		frappe.log_error(frappe.get_traceback(), _("Callyzer API Error"))
+		frappe.throw(_("Error communicating with Callyzer API: ") + str(e))
 
 def get_api(url, api_key, payload):
-    headers = build_callyzer_headers(api_key)
-    try:
-        response = requests.get(url, headers=headers, data=json.dumps(payload), timeout=20)
+	headers = build_callyzer_headers(api_key)
+	try:
+		response = requests.get(url, headers=headers, data=json.dumps(payload), timeout=20)
 
-        if response.status_code != 200:
-            frappe.throw(_(f"Callyzer API request failed with status {response.status_code}: {response.text}"))
+		if response.status_code != 200:
+			frappe.throw(_(f"Callyzer API request failed with status {response.status_code}: {response.text}"))
 
-        return response.json().get("result", {})
-        
-    except requests.exceptions.RequestException as e:
-        frappe.log_error(frappe.get_traceback(), _("Callyzer API Error"))
-        frappe.throw(_("Error communicating with Callyzer API: ") + str(e))
+		return response.json().get("result", {})
+		
+	except requests.exceptions.RequestException as e:
+		frappe.log_error(frappe.get_traceback(), _("Callyzer API Error"))
+		frappe.throw(_("Error communicating with Callyzer API: ") + str(e))
 
 def get_valid_callyzer_settings(company):
-    settings = get_callyzer_settings(company)
-    if not settings:
-        frappe.throw(_("Callyzer settings not found for the company"))
-    return settings
+	settings = get_callyzer_settings(company)
+	if not settings:
+		frappe.throw(_("Callyzer settings not found for the company"))
+	return settings
 
 def build_callyzer_headers(api_key):
-    return {
-        "Authorization": f"Bearer {api_key}",
-        "Content-Type": "application/json"
-    }
+	return {
+		"Authorization": f"Bearer {api_key}",
+		"Content-Type": "application/json"
+	}
 
 
 @frappe.whitelist()
 def bg_fetch_summary_report():
-    frappe.enqueue(
-        "callyzer.api.call_log.fetch_summary_report",
-        queue='default',  
-        timeout=60,  
-        now=False
-    )
-    return _("Summary report job has been queued. You will be notified once it's complete.")
+	frappe.enqueue(
+		"callyzer.api.call_log.fetch_summary_report",
+		queue='default',  
+		timeout=600,  
+		now=False
+	)
+	return _("Summary report job has been queued. You will be notified once it's complete.")
 
 @frappe.whitelist()
 def bg_fetch_employee_summary_report():
-    frappe.enqueue(
-        "callyzer.api.call_log.fetch_employee_summary_report",
-        queue='default',  
-        timeout=60,  
-        now=False
-    )
-    return _("Employee summary report job has been queued. You will be notified once it's complete.")
+	frappe.enqueue(
+		"callyzer.api.call_log.fetch_employee_summary_report",
+		queue='default',  
+		timeout=600,  
+		now=False
+	)
+	return _("Employee summary report job has been queued. You will be notified once it's complete.")
 
 @frappe.whitelist()
 def bg_fetch_analysis_report():
-    frappe.enqueue(
-        "callyzer.api.call_log.fetch_analysis_report",
-        queue='default',  
-        timeout=60,  
-        now=False
-    )
-    return _("Analysis report job has been queued. You will be notified once it's complete.")
+	frappe.enqueue(
+		"callyzer.api.call_log.fetch_analysis_report",
+		queue='default',  
+		timeout=600,  
+		now=False
+	)
+	return _("Analysis report job has been queued. You will be notified once it's complete.")
 
 @frappe.whitelist()
 def bg_fetch_never_attended_calls():
-    frappe.enqueue(
-        "callyzer.api.call_log.fetch_never_attended_calls",
-        queue='default',  
-        timeout=60,  
-        now=False
-    )
-    return _("Never attended calls job has been queued. You will be notified once it's complete.")
+	frappe.enqueue(
+		"callyzer.api.call_log.fetch_never_attended_calls",
+		queue='default',  
+		timeout=600,  
+		now=False
+	)
+	return _("Never attended calls job has been queued. You will be notified once it's complete.")
 
 @frappe.whitelist()
 def bg_fetch_not_pickup_by_client_calls():
-    frappe.enqueue(
-        "callyzer.api.call_log.fetch_not_pickup_by_client_calls",
-        queue='default',  
-        timeout=60,  
-        now=False
-    )
-    return _("Not pickup by client calls job has been queued. You will be notified once it's complete.")
+	frappe.enqueue(
+		"callyzer.api.call_log.fetch_not_pickup_by_client_calls",
+		queue='default',  
+		timeout=600,  
+		now=False
+	)
+	return _("Not pickup by client calls job has been queued. You will be notified once it's complete.")
 
 @frappe.whitelist()
 def bg_fetch_unique_clients_report():
-    frappe.enqueue(
-        "callyzer.api.call_log.fetch_unique_clients_report",
-        queue='default',  
-        timeout=60,  
-        now=False
-    )
-    return _("Unique clients report job has been queued. You will be notified once it's complete.")
+	frappe.enqueue(
+		"callyzer.api.call_log.fetch_unique_clients_report",
+		queue='default',  
+		timeout=600,  
+		now=False
+	)
+	return _("Unique clients report job has been queued. You will be notified once it's complete.")
 
 @frappe.whitelist()
 def bg_fetch_hourly_analytics_report():
-    frappe.enqueue(
-        "callyzer.api.call_log.fetch_hourly_analytics_report",
-        queue='default',  
-        timeout=60,  
-        now=False
-    )
-    return _("Hourly analytics report job has been queued. You will be notified once it's complete.")
+	frappe.enqueue(
+		"callyzer.api.call_log.fetch_hourly_analytics_report",
+		queue='default',  
+		timeout=600,  
+		now=False
+	)
+	return _("Hourly analytics report job has been queued. You will be notified once it's complete.")
 
 @frappe.whitelist()
 def bg_fetch_day_wise_analytics_report():
-    frappe.enqueue(
-        "callyzer.api.call_log.fetch_day_wise_analytics_report",
-        queue='default',  
-        timeout=600,  
-        now=False
-    )
-    return _("Day-wise analytics report job has been queued. You will be notified once it's complete.")
+	frappe.enqueue(
+		"callyzer.api.call_log.fetch_day_wise_analytics_report",
+		queue='default',  
+		timeout=600,  
+		now=False
+	)
+	return _("Day-wise analytics report job has been queued. You will be notified once it's complete.")
 
 @frappe.whitelist()
 def bg_fetch_call_history_report():
-    frappe.enqueue(
-        "callyzer.api.call_log.fetch_call_history_report",
-        queue='default',  
-        timeout=60,  
-        now=False
-    )
-    return _("Call history report job has been queued. You will be notified once it's complete.")
+	frappe.enqueue(
+		"callyzer.api.call_log.fetch_call_history_report",
+		queue='default',  
+		timeout=600,  
+		now=False
+	)
+	return _("Call history report job has been queued. You will be notified once it's complete.")

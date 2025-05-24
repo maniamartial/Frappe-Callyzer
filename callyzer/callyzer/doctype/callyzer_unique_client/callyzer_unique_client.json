@@ -19,7 +19,18 @@
   "column_break_pyze",
   "last_call_date",
   "last_call_time",
-  "last_call_type"
+  "last_call_type",
+  "section_break_mpuc",
+  "total_incoming_duration",
+  "total_missed_calls",
+  "total_never_attended_calls",
+  "total_connected_calls",
+  "column_break_tanp",
+  "total_outgoing_duration",
+  "total_rejected_calls",
+  "total_not_picked_by_client",
+  "section_break_dumc",
+  "last_call_details"
  ],
  "fields": [
   {
@@ -92,12 +103,64 @@
    "fieldname": "last_call_type",
    "fieldtype": "Data",
    "label": "Last Call Type"
+  },
+  {
+   "fieldname": "section_break_mpuc",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "total_incoming_duration",
+   "fieldtype": "Float",
+   "label": "Total Incoming Duration"
+  },
+  {
+   "fieldname": "column_break_tanp",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "total_outgoing_duration",
+   "fieldtype": "Float",
+   "label": "Total Outgoing Duration"
+  },
+  {
+   "fieldname": "total_missed_calls",
+   "fieldtype": "Int",
+   "label": "Total Missed Calls"
+  },
+  {
+   "fieldname": "total_never_attended_calls",
+   "fieldtype": "Int",
+   "label": "Total Never Attended Calls"
+  },
+  {
+   "fieldname": "total_rejected_calls",
+   "fieldtype": "Int",
+   "label": "Total rejected Calls"
+  },
+  {
+   "fieldname": "total_not_picked_by_client",
+   "fieldtype": "Int",
+   "label": "Total Not Picked By Client"
+  },
+  {
+   "fieldname": "total_connected_calls",
+   "fieldtype": "Int",
+   "label": "Total Connected Calls"
+  },
+  {
+   "fieldname": "section_break_dumc",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "last_call_details",
+   "fieldtype": "Small Text",
+   "label": "Last Call details"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-22 11:03:28.275097",
+ "modified": "2025-05-24 01:25:10.083916",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Callyzer Unique Client",

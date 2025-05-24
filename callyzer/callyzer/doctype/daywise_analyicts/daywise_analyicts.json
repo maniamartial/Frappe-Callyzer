@@ -19,7 +19,9 @@
   "total_connected_calls_perc",
   "total_call_perc",
   "column_break_mnka",
-  "total_duration_perc"
+  "total_duration_perc",
+  "section_break_ctwo",
+  "daywise_calls"
  ],
  "fields": [
   {
@@ -32,7 +34,7 @@
   },
   {
    "fieldname": "call_date",
-   "fieldtype": "Data",
+   "fieldtype": "Date",
    "label": "Call Date"
   },
   {
@@ -57,7 +59,8 @@
   {
    "fieldname": "slot",
    "fieldtype": "Data",
-   "label": "Slot"
+   "label": "Slot",
+   "reqd": 1
   },
   {
    "fieldname": "section_break_aigt",
@@ -89,12 +92,22 @@
    "fieldname": "total_duration_perc",
    "fieldtype": "Float",
    "label": "Total Duration Perc"
+  },
+  {
+   "fieldname": "section_break_ctwo",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "daywise_calls",
+   "fieldtype": "Table",
+   "label": "Daywise Calls",
+   "options": "DayWise Calls"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-22 23:49:06.417473",
+ "modified": "2025-05-24 11:29:33.453826",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Daywise Analyicts",

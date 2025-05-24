@@ -8,12 +8,13 @@
   "company",
   "external_id",
   "lead_id",
-  "employer_name",
+  "employee_name",
+  "employee",
   "column_break_qdck",
-  "employer_code",
-  "employer_number",
-  "employer_country_code",
-  "employer_tags",
+  "employee_code",
+  "employee_number",
+  "employee_country_code",
+  "employee_tags",
   "section_break_xehp",
   "client_name",
   "client_number",
@@ -56,33 +57,8 @@
    "label": "Lead Id"
   },
   {
-   "fieldname": "employer_name",
-   "fieldtype": "Data",
-   "label": "Employer Name"
-  },
-  {
    "fieldname": "column_break_qdck",
    "fieldtype": "Column Break"
-  },
-  {
-   "fieldname": "employer_code",
-   "fieldtype": "Data",
-   "label": "Employer Code"
-  },
-  {
-   "fieldname": "employer_number",
-   "fieldtype": "Data",
-   "label": "Employer Number"
-  },
-  {
-   "fieldname": "employer_country_code",
-   "fieldtype": "Data",
-   "label": "Employer Country Code"
-  },
-  {
-   "fieldname": "employer_tags",
-   "fieldtype": "Data",
-   "label": "Employer Tags"
   },
   {
    "fieldname": "section_break_xehp",
@@ -180,12 +156,43 @@
    "fieldname": "modified_at",
    "fieldtype": "Data",
    "label": "Modified At"
+  },
+  {
+   "fieldname": "employee",
+   "fieldtype": "Link",
+   "label": "Employee",
+   "options": "Callyzer Employee"
+  },
+  {
+   "fieldname": "employee_number",
+   "fieldtype": "Data",
+   "label": "Employee Number"
+  },
+  {
+   "fieldname": "employee_country_code",
+   "fieldtype": "Data",
+   "label": "Employee Country Code"
+  },
+  {
+   "fieldname": "employee_tags",
+   "fieldtype": "Data",
+   "label": "Employee Tags"
+  },
+  {
+   "fieldname": "employee_name",
+   "fieldtype": "Data",
+   "label": "Employer Name"
+  },
+  {
+   "fieldname": "employee_code",
+   "fieldtype": "Data",
+   "label": "Employee Code"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-23 14:22:10.175632",
+ "modified": "2025-05-24 02:03:21.231316",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Call History Log",

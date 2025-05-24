@@ -1,0 +1,80 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-05-24 11:18:42.454762",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "date",
+  "column_break_nfzm",
+  "day",
+  "section_break_rphw",
+  "total_calls",
+  "total_connected_calls",
+  "column_break_xkid",
+  "duration"
+ ],
+ "fields": [
+  {
+   "fieldname": "date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_nfzm",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "day",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Day",
+   "options": "\nMonday\nTuesday\nWednesday\nThursday\nFriday\nSaturday\nSunday",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_rphw",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "total_calls",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Total Calls"
+  },
+  {
+   "fieldname": "total_connected_calls",
+   "fieldtype": "Int",
+   "in_list_view": 1,
+   "label": "Total Connected Calls"
+  },
+  {
+   "fieldname": "column_break_xkid",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "duration",
+   "fieldtype": "Float",
+   "in_list_view": 1,
+   "label": "Duration"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-05-24 11:27:13.502191",
+ "modified_by": "Administrator",
+ "module": "Callyzer",
+ "name": "DayWise Calls",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
