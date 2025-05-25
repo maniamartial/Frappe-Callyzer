@@ -5,6 +5,7 @@ from callyzer.callyzer.utils import get_callyzer_settings, normalize_payload, ge
 from callyzer.api.fetch_employee import parse_datetime, process_employee
 from frappe import _
 from frappe.utils import getdate
+import time
 
 #Tested working
 @frappe.whitelist()
@@ -737,6 +738,9 @@ def post_api(url, api_key, payload):
 	headers = build_callyzer_headers(api_key)
 	try:
 		response = requests.post(url, headers=headers, data=json.dumps(payload), timeout=20)
+		if response.status_code == 429:
+			time.sleep(5)
+			response = requests.post(url, json=payload, headers=headers)
 
 		if response.status_code != 200:
 			frappe.throw(_(f"Callyzer API request failed with status {response.status_code}: {response.text}"))
