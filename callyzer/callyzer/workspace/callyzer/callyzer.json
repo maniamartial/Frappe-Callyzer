@@ -18,7 +18,7 @@
  "hide_custom": 0,
  "icon": "read-status",
  "idx": 0,
- "indicator_color": "blue",
+ "indicator_color": "",
  "is_hidden": 0,
  "label": "Callyzer",
  "links": [
@@ -171,7 +171,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-05-25 20:20:13.711469",
+ "modified": "2025-05-25 20:29:07.408625",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Callyzer",

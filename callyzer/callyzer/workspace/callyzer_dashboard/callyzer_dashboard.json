@@ -1,0 +1,94 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"_CiakJVWOg\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Yesterday Summary</b></span>\",\"col\":12}},{\"id\":\"AyNr1GmxNv\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Call Duration(Yesterday)\",\"col\":4}},{\"id\":\"n0S-IrsEiV\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Connected Calls(Yesterday)\",\"col\":4}},{\"id\":\"Le43FrVylI\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Incoming Duration\",\"col\":4}},{\"id\":\"ZbsTHYvTgb\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Missed\",\"col\":4}},{\"id\":\"MFGG7GLRZM\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Never Attended(Yesterday)\",\"col\":4}},{\"id\":\"ls2a4Xgrnk\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Outgoing Duration(Yesterday)\",\"col\":4}},{\"id\":\"fYEO7F6cBo\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"IrUTYfxka0\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Today Summary</b></span>\",\"col\":12}},{\"id\":\"7g6qSRDlaZ\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Call Duration(Today)\",\"col\":4}},{\"id\":\"X1UcOks_kX\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Not Pickup Client\",\"col\":4}},{\"id\":\"Ql-YTQUFAF\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Rejected(Today)\",\"col\":4}},{\"id\":\"4Tc_2UjQF_\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Total Calls\",\"col\":4}},{\"id\":\"NlWk_je5bc\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Outgoing Calls\",\"col\":4}},{\"id\":\"osyblAXXXx\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Never Attended Calls\",\"col\":4}},{\"id\":\"NzGFNYXFRI\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"uPFpK-N1-r\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\"><b>Weekly Summary</b></span>\",\"col\":12}},{\"id\":\"QF5AfPH3Wi\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Call Duration\",\"col\":4}},{\"id\":\"_-aKMM1Psl\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Connected Calls\",\"col\":4}},{\"id\":\"kzFENqeM1b\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Incoming Duration\",\"col\":4}},{\"id\":\"xBN7okVill\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Incoming\",\"col\":4}},{\"id\":\"26AGfdPCyP\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Missed\",\"col\":4}},{\"id\":\"FKgBBm4uFB\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Never Attended\",\"col\":4}}]",
+ "creation": "2025-05-25 20:29:58.715225",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "select",
+ "idx": 0,
+ "indicator_color": "",
+ "is_hidden": 0,
+ "label": "Callyzer Dashboard",
+ "links": [],
+ "modified": "2025-05-25 22:56:25.577445",
+ "modified_by": "Administrator",
+ "module": "Callyzer",
+ "name": "Callyzer Dashboard",
+ "number_cards": [
+  {
+   "label": "Call Duration(Yesterday)",
+   "number_card_name": "Call Duration(Yesterday)"
+  },
+  {
+   "label": "Outgoing Duration(Yesterday)",
+   "number_card_name": "Outgoing Duration(Yesterday)"
+  },
+  {
+   "label": "Call Duration(Today)",
+   "number_card_name": "Call Duration(Today)"
+  },
+  {
+   "label": "Connected Calls(Yesterday)",
+   "number_card_name": "Connected Calls(Yesterday)"
+  },
+  {
+   "label": "Never Attended(Yesterday)",
+   "number_card_name": "Never Attended(Yesterday)"
+  },
+  {
+   "label": "Not Pickup Client",
+   "number_card_name": "Not Pickup Client(Today)"
+  },
+  {
+   "label": "Rejected(Today)",
+   "number_card_name": "Rejected(Today)"
+  },
+  {
+   "label": "Total Calls",
+   "number_card_name": "Total Calls(Today)"
+  },
+  {
+   "label": "Outgoing Calls",
+   "number_card_name": "Outgoing"
+  },
+  {
+   "label": "Never Attended Calls",
+   "number_card_name": "Never Attended"
+  },
+  {
+   "label": "Call Duration",
+   "number_card_name": "Call Duration(Last Week)"
+  },
+  {
+   "label": "Connected Calls",
+   "number_card_name": "Connected Calls(Last Week)"
+  },
+  {
+   "label": "Incoming Duration",
+   "number_card_name": "Incoming Duration(Last Week)"
+  },
+  {
+   "label": "Incoming",
+   "number_card_name": "Incoming(Last Week)"
+  },
+  {
+   "label": "Missed",
+   "number_card_name": "Missed(Last Week)"
+  },
+  {
+   "label": "Never Attended",
+   "number_card_name": "Never Attended(Last Week)"
+  }
+ ],
+ "owner": "Administrator",
+ "parent_page": "Callyzer",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 45.0,
+ "shortcuts": [],
+ "title": "Callyzer Dashboard"
+}
