@@ -136,17 +136,21 @@
  "charts": [
   {
    "chart": "Call Types Summary",
-   "width": "Full"
+   "width": "Half"
+  },
+  {
+   "chart": "Call Attendance",
+   "width": "Half"
   }
  ],
  "creation": "2025-05-21 23:55:05.048003",
  "dashboard_name": "Callyzer Analytics",
  "docstatus": 0,
  "doctype": "Dashboard",
- "idx": 0,
+ "idx": 8,
  "is_default": 0,
  "is_standard": 1,
- "modified": "2025-05-24 19:28:37.492696",
+ "modified": "2025-05-25 20:19:09.695171",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Callyzer Analytics",

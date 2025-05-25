@@ -1,15 +1,15 @@
 {
  "charts": [
   {
-   "chart_name": "Call Types Summary",
-   "label": "Call Types Summary"
-  },
-  {
    "chart_name": "Call Attendance",
    "label": "Call Attendance"
+  },
+  {
+   "chart_name": "Call Types Summary",
+   "label": "Call Types Summary"
   }
  ],
- "content": "[{\"id\":\"cNXmYDEIfw\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Top Dialer\",\"col\":4}},{\"id\":\"pfLfIB3k9H\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Top Caller\",\"col\":4}},{\"id\":\"Nud0ZBljx2\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Top Answered\",\"col\":4}},{\"id\":\"llAIb5tEZo\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Call Types Summary\",\"col\":12}},{\"id\":\"JQherRan-O\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Call Attendance\",\"col\":12}},{\"id\":\"p0Q_yYZNUP\",\"type\":\"header\",\"data\":{\"text\":\"<span style=\\\"font-size: 18px; letter-spacing: 0.18px;\\\"><b>Shortcut</b></span>\",\"col\":12}},{\"id\":\"VNn9yQ5ou8\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Callyzer Settings\",\"col\":5}},{\"id\":\"LZfuvoZRCY\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Callyzer Employee\",\"col\":4}},{\"id\":\"sRPngGtfi6\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Callyzer Analytics Dashboard\",\"col\":3}},{\"id\":\"Y2AY2IOhw1\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"PJ9ec-7UcS\",\"type\":\"card\",\"data\":{\"card_name\":\"Master Doctypes\",\"col\":4}},{\"id\":\"C2nPMBgQgS\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}},{\"id\":\"ZdZOQC8ALY\",\"type\":\"spacer\",\"data\":{\"col\":12}}]",
+ "content": "[{\"id\":\"cNXmYDEIfw\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Top Dialer\",\"col\":4}},{\"id\":\"pfLfIB3k9H\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Top Caller\",\"col\":4}},{\"id\":\"Nud0ZBljx2\",\"type\":\"number_card\",\"data\":{\"number_card_name\":\"Top Answered\",\"col\":4}},{\"id\":\"llAIb5tEZo\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Call Types Summary\",\"col\":6}},{\"id\":\"JQherRan-O\",\"type\":\"chart\",\"data\":{\"chart_name\":\"Call Attendance\",\"col\":6}},{\"id\":\"p0Q_yYZNUP\",\"type\":\"header\",\"data\":{\"text\":\"<span style=\\\"font-size: 18px; letter-spacing: 0.18px;\\\"><b>Shortcut</b></span>\",\"col\":12}},{\"id\":\"VNn9yQ5ou8\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Callyzer Settings\",\"col\":5}},{\"id\":\"LZfuvoZRCY\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Callyzer Employee\",\"col\":4}},{\"id\":\"sRPngGtfi6\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Callyzer Analytics Dashboard\",\"col\":3}},{\"id\":\"Y2AY2IOhw1\",\"type\":\"spacer\",\"data\":{\"col\":12}},{\"id\":\"PJ9ec-7UcS\",\"type\":\"card\",\"data\":{\"card_name\":\"Master Doctypes\",\"col\":4}},{\"id\":\"C2nPMBgQgS\",\"type\":\"card\",\"data\":{\"card_name\":\"Reports\",\"col\":4}},{\"id\":\"ZdZOQC8ALY\",\"type\":\"spacer\",\"data\":{\"col\":12}}]",
  "creation": "2025-05-17 10:04:40.693662",
  "custom_blocks": [],
  "docstatus": 0,
@@ -171,7 +171,7 @@
    "type": "Link"
   }
  ],
- "modified": "2025-05-25 20:07:41.934571",
+ "modified": "2025-05-25 20:20:13.711469",
  "modified_by": "Administrator",
  "module": "Callyzer",
  "name": "Callyzer",
