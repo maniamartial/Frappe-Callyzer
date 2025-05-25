@@ -25,7 +25,7 @@ def fetch_summary_report():
 			"call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
 			"emp_numbers": employee_ids,
 			# "duration_les_than": 200,
-			"emp_tags": ["api"],
+			"emp_tags": [],
 			"is_exclude_numbers": True
 		}
 		
@@ -111,7 +111,7 @@ def fetch_employee_summary_report():
 			"call_to": int(call_to),
 			"call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
 			"emp_numbers": employee_ids,
-			"emp_tags": ["api"],
+			"emp_tags": [],
 			"is_exclude_numbers": True
 		}
 		update_last_fetched_time(end_point_name)
