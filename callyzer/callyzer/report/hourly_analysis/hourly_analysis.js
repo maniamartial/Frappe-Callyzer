@@ -7,28 +7,28 @@ frappe.query_reports["Hourly Analysis"] = {
 			"fieldname": "from_date",
 			"label": "From Date",
 			"fieldtype": "Date",
-			"reqd": 1
+			"reqd": 1,
+			"default": frappe.datetime.add_months(frappe.datetime.get_today(), -1)
 		},
 		{
 			"fieldname": "to_date",
 			"label": "To Date",
 			"fieldtype": "Date",
-			"reqd": 1
+			"reqd": 1,
+			"default": frappe.datetime.get_today()
 		},
 		{
 			"fieldname": "employee_tag",
 			"label": "Employee Tag",
-			"fieldtype": "MultiSelectList",
-			"get_data": function(txt) {
-				return frappe.db.get_link_options("Employee Tag", txt);
-			}
+			"fieldtype": "Data",
+			
 		},
 		{
 			"fieldname": "employee",
-			"label": "Employee",
+			"label": "Callyzer Employee",
 			"fieldtype": "MultiSelectList",
 			"get_data": function(txt) {
-				return frappe.db.get_link_options("Employee", txt);
+				return frappe.db.get_link_options("Callyzer Employee", txt);
 			}
 		},
 		{

@@ -10,7 +10,7 @@ def execute(filters=None):
 	filters = frappe._dict(filters or {})
 	columns = get_columns()
 
-	conditions = ["call_status = 'Unattended'"]
+	conditions = ["call_status = 'Unattended Incoming'"]
 
 	if filters.get("employee"):
 		conditions.append("employee = %(employee)s")
@@ -20,7 +20,7 @@ def execute(filters=None):
 		conditions.append("call_date <= %(to_date)s")
 
 	where_clause = " AND ".join(conditions)
-
+	
 	data = frappe.db.sql(f"""
 		SELECT
 			employee,
@@ -34,7 +34,6 @@ def execute(filters=None):
 		WHERE {where_clause}
 		ORDER BY call_date DESC, call_time DESC
 	""", filters, as_dict=True)
-
 	return columns, data
 
 def get_columns():

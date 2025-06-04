@@ -23,5 +23,23 @@ frappe.query_reports["Daywise Analysis"] = {
 			options: ["Bar", "Line"],
 			default: "Bar"
 		}
-	]
+	],
+
+	formatter: function (value, row, column, data, default_formatter) {
+		value = default_formatter(value, row, column, data);
+
+		// Apply color to columns
+		if (column.fieldname) {
+			if (column.fieldname.includes("connected")) {
+				value = `<span style="color: blue;">${value}</span>`;
+			} else if (column.fieldname.includes("calls")) {
+				value = `<span style="color: green;">${value}</span>`;
+			} else if (column.fieldname.includes("duration")) {
+				value = `<span style="color: goldenrod;">${value}</span>`;
+			}
+		}
+
+		return value;
+	}
 };
+

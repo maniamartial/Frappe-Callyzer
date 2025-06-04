@@ -10,7 +10,7 @@ def execute(filters=None):
 	filters = frappe._dict(filters or {})
 	columns = get_columns()
 
-	conditions = ["call_status = 'Missed'", "call_type = 'Outgoing'"]
+	conditions = ["call_status = 'Unattended Outgoing'"]
 
 	if filters.get("employee"):
 		conditions.append("employee = %(employee)s")

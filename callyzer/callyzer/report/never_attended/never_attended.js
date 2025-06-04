@@ -6,7 +6,7 @@ frappe.query_reports["Never Attended"] = {
 			"fieldname": "employee",
 			"label": "Employee",
 			"fieldtype": "Link",
-			"options": "Employee",
+			"options": "Callyzer Employee",
 			"width": "120"
 		},
 		{
