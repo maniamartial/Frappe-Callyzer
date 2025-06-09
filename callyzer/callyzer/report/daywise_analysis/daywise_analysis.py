@@ -136,7 +136,7 @@ def get_data(filters):
     from_date = filters.get("from_date")
     to_date = filters.get("to_date")
 
-    # Step 1: Pull slot and call data by joining child and parent tables
+    # Step 1: Pull and aggregate data by date and slot
     raw_data = frappe.db.sql("""
         SELECT 
             dwc.date AS call_date,
@@ -148,40 +148,40 @@ def get_data(filters):
         JOIN `tabDaywise Analyicts` dai ON dwc.parent = dai.name
         WHERE dwc.date BETWEEN %(from_date)s AND %(to_date)s
         GROUP BY dwc.date, dai.slot
-        ORDER BY dwc.date ASC
+        ORDER BY dwc.date ASC, dai.slot ASC
     """, {"from_date": from_date, "to_date": to_date}, as_dict=True)
 
     # Step 2: Organize data by date and slot
     structured = {}
     for row in raw_data:
-        date = row["call_date"]
-        slot_suffix = normalize_slot(row["slot"])
+        call_date = row["call_date"]
+        slot = row["slot"]
 
-        if date not in structured:
-            structured[date] = {}
+        if call_date not in structured:
+            structured[call_date] = {}
 
-        structured[date][slot_suffix] = {
-            "calls": row["total_calls"],
-            "connected": row["total_connected_calls"],
-            "duration": row["total_duration"]
+        structured[call_date][slot] = {
+            "calls": row["total_calls"] or 0,
+            "connected": row["total_connected_calls"] or 0,
+            "duration": row["total_duration"] or 0
         }
 
-    # Define all slots (suffix format)
     slots = ["before_10"] + [f"{str(h).zfill(2)}00" for h in range(10, 20)] + ["after_1900"]
 
     result = []
     totals = {"total_calls": 0, "total_connected_calls": 0, "total_duration": 0}
     slot_totals = {slot: {"calls": 0, "connected": 0, "duration": 0} for slot in slots}
-
+    
     # Step 3: Build each row per day
     for date, slot_data in structured.items():
+        
         row = {
             "call_date": date,
             "total_calls": sum(v["calls"] for v in slot_data.values()),
             "total_connected_calls": sum(v["connected"] for v in slot_data.values()),
             "total_duration": sum(v["duration"] for v in slot_data.values()),
         }
-
+        
         for slot in slots:
             data = slot_data.get(slot, {"calls": 0, "connected": 0, "duration": 0})
             row[f"calls_{slot}"] = data["calls"]
@@ -196,7 +196,7 @@ def get_data(filters):
         totals["total_calls"] += row["total_calls"]
         totals["total_connected_calls"] += row["total_connected_calls"]
         totals["total_duration"] += row["total_duration"]
-
+        
         result.append(row)
 
     # Step 4: Totals row
@@ -211,7 +211,7 @@ def get_data(filters):
         total_row[f"connected_{slot}"] = slot_totals[slot]["connected"]
         total_row[f"duration_{slot}"] = slot_totals[slot]["duration"]
     result.append(total_row)
-
+   
     # Step 5: Average row
     num_days = len(structured)
     if num_days > 0:
@@ -226,7 +226,7 @@ def get_data(filters):
             avg_row[f"connected_{slot}"] = round(slot_totals[slot]["connected"] / num_days, 2)
             avg_row[f"duration_{slot}"] = round(slot_totals[slot]["duration"] / num_days, 2)
         result.append(avg_row)
-
+    
     return result
 
 

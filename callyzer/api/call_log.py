@@ -550,20 +550,32 @@ def process_daywise_analytics_response(response_json, company):
 		return {"status": "error", "message": "No day-wise analytics found in response"}
 
 	time_slots = result.get("time_slots", [])
-	
+
 	for slot in time_slots:
-		doc = frappe.new_doc("Daywise Analyicts")
-		doc.company = company
-		doc.slot = slot.get("slot")
-		doc.total_calls = slot.get("total_calls", 0)
-		doc.total_connected_calls = slot.get("total_connected_calls", 0)
-		doc.total_duration = slot.get("total_duration", 0)
-		doc.total_call_perc = slot.get("total_call_perc", 0.0)
-		doc.total_connected_calls_perc = slot.get("total_connected_calls_perc", 0.0)
-		doc.total_duration_perc = slot.get("total_duration_perc", 0.0)
+		slot_name = slot.get("slot")
+		existing_doc = frappe.get_all("Daywise Analyicts", filters={"company": company, "slot": slot_name}, fields=["name"])
+
+		if existing_doc:
+			doc = frappe.get_doc("Daywise Analyicts", existing_doc[0]["name"])
+		else:
+			doc = frappe.new_doc("Daywise Analyicts")
+			doc.company = company
+			doc.slot = slot_name
+			doc.total_calls = slot.get("total_calls", 0)
+			doc.total_connected_calls = slot.get("total_connected_calls", 0)
+			doc.total_duration = slot.get("total_duration", 0)
+			doc.total_call_perc = slot.get("total_call_perc", 0.0)
+			doc.total_connected_calls_perc = slot.get("total_connected_calls_perc", 0.0)
+			doc.total_duration_perc = slot.get("total_duration_perc", 0.0)
+
+		existing_keys = {(child.date, child.day) for child in doc.daywise_calls}
 
 		day_wise_entries = slot.get("day_wise", [])
 		for entry in day_wise_entries:
+			key = (entry.get("date"), entry.get("day"))
+			if key in existing_keys:
+				continue  
+
 			doc.append("daywise_calls", {
 				"date": entry.get("date"),
 				"day": entry.get("day"),
@@ -571,8 +583,11 @@ def process_daywise_analytics_response(response_json, company):
 				"total_connected_calls": entry.get("total_connected_calls", 0),
 				"total_duration": entry.get("total_duration", 0)
 			})
-		
-		doc.insert(ignore_permissions=True)
+
+		doc.save(ignore_permissions=True)
+
+	return {"status": "success", "message": "Daywise analytics processed successfully"}
+
 
 
 
