@@ -177,6 +177,7 @@ def fetch_analysis_report():
 		}
 		update_last_fetched_time(end_point_name)
 		result = post_api(url, token, payload)
+		# frappe.throw(str(result))
 		handle_analysis_report(call_from, call_to, company, result)
 		
 	return {"status": "success", "message": "Analysis report fetched successfully"}
@@ -517,31 +518,49 @@ def process_hourly_analytics_response(result, company):
 #Fetch Day-wise Analytics Report
 @frappe.whitelist()
 def fetch_day_wise_analytics_report():
-	end_point_name = "Day-wise Analytics"
-	endpoint, call_from, call_to = get_endpoint(end_point_name)
+    import time
 
-	employee_ids = get_employees()
-	settings = get_callyzer_settings()
-	for setting in settings:
-		company = setting["company"]
-		token = setting["api_key"]
+    end_point_name = "Day-wise Analytics"
 
-		url = setting['domain_api'] + endpoint
+    # Try to get from request first
+    call_from = frappe.form_dict.get("call_from")
+    call_to = frappe.form_dict.get("call_to")
 
-		payload = {
-			"call_from": int(call_from),
-			"call_to": int(call_to),
-			"emp_numbers": employee_ids,
-			"working_hour_from": "00:00",
-			"working_hour_to": "20:59",
-			"is_exclude_numbers": True
-		}
-		update_last_fetched_time(end_point_name)
-		result = post_api(url, token, payload)
-		# frappe.throw(str(result))
-		process_daywise_analytics_response(result, company)
+    if call_from and call_to:
+        # Convert to Unix timestamp if needed
+        call_from = int(time.mktime(frappe.utils.getdate(call_from).timetuple()))
+        call_to = int(time.mktime(frappe.utils.getdate(call_to).timetuple()))
+        endpoint = get_endpoint(end_point_name)[0]  # only get the endpoint string
+    else:
+        # Use default logic if dates are not provided
+        endpoint, call_from, call_to = get_endpoint(end_point_name)
 
-	return {"status": "success", "message": "Day-wise analytics report fetched successfully"}
+    employee_ids = get_employees()
+    settings = get_callyzer_settings()
+
+    for setting in settings:
+        company = setting["company"]
+        token = setting["api_key"]
+        url = setting['domain_api'] + endpoint
+
+        payload = {
+            "call_from": int(call_from),
+            "call_to": int(call_to),
+            "emp_numbers": employee_ids,
+            "working_hour_from": "00:00",
+            "working_hour_to": "20:59",
+            "is_exclude_numbers": True
+        }
+
+        result = post_api(url, token, payload)
+        update_last_fetched_time(end_point_name)
+        process_daywise_analytics_response(result, company)
+
+    return {
+        "status": "success",
+        "message": "Day-wise analytics report fetched successfully"
+    }
+
 
 def process_daywise_analytics_response(response_json, company):
 	result = response_json or {}
