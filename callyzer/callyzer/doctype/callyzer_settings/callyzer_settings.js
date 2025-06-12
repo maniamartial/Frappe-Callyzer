@@ -60,21 +60,40 @@ frappe.ui.form.on('Callyzer Settings', {
   
 }, __('Action'));
 
- frm.add_custom_button(__('Call History'), function() {
-   
-    
+
+     frm.add_custom_button(__('Call History'), function() {
+    frappe.prompt([
+        {
+            fieldtype: 'Date',
+            label: 'From Date',
+            fieldname: 'from_date',
+            reqd: true
+        },
+        {
+            fieldtype: 'Date',
+            label: 'To Date',
+            fieldname: 'to_date',
+            reqd: true
+        }
+    ],
+    function(values) {
         frappe.call({
             method: "callyzer.api.call_log.fetch_call_history_report",
-            
+            args: {
+                call_from: values.from_date,
+                call_to: values.to_date
+            },
             callback: function(r) {
                 if (r.message) {
                     frappe.msgprint(r.message);
                 }
             }
         });
-  
-  
+    },
+    __('Select Date Range'),
+    __('Get Report'));
 }, __('Action'));
+
 
 frm.add_custom_button(__('Hourly Analytics'), function() {
    

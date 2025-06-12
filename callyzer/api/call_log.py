@@ -278,10 +278,10 @@ def handle_never_attended_calls(response, company):
 
 		for log in emp.get("call_logs", []):
 			call_log = frappe.db.get_value(
-                "Call History Log",
-                {"external_id": log.get("id")},
-                "name"
-            )
+				"Call History Log",
+				{"external_id": log.get("id")},
+				"name"
+			)
 			if not call_log:
 				continue
 			if not frappe.db.exists("Callyzer Attendance Call", {"call_log": call_log}):
@@ -349,10 +349,10 @@ def handle_not_pickup_by_client_calls(response, company):
 
 		for log in emp.get("call_logs", []):
 			call_log = frappe.db.get_value(
-                "Call History Log",
-                {"external_id": log.get("id")},
-                "name"
-            )
+				"Call History Log",
+				{"external_id": log.get("id")},
+				"name"
+			)
 			if not call_log:
 				continue
 			if not frappe.db.exists("Callyzer Attendance Call", {"call_log": call_log}):
@@ -518,48 +518,48 @@ def process_hourly_analytics_response(result, company):
 #Fetch Day-wise Analytics Report
 @frappe.whitelist()
 def fetch_day_wise_analytics_report():
-    import time
+	import time
 
-    end_point_name = "Day-wise Analytics"
+	end_point_name = "Day-wise Analytics"
 
-    # Try to get from request first
-    call_from = frappe.form_dict.get("call_from")
-    call_to = frappe.form_dict.get("call_to")
+	# Try to get from request first
+	call_from = frappe.form_dict.get("call_from")
+	call_to = frappe.form_dict.get("call_to")
 
-    if call_from and call_to:
-        # Convert to Unix timestamp if needed
-        call_from = int(time.mktime(frappe.utils.getdate(call_from).timetuple()))
-        call_to = int(time.mktime(frappe.utils.getdate(call_to).timetuple()))
-        endpoint = get_endpoint(end_point_name)[0]  # only get the endpoint string
-    else:
-        # Use default logic if dates are not provided
-        endpoint, call_from, call_to = get_endpoint(end_point_name)
+	if call_from and call_to:
+		# Convert to Unix timestamp if needed
+		call_from = int(time.mktime(frappe.utils.getdate(call_from).timetuple()))
+		call_to = int(time.mktime(frappe.utils.getdate(call_to).timetuple()))
+		endpoint = get_endpoint(end_point_name)[0]  # only get the endpoint string
+	else:
+		# Use default logic if dates are not provided
+		endpoint, call_from, call_to = get_endpoint(end_point_name)
 
-    employee_ids = get_employees()
-    settings = get_callyzer_settings()
+	employee_ids = get_employees()
+	settings = get_callyzer_settings()
 
-    for setting in settings:
-        company = setting["company"]
-        token = setting["api_key"]
-        url = setting['domain_api'] + endpoint
+	for setting in settings:
+		company = setting["company"]
+		token = setting["api_key"]
+		url = setting['domain_api'] + endpoint
 
-        payload = {
-            "call_from": int(call_from),
-            "call_to": int(call_to),
-            "emp_numbers": employee_ids,
-            "working_hour_from": "00:00",
-            "working_hour_to": "20:59",
-            "is_exclude_numbers": True
-        }
+		payload = {
+			"call_from": int(call_from),
+			"call_to": int(call_to),
+			"emp_numbers": employee_ids,
+			"working_hour_from": "00:00",
+			"working_hour_to": "20:59",
+			"is_exclude_numbers": True
+		}
 
-        result = post_api(url, token, payload)
-        update_last_fetched_time(end_point_name)
-        process_daywise_analytics_response(result, company)
+		result = post_api(url, token, payload)
+		update_last_fetched_time(end_point_name)
+		process_daywise_analytics_response(result, company)
 
-    return {
-        "status": "success",
-        "message": "Day-wise analytics report fetched successfully"
-    }
+	return {
+		"status": "success",
+		"message": "Day-wise analytics report fetched successfully"
+	}
 
 
 def process_daywise_analytics_response(response_json, company):
@@ -614,7 +614,18 @@ def process_daywise_analytics_response(response_json, company):
 @frappe.whitelist()
 def fetch_call_history_report():
 	end_point_name = "Call History"
-	endpoint, call_from, call_to = get_endpoint(end_point_name)
+	
+	call_from = frappe.form_dict.get("call_from")
+	call_to = frappe.form_dict.get("call_to")
+
+	if call_from and call_to:
+		# Convert to Unix timestamp if needed
+		call_from = int(time.mktime(frappe.utils.getdate(call_from).timetuple()))
+		call_to = int(time.mktime(frappe.utils.getdate(call_to).timetuple()))
+		endpoint = get_endpoint(end_point_name)[0]  # only get the endpoint string
+	else:
+		# Use default logic if dates are not provided
+		endpoint, call_from, call_to = get_endpoint(end_point_name)
 
 	employee_ids = get_employees()
 	settings = get_callyzer_settings()
@@ -623,19 +634,31 @@ def fetch_call_history_report():
 		token = setting["api_key"]
 
 		url = setting['domain_api'] + endpoint
-		payload = {
-			"call_from": int(call_from),
-			"call_to": int(call_to),
-			"call_types": ["Missed", "Rejected", "Incoming", "Outgoing"],
-			"emp_numbers": employee_ids,
-			"is_exclude_numbers": True,
-			"page_no": 1,
-			"page_size": 100
-		}
-		result = post_api(url, token, payload)
-		update_last_fetched_time(end_point_name)
-		process_call_history_response(result, company)
-		
+		page_size = 100
+		page_no = 1
+
+		while True:
+			payload = {
+				"call_from": int(call_from),
+				"call_to": int(call_to),
+				"call_types": [],
+				"emp_numbers": employee_ids,
+				"is_exclude_numbers": True,
+				"page_no": page_no,
+				"page_size": page_size
+			}
+
+			result = post_api(url, token, payload)
+			
+			if len(result)==0:
+				break
+
+			process_call_history_response(result, company)
+
+			# Go to the next page
+			page_no += 1
+
+	update_last_fetched_time(end_point_name)	
 	return {"status": "success", "message": "Call history report fetched successfully"}
 	   
 
