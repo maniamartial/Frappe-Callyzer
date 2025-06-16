@@ -74,8 +74,10 @@ def update_last_fetched_time(endpoint_name):
 
     for row in settings.endpoints:
         if row.endpoint_name == endpoint_name:
-            row.last_fetch = frappe.utils.now()
-            settings.save(ignore_permissions=True)
+            last_fetch = frappe.utils.now()
+            frappe.db.set_value("Endpoint Call", row.name, "last_fetch", last_fetch)
+            # frappe.db.commit()
+            # settings.save(ignore_permissions=True)
             break
     else:
         frappe.throw(f"{endpoint_name} not found in settings")
