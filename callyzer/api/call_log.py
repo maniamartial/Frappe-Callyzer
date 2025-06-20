@@ -608,8 +608,6 @@ def process_daywise_analytics_response(response_json, company):
 	return {"status": "success", "message": "Daywise analytics processed successfully"}
 
 
-
-
 ##Fetch Call History Report #Tested working
 @frappe.whitelist()
 def fetch_call_history_report():
@@ -629,6 +627,7 @@ def fetch_call_history_report():
 
 	employee_ids = get_employees()
 	settings = get_callyzer_settings()
+	update_last_fetched_time(end_point_name)
 	for setting in settings:
 		company = setting["company"]
 		token = setting["api_key"]
@@ -658,7 +657,7 @@ def fetch_call_history_report():
 			# Go to the next page
 			page_no += 1
 
-	update_last_fetched_time(end_point_name)	
+		
 	return {"status": "success", "message": "Call history report fetched successfully"}
 	   
 
@@ -934,3 +933,49 @@ def bg_fetch_call_history_report():
 		now=False
 	)
 	return _("Call history report job has been queued. You will be notified once it's complete.")
+
+
+@frappe.whitelist()
+def fetch_call_history_report_daily():
+	end_point_name = "Call History"
+	
+	# Define today's start and end timestamps
+	today_date = getdate()
+	call_from_dt = datetime.combine(today_date, time.min)  # 12:00 AM
+	call_to_dt = datetime.combine(today_date, time.max)    # 11:59:59 PM
+
+	call_from = int(pytime.mktime(call_from_dt.timetuple()))
+	call_to = int(pytime.mktime(call_to_dt.timetuple()))
+
+	endpoint = get_endpoint(end_point_name)[0]  # Only get the endpoint string
+
+	employee_ids = get_employees()
+	settings = get_callyzer_settings()
+
+	for setting in settings:
+		company = setting["company"]
+		token = setting["api_key"]
+		url = setting["domain_api"] + endpoint
+		page_size = 100
+		page_no = 1
+
+		while True:
+			payload = {
+				"call_from": call_from,
+				"call_to": call_to,
+				"call_types": [],
+				"emp_numbers": employee_ids,
+				"is_exclude_numbers": True,
+				"page_no": page_no,
+				"page_size": page_size
+			}
+
+			result = post_api(url, token, payload)
+
+			if not result:
+				break
+
+			process_call_history_response(result, company)
+			page_no += 1
+
+	return {"status": "success", "message": "Call history report fetched successfully"}
